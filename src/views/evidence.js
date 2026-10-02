@@ -168,9 +168,7 @@ function handleBookmarkClick(evidenceId) {
     bookmarks.push(evidenceId);
     ev.bookmarked = true;
   } else {
-    setBookmarks(bookmarks.filter(function (id) {
-      return id !== evidenceId;
-    }));
+    setBookmarks(bookmarks.filter((id) => id !== evidenceId));
     ev.bookmarked = false;
   }
   saveBookmarksToStorage();
@@ -194,10 +192,8 @@ export function clearFilters() {
 }
 
 function simulateAsyncSearch(term) {
-  return new Promise(function (resolve) {
-    setTimeout(function () {
-      resolve(term);
-    }, 300);
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(term), 300);
   });
 }
 
@@ -299,11 +295,11 @@ function renderEvidenceDetail(ev) {
   document.getElementById("closeEvidenceDetailBtn").addEventListener("click", closeEvidenceDetail);
   document.getElementById("saveNoteBtn").addEventListener("click", saveCurrentNote);
 
-  document.getElementById("detailStatusSelect").addEventListener("change", function (e) {
+  document.getElementById("detailStatusSelect").addEventListener("change", (e) => {
     ev.status = e.target.value; // direct mutation of the loaded evidence object
     if (viewRendered.evidence) renderEvidenceList();
   });
-  document.getElementById("detailRelevanceSelect").addEventListener("change", function (e) {
+  document.getElementById("detailRelevanceSelect").addEventListener("change", (e) => {
     ev.relevance = e.target.value;
     if (viewRendered.evidence) renderEvidenceList();
   });

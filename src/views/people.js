@@ -61,13 +61,13 @@ export function renderPeople() {
 
   const links = container.querySelectorAll(".evidence-count-link");
   for (let l = 0; l < links.length; l++) {
-    links[l].addEventListener("click", function (e) {
+    links[l].addEventListener("click", (e) => {
       const personId = e.target.getAttribute("data-person-id");
       // the link promises exactly this person's items, so leftover filters must not apply
       clearFilters();
       document.getElementById("filterPerson").value = personId;
       navigateTo("evidence");
-      setTimeout(function () {
+      setTimeout(() => {
         renderEvidenceList();
       }, 0);
     });
