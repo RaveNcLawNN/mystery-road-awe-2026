@@ -16,24 +16,27 @@ during the course will be to analyse, maintain, refactor, migrate, and extend it
 
 ## Running the application
 
-This application uses `fetch()` to load its case data from local JSON files, so it must be served
-over HTTP — opening `index.html` directly from the filesystem (`file://`) will not work in most
-browsers.
-
-Any static file server will do. For example, from the project root:
+The project is built and served with [Vite](https://vite.dev/). You need Node.js
+`^20.19.0 || >=22.12.0` (see `engines` in `package.json`).
 
 ```bash
-# Python 3
-python -m http.server 8080
-
-# Node.js (no install required)
-npx serve .
-
-# VS Code
-# Use the "Live Server" extension
+npm ci        # install the exact dependency versions from package-lock.json
+npm run dev   # start the Vite dev server with hot module replacement
 ```
 
-Then open `http://localhost:8080` (or whatever port your server prints) in your browser.
+Then open `http://localhost:5173`.
+
+Opening `index.html` directly from the filesystem (`file://`) does not work: the app loads its case
+data with `fetch()` and is made of ES modules, and both need HTTP. A plain static file server on the
+project root no longer works either, because the runtime files live in `public/` (see below).
+
+### Project layout
+
+- `index.html`: entry page, loads `src/main.js`
+- `src/`: application code (ES modules)
+- `styles.css`, `assets/logo/`: processed by Vite
+- `public/data/*.json`, `public/assets/people/*.png`: copied as-is and served from the site root,
+  because they are loaded by URL at runtime
 
 ## Features
 

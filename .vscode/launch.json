@@ -2,17 +2,17 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug app in Edge (Live Server :5501)",
+      "name": "Debug app in Edge (Vite dev server :5173)",
       "type": "msedge",
       "request": "launch",
-      "url": "http://localhost:5501/index.html",
+      "url": "http://localhost:5173/index.html",
       "webRoot": "${workspaceFolder}"
     },
     {
-      "name": "Debug app in Chrome (Live Server :5501)",
+      "name": "Debug app in Chrome (Vite dev server :5173)",
       "type": "chrome",
       "request": "launch",
-      "url": "http://localhost:5501/index.html",
+      "url": "http://localhost:5173/index.html",
       "webRoot": "${workspaceFolder}"
     }
   ]
