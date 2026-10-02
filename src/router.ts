@@ -3,33 +3,30 @@
 // ---------------------------------------------------------------------
 
 import { viewRendered, setCurrentPage } from "./state.ts";
+import { isViewName, type ViewName } from "./navigation.ts";
+import { getRequiredElement } from "./utils/dom.ts";
 import { renderDashboard } from "./views/dashboard.ts";
 import { renderEvidenceList } from "./views/evidence.ts";
 import { renderPeople, renderLocations } from "./views/people.ts";
 import { renderTimeline } from "./views/timeline.ts";
 import { renderWorkspace } from "./views/workspace.ts";
 
-export function handleHashChange() {
-  let hash = window.location.hash.replace("#", "");
-  const validViews = ["dashboard", "evidence", "people", "timeline", "workspace"];
-  if (validViews.indexOf(hash) === -1) {
-    hash = "dashboard";
-  }
+export function handleHashChange(): void {
+  const requested = window.location.hash.replace("#", "");
+  const hash: ViewName = isViewName(requested) ? requested : "dashboard";
   setCurrentPage(hash);
 
-  const sections = document.querySelectorAll(".view");
-  for (let i = 0; i < sections.length; i++) {
-    sections[i].classList.remove("active");
-  }
-  document.getElementById("view-" + hash).classList.add("active");
+  document.querySelectorAll(".view").forEach((section) => {
+    section.classList.remove("active");
+  });
+  getRequiredElement("view-" + hash, HTMLElement).classList.add("active");
 
-  const navButtons = document.querySelectorAll(".nav-btn");
-  for (let n = 0; n < navButtons.length; n++) {
-    navButtons[n].classList.remove("active");
-    if (navButtons[n].getAttribute("data-view") === hash) {
-      navButtons[n].classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach((button) => {
+    button.classList.remove("active");
+    if (button.getAttribute("data-view") === hash) {
+      button.classList.add("active");
     }
-  }
+  });
 
   if (hash === "dashboard") {
     // the stats derive from bookmarks and review status, which change in other views
