@@ -2,7 +2,7 @@
 // GENERIC LOOKUP HELPERS
 // ---------------------------------------------------------------------
 
-import { allEvidence, allPeople, allLocations } from "../state.js";
+import { allEvidence, allPeople, allLocations } from "../state.ts";
 
 export function findEvidenceById(id) {
   for (let i = 0; i < allEvidence.length; i++) {

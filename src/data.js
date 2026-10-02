@@ -11,7 +11,7 @@ import {
   setAllTimeline,
   setCaseData,
   setEvidenceViewLoading,
-} from "./state.js";
+} from "./state.ts";
 import { renderDashboard } from "./views/dashboard.js";
 import { populateEvidenceDropdowns, renderEvidenceList, applyStoredBookmarkFlags } from "./views/evidence.js";
 import { populateTimelineDropdowns, renderTimeline } from "./views/timeline.js";

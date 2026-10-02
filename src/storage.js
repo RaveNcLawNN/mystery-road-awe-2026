@@ -2,7 +2,7 @@
 // LOCAL STORAGE HELPERS (bookmarks & notes)
 // ---------------------------------------------------------------------
 
-import { bookmarks, notesStore, setBookmarks, setNotesStore } from "./state.js";
+import { bookmarks, notesStore, setBookmarks, setNotesStore } from "./state.ts";
 
 const STORAGE_KEY_BOOKMARKS = "remotion_bookmarks";
 const STORAGE_KEY_NOTES = "remotion_notes";

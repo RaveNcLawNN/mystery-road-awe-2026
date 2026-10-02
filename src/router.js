@@ -2,7 +2,7 @@
 // HASH ROUTING
 // ---------------------------------------------------------------------
 
-import { viewRendered, setCurrentPage } from "./state.js";
+import { viewRendered, setCurrentPage } from "./state.ts";
 import { renderDashboard } from "./views/dashboard.js";
 import { renderEvidenceList } from "./views/evidence.js";
 import { renderPeople, renderLocations } from "./views/people.js";

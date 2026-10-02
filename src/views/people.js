@@ -2,7 +2,7 @@
 // PEOPLE & LOCATIONS
 // ---------------------------------------------------------------------
 
-import { allEvidence, allPeople, allLocations } from "../state.js";
+import { allEvidence, allPeople, allLocations } from "../state.ts";
 import { evidenceMentionsPerson } from "../utils/lookup.js";
 import { navigateTo } from "../navigation.ts";
 import { renderEvidenceList, clearFilters } from "./evidence.js";

@@ -2,7 +2,7 @@
 // TIMELINE
 // ---------------------------------------------------------------------
 
-import { allPeople, allLocations, allTimeline } from "../state.js";
+import { allPeople, allLocations, allTimeline } from "../state.ts";
 import { findEvidenceById, findLocationById } from "../utils/lookup.js";
 import { formatDate } from "../utils/format.ts";
 import { navigateTo } from "../navigation.ts";

@@ -2,7 +2,7 @@
 // DASHBOARD
 // ---------------------------------------------------------------------
 
-import { allEvidence, allPeople, allLocations, allTimeline, bookmarks, caseData } from "../state.js";
+import { allEvidence, allPeople, allLocations, allTimeline, bookmarks, caseData } from "../state.ts";
 import { formatDate, getStatusBadgeClass } from "../utils/format.ts";
 
 export function renderDashboard() {

@@ -2,7 +2,7 @@
 // WORKSPACE
 // ---------------------------------------------------------------------
 
-import { allEvidence, allPeople, notesStore } from "../state.js";
+import { allEvidence, allPeople, notesStore } from "../state.ts";
 import { STORAGE_KEY_HYPOTHESIS } from "../storage.js";
 import { navigateTo } from "../navigation.ts";
 import { openEvidenceDetail } from "./evidence.js";
