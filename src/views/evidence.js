@@ -201,15 +201,14 @@ function simulateAsyncSearch(term) {
   });
 }
 
-export function handleSearchInput(event) {
+export async function handleSearchInput(event) {
   const term = event.target.value;
   const requestId = ++latestSearchRequestId;
 
-  simulateAsyncSearch(term).then(function () {
-    // Only apply this response if nothing newer has been typed meanwhile.
-    if (requestId !== latestSearchRequestId) return;
-    renderEvidenceList();
-  });
+  await simulateAsyncSearch(term);
+  // Only apply this response if nothing newer has been typed meanwhile.
+  if (requestId !== latestSearchRequestId) return;
+  renderEvidenceList();
 }
 
 // --- Evidence detail ----------------------------------------------------

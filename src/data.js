@@ -58,53 +58,44 @@ async function loadCorePeopleAndLocations() {
   populateAllDropdowns();
 }
 
-function loadEvidenceData() {
-  fetch("data/evidence.json")
-    .then(function (res) {
-      return res.json();
-    })
-    .then(function (data) {
-      setAllEvidence(data);
-      applyStoredBookmarkFlags();
-      renderDashboard();
-      populateAllDropdowns();
-      // per-person evidence counts are computed at render time
-      if (viewRendered.people) renderPeople();
-    })
-    .catch(function (err) {
-      console.error("Failed to load evidence.json", err);
-      alert("Evidence could not be loaded. Some views may be incomplete.");
-    })
-    .finally(function () {
-      setEvidenceViewLoading(false);
-      renderEvidenceList();
-    });
+async function loadEvidenceData() {
+  try {
+    const res = await fetch("data/evidence.json");
+    setAllEvidence(await res.json());
+    applyStoredBookmarkFlags();
+    renderDashboard();
+    populateAllDropdowns();
+    // per-person evidence counts are computed at render time
+    if (viewRendered.people) renderPeople();
+  } catch (err) {
+    console.error("Failed to load evidence.json", err);
+    alert("Evidence could not be loaded. Some views may be incomplete.");
+  } finally {
+    setEvidenceViewLoading(false);
+    renderEvidenceList();
+  }
 }
 
-function loadTimelineData() {
-  return fetch("data/timeline.json")
-    .then(function (res) {
-      return res.json();
-    })
-    .then(function (data) {
-      setAllTimeline(data);
-      renderDashboard();
-      if (currentPage === "timeline") renderTimeline();
-      populateAllDropdowns();
-    })
-    .catch(function (err) {
-      console.error("Failed to load timeline.json", err);
-    })
-    .finally(function () {
-      hideLoadingStep();
-    });
+async function loadTimelineData() {
+  try {
+    const res = await fetch("data/timeline.json");
+    setAllTimeline(await res.json());
+    renderDashboard();
+    if (currentPage === "timeline") renderTimeline();
+    populateAllDropdowns();
+  } catch (err) {
+    console.error("Failed to load timeline.json", err);
+  } finally {
+    hideLoadingStep();
+  }
 }
 
-export function loadAllData() {
+export async function loadAllData() {
   showLoadingOverlay("Loading case file…");
   loadingStepsRemaining = 2;
-  return loadCorePeopleAndLocations().then(function () {
-    loadEvidenceData();
-    loadTimelineData();
-  });
+  await loadCorePeopleAndLocations();
+  // Deliberately not awaited: the app starts once the core data is there,
+  // evidence and timeline fill in when they arrive.
+  loadEvidenceData();
+  loadTimelineData();
 }

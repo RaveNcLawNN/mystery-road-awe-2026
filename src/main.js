@@ -46,14 +46,13 @@ function setupEventListeners() {
   });
 }
 
-function initApp() {
+async function initApp() {
   loadBookmarksFromStorage();
   loadNotesFromStorage();
   setupEventListeners();
 
-  loadAllData().then(function () {
-    handleHashChange();
-  });
+  await loadAllData();
+  handleHashChange();
 }
 
 window.addEventListener("DOMContentLoaded", initApp);
