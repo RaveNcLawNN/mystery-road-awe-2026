@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------
 
 import { viewRendered, setCurrentPage } from "./state.ts";
-import { renderDashboard } from "./views/dashboard.js";
+import { renderDashboard } from "./views/dashboard.ts";
 import { renderEvidenceList } from "./views/evidence.js";
 import { renderPeople, renderLocations } from "./views/people.js";
 import { renderTimeline } from "./views/timeline.js";

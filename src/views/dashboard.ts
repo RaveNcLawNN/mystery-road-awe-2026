@@ -5,14 +5,11 @@
 import { allEvidence, allPeople, allLocations, allTimeline, bookmarks, caseData } from "../state.ts";
 import { formatDate, getStatusBadgeClass } from "../utils/format.ts";
 
-export function renderDashboard() {
+export function renderDashboard(): void {
   const container = document.getElementById("dashboardContent");
   if (!container) return;
 
-  let reviewedCount = 0;
-  for (let i = 0; i < allEvidence.length; i++) {
-    if ((allEvidence[i].status || "").toLowerCase() === "reviewed") reviewedCount++;
-  }
+  const reviewedCount = allEvidence.filter((ev) => ev.status.toLowerCase() === "reviewed").length;
 
   const progressPct = allEvidence.length === 0 ? 0 : Math.round((reviewedCount / allEvidence.length) * 100);
 
@@ -45,8 +42,7 @@ export function renderDashboard() {
   if (recentEvidence.length === 0) {
     html += "<p>No evidence loaded yet.</p>";
   }
-  for (let e = 0; e < recentEvidence.length; e++) {
-    const ev = recentEvidence[e];
+  for (const ev of recentEvidence) {
     html +=
       '<div class="mini-list-item"><strong>' +
       ev.id +
@@ -65,8 +61,7 @@ export function renderDashboard() {
   if (recentTimeline.length === 0) {
     html += "<p>No timeline events loaded yet.</p>";
   }
-  for (let t = 0; t < recentTimeline.length; t++) {
-    const evt = recentTimeline[t];
+  for (const evt of recentTimeline) {
     html += '<div class="mini-list-item"><strong>' + formatDate(evt.time) + "</strong><br>" + evt.title + "</div>";
   }
   html += "</div>";
@@ -76,7 +71,7 @@ export function renderDashboard() {
   container.innerHTML = html;
 }
 
-function statCardHTML(value, label) {
+function statCardHTML(value: number, label: string): string {
   return (
     '<div class="stat-card"><div class="stat-value">' +
     value +

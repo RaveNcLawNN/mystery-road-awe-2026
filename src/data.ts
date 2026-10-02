@@ -14,7 +14,7 @@ import {
   setEvidenceViewLoading,
 } from "./state.ts";
 import { parseCaseFile, parseEvidence, parseLocations, parsePeople, parseTimeline } from "./validate.ts";
-import { renderDashboard } from "./views/dashboard.js";
+import { renderDashboard } from "./views/dashboard.ts";
 import { populateEvidenceDropdowns, renderEvidenceList, applyStoredBookmarkFlags } from "./views/evidence.js";
 import { populateTimelineDropdowns, renderTimeline } from "./views/timeline.js";
 import { renderPeople } from "./views/people.js";
