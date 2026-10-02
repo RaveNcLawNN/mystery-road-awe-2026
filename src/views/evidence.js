@@ -6,7 +6,6 @@ import {
   allEvidence,
   allPeople,
   allLocations,
-  filteredEvidence,
   bookmarks,
   currentPage,
   evidenceViewLoading,
@@ -78,8 +77,25 @@ function getFilteredEvidence() {
     if (matches) results.push(item);
   }
 
-  setFilteredEvidence(results);
-  return results;
+  const sorted = sortEvidence(results, document.getElementById("sortEvidence").value);
+  setFilteredEvidence(sorted);
+  return sorted;
+}
+
+// Returns a sorted copy: Array.prototype.sort works in place, and the input
+// may be (or share items with) the master allEvidence array.
+function sortEvidence(items, sortValue) {
+  const sorted = [...items];
+  if (sortValue === "title-asc") {
+    sorted.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (sortValue === "title-desc") {
+    sorted.sort((a, b) => b.title.localeCompare(a.title));
+  } else if (sortValue === "date-asc") {
+    sorted.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+  } else {
+    sorted.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  }
+  return sorted;
 }
 
 export function renderEvidenceList() {
@@ -171,25 +187,6 @@ export function applyStoredBookmarkFlags() {
 }
 
 export function handleSortChange() {
-  var sortValue = document.getElementById("sortEvidence").value;
-
-  if (sortValue === "title-asc") {
-    filteredEvidence.sort(function (a, b) {
-      return a.title.localeCompare(b.title);
-    });
-  } else if (sortValue === "title-desc") {
-    filteredEvidence.sort(function (a, b) {
-      return b.title.localeCompare(a.title);
-    });
-  } else if (sortValue === "date-asc") {
-    filteredEvidence.sort(function (a, b) {
-      return new Date(a.timestamp) - new Date(b.timestamp);
-    });
-  } else {
-    filteredEvidence.sort(function (a, b) {
-      return new Date(b.timestamp) - new Date(a.timestamp);
-    });
-  }
   renderEvidenceList();
 }
 
