@@ -168,15 +168,21 @@ function loadHypothesisFromStorage() {
   }
   if (draft === null || typeof draft !== "object") return;
 
-  document.getElementById("hypSuspect").value = draft.suspectId || "";
-  document.getElementById("hypNature").value = draft.nature || "";
-  document.getElementById("hypConfidence").value = draft.confidence || 50;
-  document.getElementById("hypConfidenceValue").textContent = draft.confidence || 50;
-  document.getElementById("hypExplanation").value = draft.explanation || "";
-  document.getElementById("hypAlternative").value = draft.alternative || "";
+  // Valid JSON is not necessarily a valid draft: a field is only used if it
+  // has the type saveHypothesis() writes (all strings, evidenceIds a list).
+  const text = (value) => (typeof value === "string" ? value : "");
+
+  document.getElementById("hypSuspect").value = text(draft.suspectId);
+  document.getElementById("hypNature").value = text(draft.nature);
+  const confidenceInput = document.getElementById("hypConfidence");
+  confidenceInput.value = text(draft.confidence) || "50";
+  // the range input discards values it cannot represent; show what it kept
+  document.getElementById("hypConfidenceValue").textContent = confidenceInput.value;
+  document.getElementById("hypExplanation").value = text(draft.explanation);
+  document.getElementById("hypAlternative").value = text(draft.alternative);
 
   const evidenceSelect = document.getElementById("hypEvidence");
-  const savedIds = draft.evidenceIds || [];
+  const savedIds = Array.isArray(draft.evidenceIds) ? draft.evidenceIds.filter((id) => typeof id === "string") : [];
   for (let i = 0; i < evidenceSelect.options.length; i++) {
     evidenceSelect.options[i].selected = savedIds.indexOf(evidenceSelect.options[i].value) !== -1;
   }
