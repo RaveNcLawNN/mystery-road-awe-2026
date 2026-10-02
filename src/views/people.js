@@ -5,7 +5,7 @@
 import { allEvidence, allPeople, allLocations } from "../state.js";
 import { evidenceMentionsPerson } from "../utils/lookup.js";
 import { navigateTo } from "../navigation.js";
-import { renderEvidenceList } from "./evidence.js";
+import { renderEvidenceList, clearFilters } from "./evidence.js";
 
 let currentPeopleTab = "people";
 
@@ -66,6 +66,8 @@ export function renderPeople() {
   for (var l = 0; l < links.length; l++) {
     links[l].addEventListener("click", function (e) {
       var personId = e.target.getAttribute("data-person-id");
+      // the link promises exactly this person's items, so leftover filters must not apply
+      clearFilters();
       document.getElementById("filterPerson").value = personId;
       navigateTo("evidence");
       setTimeout(function () {
