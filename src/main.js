@@ -33,14 +33,6 @@ Object.assign(window, {
 function setupEventListeners() {
   window.addEventListener("hashchange", handleHashChange);
 
-  var navButtons = document.querySelectorAll(".nav-btn");
-  for (var i = 0; i < navButtons.length; i++) {
-    navButtons[i].addEventListener("click", function () {
-      var targetView = navButtons[i].getAttribute("data-view");
-      console.log("nav clicked:", targetView);
-    });
-  }
-
   document.getElementById("evidenceSearch").addEventListener("input", handleSearchInput);
 
   document.getElementById("filterType").addEventListener("change", renderEvidenceList);
