@@ -31,7 +31,11 @@ function setupEventListeners(): void {
   );
   getRequiredElement("saveHypothesisBtn", HTMLButtonElement).addEventListener("click", saveHypothesis);
 
-  getRequiredElement("evidenceSearch", HTMLInputElement).addEventListener("input", handleSearchInput);
+  // async handlers: addEventListener ignores the returned Promise, so it is
+  // discarded explicitly (`void`) instead of silently
+  getRequiredElement("evidenceSearch", HTMLInputElement).addEventListener("input", (event) => {
+    void handleSearchInput(event);
+  });
   getRequiredElement("sortEvidence", HTMLSelectElement).addEventListener("change", renderEvidenceList);
 
   getRequiredElement("filterType", HTMLSelectElement).addEventListener("change", renderEvidenceList);
@@ -64,4 +68,6 @@ async function initApp(): Promise<void> {
   handleHashChange();
 }
 
-window.addEventListener("DOMContentLoaded", initApp);
+window.addEventListener("DOMContentLoaded", () => {
+  void initApp();
+});

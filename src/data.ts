@@ -116,7 +116,8 @@ export async function loadAllData(): Promise<void> {
     return;
   }
   // Deliberately not awaited: the app starts once the core data is there,
-  // evidence and timeline fill in when they arrive.
-  loadEvidenceData();
-  loadTimelineData();
+  // evidence and timeline fill in when they arrive. Both handle their own
+  // errors; `void` marks the un-awaited Promise as intentional.
+  void loadEvidenceData();
+  void loadTimelineData();
 }

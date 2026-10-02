@@ -25,10 +25,18 @@ export default defineConfig([
     },
   },
   {
-    // TypeScript modules: TS-aware parser and rules (includes no-explicit-any);
-    // type errors themselves are reported by tsc, not by ESLint
+    // TypeScript modules: rules that use the type information (via
+    // tsconfig.json), e.g. no-unsafe-* for any-typed values from library
+    // APIs such as JSON.parse, and no-floating-promises. no-explicit-any is
+    // included. Type errors themselves are reported by tsc, not by ESLint.
     files: ["src/**/*.ts"],
-    extends: [tseslint.configs.recommended],
+    extends: [tseslint.configs.recommendedTypeChecked],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
   },
   {
     // tool configuration files run in Node
