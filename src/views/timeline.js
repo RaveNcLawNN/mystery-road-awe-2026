@@ -8,8 +8,6 @@ import { formatDate } from "../utils/format.js";
 import { navigateTo } from "../navigation.js";
 import { openEvidenceDetail } from "./evidence.js";
 
-let modalCloseListenerCount = 0;
-
 export function populateTimelineDropdowns() {
   var personSelect = document.getElementById("timelinePersonFilter");
   var locationSelect = document.getElementById("timelineLocationFilter");
@@ -111,6 +109,8 @@ function openEvidenceModal(evidenceId) {
     modal = document.createElement("div");
     modal.id = "quickViewModal";
     document.body.appendChild(modal);
+    // registered once: the element is reused for every later quick view
+    modal.addEventListener("click", handleModalClick);
   }
 
   modal.innerHTML =
@@ -121,20 +121,19 @@ function openEvidenceModal(evidenceId) {
     "<p>" + ev.summary + "</p>" +
     '<button type="button" class="btn btn-primary btn-small" data-open-full="' + ev.id + '">Open full evidence</button>' +
     "</div></div>";
+}
 
-  modalCloseListenerCount++;
-  console.log("modal opened, active close listeners:", modalCloseListenerCount);
-
-  modal.addEventListener("click", function (e) {
-    if (e.target.classList.contains("modal-close-btn") || e.target.classList.contains("modal-backdrop")) {
-      modal.innerHTML = "";
-    }
-    if (e.target.getAttribute && e.target.getAttribute("data-open-full")) {
-      modal.innerHTML = "";
-      navigateTo("evidence");
-      setTimeout(function () {
-        openEvidenceDetail(e.target.getAttribute("data-open-full"));
-      }, 0);
-    }
-  });
+function handleModalClick(e) {
+  const modal = e.currentTarget;
+  if (e.target.classList.contains("modal-close-btn") || e.target.classList.contains("modal-backdrop")) {
+    modal.innerHTML = "";
+  }
+  const evidenceId = e.target.getAttribute && e.target.getAttribute("data-open-full");
+  if (evidenceId) {
+    modal.innerHTML = "";
+    navigateTo("evidence");
+    setTimeout(() => {
+      openEvidenceDetail(evidenceId);
+    }, 0);
+  }
 }
