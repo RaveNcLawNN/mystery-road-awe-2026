@@ -3,11 +3,9 @@
 // ---------------------------------------------------------------------
 
 import {
-  allEvidence,
   currentPage,
   viewRendered,
   setAllEvidence,
-  setFilteredEvidence,
   setAllPeople,
   setAllLocations,
   setAllTimeline,
@@ -75,7 +73,6 @@ function loadEvidenceData() {
     .then(function (data) {
       setAllEvidence(data);
       applyStoredBookmarkFlags();
-      setFilteredEvidence([...allEvidence]);
       renderDashboard();
       populateAllDropdowns();
       // per-person evidence counts are computed at render time

@@ -5,7 +5,6 @@
 // read-only, so reassignment has to go through the setters below.
 
 export let allEvidence = [];
-export let filteredEvidence = [];
 export let bookmarks = [];
 export let currentPage = "dashboard";
 
@@ -17,21 +16,15 @@ export let caseData = {};
 export let evidenceViewLoading = true;
 
 export const viewRendered = {
-  dashboard: false,
   evidence: false,
   people: false,
-  timeline: false,
-  workspace: false
+  timeline: false
 };
 
 export let notesStore = {};
 
 export function setAllEvidence(value) {
   allEvidence = value;
-}
-
-export function setFilteredEvidence(value) {
-  filteredEvidence = value;
 }
 
 export function setBookmarks(value) {

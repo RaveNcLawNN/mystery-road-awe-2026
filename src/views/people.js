@@ -7,10 +7,7 @@ import { evidenceMentionsPerson } from "../utils/lookup.js";
 import { navigateTo } from "../navigation.js";
 import { renderEvidenceList, clearFilters } from "./evidence.js";
 
-let currentPeopleTab = "people";
-
 export function switchPeopleTab(tab) {
-  currentPeopleTab = tab;
   const peoplePanel = document.getElementById("peoplePanel");
   const locationsPanel = document.getElementById("locationsPanel");
   const peopleTabBtn = document.getElementById("tabPeopleBtn");

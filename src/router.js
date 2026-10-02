@@ -34,7 +34,6 @@ export function handleHashChange() {
   if (hash === "dashboard") {
     // the stats derive from bookmarks and review status, which change in other views
     renderDashboard();
-    viewRendered.dashboard = true;
   } else if (hash === "evidence" && !viewRendered.evidence) {
     renderEvidenceList();
     viewRendered.evidence = true;

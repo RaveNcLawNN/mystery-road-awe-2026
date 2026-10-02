@@ -10,14 +10,12 @@ import {
   currentPage,
   evidenceViewLoading,
   viewRendered,
-  setFilteredEvidence,
   setBookmarks
 } from "../state.js";
 import { findEvidenceById, findPersonById, findLocationById, evidenceMentionsPerson } from "../utils/lookup.js";
 import { formatDate, getStatusBadgeClass, getRelevanceBadgeClass } from "../utils/format.js";
 import { saveBookmarksToStorage, saveNoteForEvidence, loadNoteForEvidence } from "../storage.js";
 
-let selectedEvidence = null;
 let latestSearchRequestId = 0;
 
 export function populateEvidenceDropdowns() {
@@ -77,9 +75,7 @@ function getFilteredEvidence() {
     if (matches) results.push(item);
   }
 
-  const sorted = sortEvidence(results, document.getElementById("sortEvidence").value);
-  setFilteredEvidence(sorted);
-  return sorted;
+  return sortEvidence(results, document.getElementById("sortEvidence").value);
 }
 
 // Returns a sorted copy: Array.prototype.sort works in place, and the input
@@ -209,7 +205,7 @@ export function handleSearchInput(event) {
   const term = event.target.value;
   const requestId = ++latestSearchRequestId;
 
-  simulateAsyncSearch(term).then(function (resolvedTerm) {
+  simulateAsyncSearch(term).then(function () {
     // Only apply this response if nothing newer has been typed meanwhile.
     if (requestId !== latestSearchRequestId) return;
     renderEvidenceList();
@@ -221,7 +217,6 @@ export function handleSearchInput(event) {
 export function openEvidenceDetail(evidenceId) {
   const ev = findEvidenceById(evidenceId);
   if (!ev) return;
-  selectedEvidence = ev;
 
   const section = document.getElementById("evidenceDetailSection");
   section.classList.remove("hidden");
@@ -234,7 +229,6 @@ function closeEvidenceDetail() {
   const section = document.getElementById("evidenceDetailSection");
   section.classList.add("hidden");
   section.innerHTML = "";
-  selectedEvidence = null;
 }
 
 function renderEvidenceDetail(ev) {
