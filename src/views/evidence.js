@@ -151,9 +151,10 @@ function renderEvidenceCardHTML(ev) {
 function handleEvidenceListClick(event) {
   var target = event.target;
 
-  if (target.dataset && target.dataset.action === "bookmark") {
+  const bookmarkButton = target.closest("[data-action='bookmark']");
+  if (bookmarkButton) {
     event.stopPropagation();
-    handleBookmarkClick(target.dataset.id);
+    handleBookmarkClick(bookmarkButton.dataset.id);
     return;
   }
 
