@@ -14,7 +14,7 @@ import {
 } from "../state.ts";
 import { findEvidenceById, findPersonById, findLocationById, evidenceMentionsPerson } from "../utils/lookup.ts";
 import { formatDate, getStatusBadgeClass, getRelevanceBadgeClass } from "../utils/format.ts";
-import { saveBookmarksToStorage, saveNoteForEvidence, loadNoteForEvidence } from "../storage.js";
+import { saveBookmarksToStorage, saveNoteForEvidence, loadNoteForEvidence } from "../storage.ts";
 
 let latestSearchRequestId = 0;
 

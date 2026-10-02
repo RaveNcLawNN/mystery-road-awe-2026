@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------
 
 import { allEvidence, allPeople, notesStore } from "../state.ts";
-import { STORAGE_KEY_HYPOTHESIS } from "../storage.js";
+import { STORAGE_KEY_HYPOTHESIS } from "../storage.ts";
 import { navigateTo } from "../navigation.ts";
 import { openEvidenceDetail } from "./evidence.js";
 
