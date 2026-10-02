@@ -24,13 +24,22 @@ npm ci        # install the exact dependency versions from package-lock.json
 npm run dev   # start the Vite dev server with hot module replacement
 ```
 
-Then open `http://localhost:5173`.
+Then open `http://localhost:5173`. Type errors are reported in the terminal and as an overlay in
+the browser while the dev server runs.
 
 For a production build:
 
 ```bash
-npm run build     # bundle + minify into dist/
+npm run build     # type-check, then bundle + minify into dist/ (fails on type errors)
 npm run preview   # serve dist/ locally on http://localhost:4173
+```
+
+Checks:
+
+```bash
+npm run typecheck      # tsc, no output files
+npm run lint           # ESLint (lint:fix applies safe fixes)
+npm run format:check   # Prettier (format rewrites files)
 ```
 
 Opening `index.html` directly from the filesystem (`file://`) does not work: the app loads its case
@@ -40,7 +49,9 @@ project root no longer works either, because the runtime files live in `public/`
 ### Project layout
 
 - `index.html`: entry page, loads `src/main.js`
-- `src/`: application code (ES modules)
+- `src/`: application code (ES modules), being migrated from JavaScript to TypeScript; `.ts` and
+  `.js` modules import each other during the migration
+- `tsconfig.json`: TypeScript settings (type-checking only, Vite does the compiling)
 - `styles.css`, `assets/logo/`: processed by Vite
 - `public/data/*.json`, `public/assets/people/*.png`: copied as-is and served from the site root,
   because they are loaded by URL at runtime
