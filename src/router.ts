@@ -14,6 +14,7 @@ import { renderWorkspace } from "./views/workspace.ts";
 export function handleHashChange(): void {
   const requested = window.location.hash.replace("#", "");
   const hash: ViewName = isViewName(requested) ? requested : "dashboard";
+  console.log("route ->", hash);
   setCurrentPage(hash);
 
   document.querySelectorAll(".view").forEach((section) => {
