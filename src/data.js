@@ -16,7 +16,7 @@ import { renderDashboard } from "./views/dashboard.js";
 import { populateEvidenceDropdowns, renderEvidenceList, applyStoredBookmarkFlags } from "./views/evidence.js";
 import { populateTimelineDropdowns, renderTimeline } from "./views/timeline.js";
 import { renderPeople } from "./views/people.js";
-import { populateHypothesisDropdowns } from "./views/workspace.js";
+import { populateHypothesisDropdowns, renderWorkspace } from "./views/workspace.js";
 
 let loadingStepsRemaining = 2;
 
@@ -76,6 +76,8 @@ async function loadEvidenceData() {
     populateAllDropdowns();
     // per-person evidence counts are computed at render time
     if (viewRendered.people) renderPeople();
+    // the bookmarks and notes lists are built from allEvidence
+    if (currentPage === "workspace") renderWorkspace();
   } catch (err) {
     console.error("Failed to load evidence.json", err);
     alert("Evidence could not be loaded. Some views may be incomplete.");
