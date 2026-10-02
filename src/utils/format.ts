@@ -2,7 +2,12 @@
 // FORMATTING HELPERS
 // ---------------------------------------------------------------------
 
-export function formatDate(ts) {
+export type StatusBadgeClass = "badge-reviewed" | "badge-flagged" | "badge-unreviewed";
+export type RelevanceBadgeClass = "badge-relevant" | "badge-unreviewed";
+
+// ISO timestamp → localized "Oct 16, 2026 08:49". Values that are not a
+// parsable date are shown as they are.
+export function formatDate(ts: string | undefined): string {
   if (!ts) return "Unknown date";
   const d = new Date(ts);
   if (isNaN(d.getTime())) return ts;
@@ -13,14 +18,14 @@ export function formatDate(ts) {
   );
 }
 
-export function getStatusBadgeClass(status) {
+export function getStatusBadgeClass(status: string | undefined): StatusBadgeClass {
   const s = (status || "").toLowerCase();
   if (s === "reviewed") return "badge-reviewed";
   if (s === "flagged") return "badge-flagged";
   return "badge-unreviewed";
 }
 
-export function getRelevanceBadgeClass(relevance) {
+export function getRelevanceBadgeClass(relevance: string | undefined): RelevanceBadgeClass {
   const r = (relevance || "").toLowerCase();
   if (r === "relevant") return "badge-relevant";
   return "badge-unreviewed";

@@ -13,7 +13,7 @@ import {
   setBookmarks,
 } from "../state.js";
 import { findEvidenceById, findPersonById, findLocationById, evidenceMentionsPerson } from "../utils/lookup.js";
-import { formatDate, getStatusBadgeClass, getRelevanceBadgeClass } from "../utils/format.js";
+import { formatDate, getStatusBadgeClass, getRelevanceBadgeClass } from "../utils/format.ts";
 import { saveBookmarksToStorage, saveNoteForEvidence, loadNoteForEvidence } from "../storage.js";
 
 let latestSearchRequestId = 0;
