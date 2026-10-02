@@ -5,6 +5,7 @@
 import {
   allEvidence,
   currentPage,
+  viewRendered,
   setAllEvidence,
   setFilteredEvidence,
   setAllPeople,
@@ -16,6 +17,7 @@ import {
 import { renderDashboard } from "./views/dashboard.js";
 import { populateEvidenceDropdowns, renderEvidenceList, applyStoredBookmarkFlags } from "./views/evidence.js";
 import { populateTimelineDropdowns, renderTimeline } from "./views/timeline.js";
+import { renderPeople } from "./views/people.js";
 import { populateHypothesisDropdowns } from "./views/workspace.js";
 
 let loadingStepsRemaining = 2;
@@ -76,6 +78,8 @@ function loadEvidenceData() {
       setFilteredEvidence([...allEvidence]);
       renderDashboard();
       populateAllDropdowns();
+      // per-person evidence counts are computed at render time
+      if (viewRendered.people) renderPeople();
     })
     .catch(function (err) {
       console.error("Failed to load evidence.json", err);
