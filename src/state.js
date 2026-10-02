@@ -58,6 +58,10 @@ export function setCaseData(value) {
   caseData = value;
 }
 
+export function setEvidenceViewLoading(value) {
+  evidenceViewLoading = value;
+}
+
 export function setNotesStore(value) {
   notesStore = value;
 }

@@ -10,7 +10,8 @@ import {
   setAllPeople,
   setAllLocations,
   setAllTimeline,
-  setCaseData
+  setCaseData,
+  setEvidenceViewLoading
 } from "./state.js";
 import { renderDashboard } from "./views/dashboard.js";
 import { populateEvidenceDropdowns, renderEvidenceList, applyStoredBookmarkFlags } from "./views/evidence.js";
@@ -75,11 +76,14 @@ function loadEvidenceData() {
       setFilteredEvidence([...allEvidence]);
       renderDashboard();
       populateAllDropdowns();
-      if (currentPage === "evidence") renderEvidenceList();
     })
     .catch(function (err) {
       console.error("Failed to load evidence.json", err);
       alert("Evidence could not be loaded. Some views may be incomplete.");
+    })
+    .finally(function () {
+      setEvidenceViewLoading(false);
+      renderEvidenceList();
     });
 }
 
