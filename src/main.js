@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------
 
 import { loadBookmarksFromStorage, loadNotesFromStorage } from "./storage.js";
-import { loadAllData } from "./data.js";
+import { loadAllData } from "./data.ts";
 import { navigateTo } from "./navigation.ts";
 import { handleHashChange } from "./router.js";
 import { renderEvidenceList, handleSearchInput, clearFilters } from "./views/evidence.js";
