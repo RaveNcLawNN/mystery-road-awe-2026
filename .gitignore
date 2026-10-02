@@ -1,0 +1,5 @@
+# Dependencies installed by npm (restored from package-lock.json with `npm ci`)
+node_modules/
+
+# Production build output (vite build)
+dist/

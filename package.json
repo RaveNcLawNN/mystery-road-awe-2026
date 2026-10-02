@@ -1,0 +1,27 @@
+{
+  "name": "remotion-investigation-portal",
+  "version": "1.0.0",
+  "description": "Browser-based investigation portal for the fictional ReMotion rehabilitation-robot incident: review evidence, people, locations and the timeline, and build a hypothesis.",
+  "private": true,
+  "type": "module",
+  "keywords": [
+    "investigation",
+    "case-study",
+    "vanilla-js",
+    "es-modules",
+    "advanced-web-engineering"
+  ],
+  "author": "Martin",
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/RaveNcLawNN/mystery-road-awe-2026#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RaveNcLawNN/mystery-road-awe-2026.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RaveNcLawNN/mystery-road-awe-2026/issues"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}
