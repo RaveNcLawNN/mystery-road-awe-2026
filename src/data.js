@@ -41,17 +41,27 @@ function populateAllDropdowns() {
   populateHypothesisDropdowns();
 }
 
+function showLoadingError(msg) {
+  const text = document.getElementById("loadingText");
+  const spinner = document.querySelector("#loadingOverlay .spinner");
+  if (text) text.textContent = msg;
+  if (spinner) spinner.hidden = true;
+}
+
+// fetch() only rejects on network failure; a 404/500 resolves normally, so
+// the status has to be checked before the body is parsed as JSON.
+async function fetchJson(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`${url} responded with HTTP ${res.status}`);
+  return res.json();
+}
+
 // The three requests intentionally run one after another (each awaits the
 // previous one); parallel loading is a later exercise.
 async function loadCorePeopleAndLocations() {
-  const caseRes = await fetch("data/case.json");
-  setCaseData(await caseRes.json());
-
-  const peopleRes = await fetch("data/people.json");
-  setAllPeople(await peopleRes.json());
-
-  const locationsRes = await fetch("data/locations.json");
-  setAllLocations(await locationsRes.json());
+  setCaseData(await fetchJson("data/case.json"));
+  setAllPeople(await fetchJson("data/people.json"));
+  setAllLocations(await fetchJson("data/locations.json"));
 
   hideLoadingStep();
   renderDashboard();
@@ -60,8 +70,7 @@ async function loadCorePeopleAndLocations() {
 
 async function loadEvidenceData() {
   try {
-    const res = await fetch("data/evidence.json");
-    setAllEvidence(await res.json());
+    setAllEvidence(await fetchJson("data/evidence.json"));
     applyStoredBookmarkFlags();
     renderDashboard();
     populateAllDropdowns();
@@ -78,8 +87,7 @@ async function loadEvidenceData() {
 
 async function loadTimelineData() {
   try {
-    const res = await fetch("data/timeline.json");
-    setAllTimeline(await res.json());
+    setAllTimeline(await fetchJson("data/timeline.json"));
     renderDashboard();
     if (currentPage === "timeline") renderTimeline();
     populateAllDropdowns();
@@ -93,7 +101,13 @@ async function loadTimelineData() {
 export async function loadAllData() {
   showLoadingOverlay("Loading case file…");
   loadingStepsRemaining = 2;
-  await loadCorePeopleAndLocations();
+  try {
+    await loadCorePeopleAndLocations();
+  } catch (err) {
+    console.error("Failed to load the case file", err);
+    showLoadingError("The case file could not be loaded. Please check your connection and reload the page.");
+    return;
+  }
   // Deliberately not awaited: the app starts once the core data is there,
   // evidence and timeline fill in when they arrive.
   loadEvidenceData();
