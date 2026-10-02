@@ -1,6 +1,14 @@
 import { defineConfig } from "vite";
+import checker from "vite-plugin-checker";
 
 export default defineConfig({
+  plugins: [
+    // Vite only strips types and never reports type errors. The checker runs
+    // tsc in watch mode next to the dev server and shows errors in the
+    // terminal and as a browser overlay. Builds are checked by the "build"
+    // script (tsc && vite build) instead.
+    checker({ typescript: true, enableBuild: false }),
+  ],
   // Relative asset URLs, so the built app works from any sub-path
   // (e.g. a GitHub Pages project site), not only from the domain root.
   base: "./",
