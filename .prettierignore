@@ -1,0 +1,14 @@
+# generated or managed by tools
+dist/
+package-lock.json
+
+# case data and images are content, not code
+public/
+
+# unused image copies and course-provided material
+resources/
+exercise_angaben/
+
+# local notes (not tracked in git)
+AGENTS.md
+CHANGES.md
