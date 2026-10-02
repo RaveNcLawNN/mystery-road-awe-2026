@@ -18,6 +18,15 @@ export function formatDate(ts: string | undefined): string {
   );
 }
 
+// ISO date without a time ("2026-10-16") → localized "Oct 16, 2026".
+// Date-only strings are parsed as UTC midnight, so they are formatted in UTC
+// too; in local time the day would shift back by one west of UTC.
+export function formatDay(isoDate: string): string {
+  const d = new Date(isoDate);
+  if (isNaN(d.getTime())) return isoDate;
+  return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" });
+}
+
 export function getStatusBadgeClass(status: string | undefined): StatusBadgeClass {
   const s = (status || "").toLowerCase();
   if (s === "reviewed") return "badge-reviewed";

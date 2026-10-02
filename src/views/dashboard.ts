@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------
 
 import { allEvidence, allPeople, allLocations, allTimeline, bookmarks, caseData } from "../state.ts";
-import { formatDate, getStatusBadgeClass } from "../utils/format.ts";
+import { formatDate, formatDay, getStatusBadgeClass } from "../utils/format.ts";
 
 export function renderDashboard(): void {
   const container = document.getElementById("dashboardContent");
@@ -17,6 +17,14 @@ export function renderDashboard(): void {
   html += '<div class="case-summary-card">';
   html += "<h3>" + (caseData.title || "Case") + "</h3>";
   html += '<p><span class="badge badge-flagged">' + (caseData.status || "unknown").toUpperCase() + "</span></p>";
+  const caseFacts = [
+    caseData.caseId,
+    caseData.opened ? "opened " + formatDay(caseData.opened) : "",
+    caseData.leadInvestigator ? "lead investigator: " + caseData.leadInvestigator : "",
+  ].filter((fact) => fact);
+  if (caseFacts.length > 0) {
+    html += '<p class="evidence-meta">' + caseFacts.join(" &middot; ") + "</p>";
+  }
   html += "<p>" + (caseData.summary || "") + "</p>";
   html += "</div>";
 
