@@ -1,0 +1,38 @@
+{
+  // Type-checking only: Vite strips the types and bundles, tsc never emits files.
+  "compilerOptions": {
+    // --- language & environment ---
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": [],
+
+    // --- modules: resolved the way Vite resolves them ---
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    // every file must be transpilable on its own (Vite compiles file by file)
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+
+    // --- gradual migration: .ts modules may import the remaining .js modules,
+    //     but the .js files themselves are not type-checked yet ---
+    "allowJs": true,
+    "checkJs": false,
+
+    // --- strictness ---
+    // strict: noImplicitAny, strictNullChecks, strictFunctionTypes,
+    // strictBindCallApply, strictPropertyInitialization, noImplicitThis,
+    // useUnknownInCatchVariables, alwaysStrict, strictBuiltinIteratorReturn
+    "strict": true,
+    // array[i] and record[key] may be undefined: they are typed as T | undefined
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}
