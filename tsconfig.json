@@ -16,11 +16,6 @@
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
 
-    // --- gradual migration: .ts modules may import the remaining .js modules,
-    //     but the .js files themselves are not type-checked yet ---
-    "allowJs": true,
-    "checkJs": false,
-
     // --- strictness ---
     // strict: noImplicitAny, strictNullChecks, strictFunctionTypes,
     // strictBindCallApply, strictPropertyInitialization, noImplicitThis,

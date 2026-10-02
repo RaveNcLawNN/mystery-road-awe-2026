@@ -48,9 +48,9 @@ project root no longer works either, because the runtime files live in `public/`
 
 ### Project layout
 
-- `index.html`: entry page, loads `src/main.js`
-- `src/`: application code (ES modules), being migrated from JavaScript to TypeScript; `.ts` and
-  `.js` modules import each other during the migration
+- `index.html`: entry page, loads `src/main.ts`
+- `src/`: application code, TypeScript ES modules (`types.ts`: the data model, `validate.ts`:
+  runtime checks of the JSON files, `views/`: one module per view)
 - `tsconfig.json`: TypeScript settings (type-checking only, Vite does the compiling)
 - `styles.css`, `assets/logo/`: processed by Vite
 - `public/data/*.json`, `public/assets/people/*.png`: copied as-is and served from the site root,
