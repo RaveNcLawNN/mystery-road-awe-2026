@@ -4,8 +4,8 @@
 
 import { allPeople, allLocations, allTimeline } from "../state.js";
 import { findEvidenceById, findLocationById } from "../utils/lookup.js";
-import { formatDate } from "../utils/format.js";
-import { navigateTo } from "../navigation.js";
+import { formatDate } from "../utils/format.ts";
+import { navigateTo } from "../navigation.ts";
 import { openEvidenceDetail } from "./evidence.js";
 
 export function populateTimelineDropdowns() {

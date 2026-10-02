@@ -4,7 +4,7 @@
 
 import { allEvidence, allPeople, notesStore } from "../state.js";
 import { STORAGE_KEY_HYPOTHESIS } from "../storage.js";
-import { navigateTo } from "../navigation.js";
+import { navigateTo } from "../navigation.ts";
 import { openEvidenceDetail } from "./evidence.js";
 
 let savedMessageTimer = null;

@@ -4,7 +4,7 @@
 
 import { loadBookmarksFromStorage, loadNotesFromStorage } from "./storage.js";
 import { loadAllData } from "./data.js";
-import { navigateTo } from "./navigation.js";
+import { navigateTo } from "./navigation.ts";
 import { handleHashChange } from "./router.js";
 import { renderEvidenceList, handleSearchInput, clearFilters } from "./views/evidence.js";
 import { switchPeopleTab } from "./views/people.js";

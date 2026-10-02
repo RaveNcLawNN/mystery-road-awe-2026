@@ -4,7 +4,7 @@
 
 import { allEvidence, allPeople, allLocations } from "../state.js";
 import { evidenceMentionsPerson } from "../utils/lookup.js";
-import { navigateTo } from "../navigation.js";
+import { navigateTo } from "../navigation.ts";
 import { renderEvidenceList, clearFilters } from "./evidence.js";
 
 export function switchPeopleTab(tab) {
