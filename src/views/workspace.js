@@ -7,6 +7,8 @@ import { STORAGE_KEY_HYPOTHESIS } from "../storage.js";
 import { navigateTo } from "../navigation.js";
 import { openEvidenceDetail } from "./evidence.js";
 
+let savedMessageTimer = null;
+
 export function renderWorkspace() {
   renderBookmarksList();
   renderNotesList();
@@ -120,7 +122,8 @@ export function saveHypothesis() {
 
   var msg = document.getElementById("hypothesisSavedMsg");
   msg.classList.remove("hidden");
-  setTimeout(function () {
+  clearTimeout(savedMessageTimer);
+  savedMessageTimer = setTimeout(function () {
     msg.classList.add("hidden");
   }, 2000);
 }
