@@ -7,7 +7,7 @@
 // the first mismatch, so a broken file fails at load time with a message
 // naming the file, record and field, instead of as a TypeError in a view.
 
-import type { CaseFile, CaseLocation, Evidence, Person, TimelineEvent } from "./types.ts";
+import type { CaseFile, CaseLocation, Evidence, Person, PersonId, TimelineEvent } from "./types.ts";
 
 type JsonObject = Record<string, unknown>;
 
@@ -38,6 +38,20 @@ function stringArrayField(obj: JsonObject, key: string, where: string): string[]
   return items;
 }
 
+// A person reference in evidence.json/timeline.json is meant to be an id,
+// but evidence E04 uses the display name "Nova Byte". Inside the app it is
+// always an id: names are resolved here, once. A reference that matches
+// neither an id nor a name is reported and left out.
+function resolvePersonRefs(refs: string[], people: readonly Person[], where: string): PersonId[] {
+  const ids: PersonId[] = [];
+  for (const ref of refs) {
+    const person = people.find((p) => p.id === ref) ?? people.find((p) => p.name === ref);
+    if (person) ids.push(person.id);
+    else console.warn(`${where}: unknown person "${ref}" ignored`);
+  }
+  return ids;
+}
+
 export function parseCaseFile(json: unknown): CaseFile {
   const where = "case.json";
   const obj = expectObject(json, where);
@@ -59,7 +73,8 @@ export function parsePeople(json: unknown): Person[] {
     const where = `people.json[${i}]`;
     const obj = expectObject(item, where);
     return {
-      id: stringField(obj, "id", where),
+      // the only place a PersonId is created
+      id: stringField(obj, "id", where) as PersonId,
       name: stringField(obj, "name", where),
       role: stringField(obj, "role", where),
       speciality: stringField(obj, "speciality", where),
@@ -84,7 +99,7 @@ export function parseLocations(json: unknown): CaseLocation[] {
   });
 }
 
-export function parseEvidence(json: unknown): Evidence[] {
+export function parseEvidence(json: unknown, people: readonly Person[]): Evidence[] {
   return expectArray(json, "evidence.json").map((item, i) => {
     const where = `evidence.json[${i}]`;
     const obj = expectObject(item, where);
@@ -95,7 +110,7 @@ export function parseEvidence(json: unknown): Evidence[] {
       timestamp: stringField(obj, "timestamp", where),
       summary: stringField(obj, "summary", where),
       content: stringField(obj, "content", where),
-      personIds: stringArrayField(obj, "personIds", where),
+      personIds: resolvePersonRefs(stringArrayField(obj, "personIds", where), people, where),
       locationIds: stringArrayField(obj, "locationIds", where),
       tags: stringArrayField(obj, "tags", where),
       status: stringField(obj, "status", where),
@@ -105,7 +120,7 @@ export function parseEvidence(json: unknown): Evidence[] {
   });
 }
 
-export function parseTimeline(json: unknown): TimelineEvent[] {
+export function parseTimeline(json: unknown, people: readonly Person[]): TimelineEvent[] {
   return expectArray(json, "timeline.json").map((item, i) => {
     const where = `timeline.json[${i}]`;
     const obj = expectObject(item, where);
@@ -116,7 +131,7 @@ export function parseTimeline(json: unknown): TimelineEvent[] {
       description: stringField(obj, "description", where),
       type: stringField(obj, "type", where),
       certainty: stringField(obj, "certainty", where),
-      personIds: stringArrayField(obj, "personIds", where),
+      personIds: resolvePersonRefs(stringArrayField(obj, "personIds", where), people, where),
       locationIds: stringArrayField(obj, "locationIds", where),
       evidenceIds: stringArrayField(obj, "evidenceIds", where),
     };

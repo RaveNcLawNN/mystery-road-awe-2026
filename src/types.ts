@@ -16,9 +16,15 @@ export interface CaseFile {
   notes: string;
 }
 
+// A reference to a person by id ("nova-byte"), never by display name
+// ("Nova Byte"). Both are strings, so a plain string type could not tell
+// them apart; the brand makes PersonId a distinct type that only
+// validate.ts creates, after checking it against people.json.
+export type PersonId = string & { readonly __brand: "PersonId" };
+
 // people.json
 export interface Person {
-  id: string; // "nova-byte"
+  id: PersonId;
   name: string; // "Nova Byte"
   role: string;
   speciality: string;
@@ -44,8 +50,9 @@ export interface Evidence {
   timestamp: string; // ISO date-time
   summary: string;
   content: string;
-  // Person ids, except that E04 lists "Nova Byte", a display name.
-  personIds: string[];
+  // evidence.json mixes ids and display names here (E04: "Nova Byte");
+  // names are resolved to ids when the file is loaded
+  personIds: PersonId[];
   locationIds: string[];
   tags: string[];
   // free text in the file ("unreviewed", "Reviewed"); the detail view writes
@@ -64,7 +71,7 @@ export interface TimelineEvent {
   description: string;
   type: string;
   certainty: string; // "confirmed" | "reported" | "contradictory" in the current file
-  personIds: string[];
+  personIds: PersonId[];
   locationIds: string[];
   evidenceIds: string[];
 }

@@ -3,6 +3,7 @@
 // ---------------------------------------------------------------------
 
 import {
+  allPeople,
   currentPage,
   viewRendered,
   setAllEvidence,
@@ -74,7 +75,7 @@ async function loadCorePeopleAndLocations(): Promise<void> {
 
 async function loadEvidenceData(): Promise<void> {
   try {
-    setAllEvidence(parseEvidence(await fetchJson("data/evidence.json")));
+    setAllEvidence(parseEvidence(await fetchJson("data/evidence.json"), allPeople));
     applyStoredBookmarkFlags();
     renderDashboard();
     populateAllDropdowns();
@@ -93,7 +94,7 @@ async function loadEvidenceData(): Promise<void> {
 
 async function loadTimelineData(): Promise<void> {
   try {
-    setAllTimeline(parseTimeline(await fetchJson("data/timeline.json")));
+    setAllTimeline(parseTimeline(await fetchJson("data/timeline.json"), allPeople));
     renderDashboard();
     if (currentPage === "timeline") renderTimeline();
     populateAllDropdowns();

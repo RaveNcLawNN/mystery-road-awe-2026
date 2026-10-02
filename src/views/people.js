@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------
 
 import { allEvidence, allPeople, allLocations } from "../state.ts";
-import { evidenceMentionsPerson } from "../utils/lookup.js";
+import { evidenceMentionsPerson } from "../utils/lookup.ts";
 import { navigateTo } from "../navigation.ts";
 import { renderEvidenceList, clearFilters } from "./evidence.js";
 

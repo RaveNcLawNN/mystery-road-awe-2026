@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------
 
 import { allPeople, allLocations, allTimeline } from "../state.ts";
-import { findEvidenceById, findLocationById } from "../utils/lookup.js";
+import { findEvidenceById, findLocationById } from "../utils/lookup.ts";
 import { formatDate } from "../utils/format.ts";
 import { navigateTo } from "../navigation.ts";
 import { openEvidenceDetail } from "./evidence.js";

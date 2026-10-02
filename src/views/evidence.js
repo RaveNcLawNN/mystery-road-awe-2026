@@ -12,7 +12,7 @@ import {
   viewRendered,
   setBookmarks,
 } from "../state.ts";
-import { findEvidenceById, findPersonById, findLocationById, evidenceMentionsPerson } from "../utils/lookup.js";
+import { findEvidenceById, findPersonById, findLocationById, evidenceMentionsPerson } from "../utils/lookup.ts";
 import { formatDate, getStatusBadgeClass, getRelevanceBadgeClass } from "../utils/format.ts";
 import { saveBookmarksToStorage, saveNoteForEvidence, loadNoteForEvidence } from "../storage.js";
 
