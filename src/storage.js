@@ -43,9 +43,3 @@ export function loadNotesFromStorage() {
     setNotesStore({});
   }
 }
-
-export function loadNoteAsync(evidenceId) {
-  return new Promise(function (resolve) {
-    resolve(notesStore[evidenceId] || "");
-  });
-}

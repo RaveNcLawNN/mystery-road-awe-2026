@@ -2,7 +2,7 @@
 // ENTRY POINT: event listener setup & app start
 // ---------------------------------------------------------------------
 
-import { loadBookmarksFromStorage, loadNotesFromStorage, loadNoteAsync } from "./storage.js";
+import { loadBookmarksFromStorage, loadNotesFromStorage } from "./storage.js";
 import { loadAllData } from "./data.js";
 import { navigateTo } from "./navigation.js";
 import { handleHashChange } from "./router.js";
@@ -53,11 +53,7 @@ function initApp() {
 
   loadAllData().then(function () {
     handleHashChange();
-    return loadNoteAsync("E01").then(function (firstNote) {
-      console.log("First note preview:", firstNote);
-    });
   });
 }
 
 window.addEventListener("DOMContentLoaded", initApp);
-window.addEventListener("hashchange", handleHashChange);

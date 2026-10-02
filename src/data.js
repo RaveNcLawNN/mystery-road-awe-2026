@@ -100,7 +100,7 @@ function loadTimelineData() {
       populateAllDropdowns();
     })
     .catch(function (err) {
-      console.log("timeline load error", err);
+      console.error("Failed to load timeline.json", err);
     })
     .finally(function () {
       hideLoadingStep();
