@@ -8,12 +8,18 @@ import { navigateTo } from "../navigation.js";
 import { openEvidenceDetail } from "./evidence.js";
 
 let savedMessageTimer = null;
+let hypothesisDraftRestored = false;
 
 export function renderWorkspace() {
   renderBookmarksList();
   renderNotesList();
   populateHypothesisDropdowns();
-  loadHypothesisFromStorage();
+  // The form keeps its own (possibly unsaved) state across visits;
+  // the stored draft is only the starting point after a page load.
+  if (!hypothesisDraftRestored) {
+    loadHypothesisFromStorage();
+    hypothesisDraftRestored = true;
+  }
 }
 
 function renderBookmarksList() {
@@ -95,9 +101,13 @@ export function populateHypothesisDropdowns() {
   }
   suspectSelect.value = currentSuspect;
 
+  const selectedEvidenceIds = getSelectedOptions(evidenceSelect);
   evidenceSelect.innerHTML = "";
   for (var i = 0; i < allEvidence.length; i++) {
     evidenceSelect.innerHTML += '<option value="' + allEvidence[i].id + '">' + allEvidence[i].id + " - " + allEvidence[i].title + "</option>";
+  }
+  for (const option of evidenceSelect.options) {
+    option.selected = selectedEvidenceIds.includes(option.value);
   }
 }
 
