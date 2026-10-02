@@ -1,0 +1,69 @@
+# Deployment workflow: every push to main is checked, built and published
+# to GitHub Pages. Nothing is deployed unless every check and the build pass.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # redeploy main manually, e.g. after re-enabling Pages
+
+# default for every job: read-only; the deploy job widens this for itself
+permissions:
+  contents: read
+
+# one deployment at a time; a queued deployment waits instead of cancelling
+# one that is already publishing
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Check & build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js (version from .nvmrc) with npm cache
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies (exactly as locked)
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
+
+      # "build" runs tsc first, so a type error stops the workflow here
+      - name: Type-check and build
+        run: npm run build
+
+      - name: Upload dist/ as the Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist/
+
+  deploy:
+    name: Deploy
+    needs: build # only runs if every step of "build" succeeded
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # the only job that may publish: write to Pages, and an OIDC token
+    # that proves to Pages that this run is allowed to deploy
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish the artifact to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
