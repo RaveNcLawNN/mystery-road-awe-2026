@@ -9,6 +9,9 @@ import { openEvidenceDetail } from "./evidence.js";
 
 let savedMessageTimer = null;
 let hypothesisDraftRestored = false;
+// Saved evidence ids that could not be selected yet because evidence.json
+// had not resolved when the draft was restored.
+let pendingEvidenceSelection = [];
 
 export function renderWorkspace() {
   renderBookmarksList();
@@ -101,7 +104,7 @@ export function populateHypothesisDropdowns() {
   }
   suspectSelect.value = currentSuspect;
 
-  const selectedEvidenceIds = getSelectedOptions(evidenceSelect);
+  const selectedEvidenceIds = [...getSelectedOptions(evidenceSelect), ...pendingEvidenceSelection];
   evidenceSelect.innerHTML = "";
   for (var i = 0; i < allEvidence.length; i++) {
     evidenceSelect.innerHTML += '<option value="' + allEvidence[i].id + '">' + allEvidence[i].id + " - " + allEvidence[i].title + "</option>";
@@ -109,6 +112,7 @@ export function populateHypothesisDropdowns() {
   for (const option of evidenceSelect.options) {
     option.selected = selectedEvidenceIds.includes(option.value);
   }
+  if (allEvidence.length > 0) pendingEvidenceSelection = [];
 }
 
 export function saveHypothesis() {
@@ -171,4 +175,5 @@ function loadHypothesisFromStorage() {
   for (var i = 0; i < evidenceSelect.options.length; i++) {
     evidenceSelect.options[i].selected = savedIds.indexOf(evidenceSelect.options[i].value) !== -1;
   }
+  if (allEvidence.length === 0) pendingEvidenceSelection = savedIds;
 }
