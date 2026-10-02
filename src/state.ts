@@ -4,15 +4,16 @@
 // Other modules read these through live import bindings. Imports are
 // read-only, so reassignment has to go through the setters below.
 //
-// The loaded collections are readonly arrays: views may read, filter and
-// copy them, but not sort or splice them in place (Exercise 1, Demo 2).
+// The loaded collections and the bookmarks are readonly arrays: views may
+// read, filter and copy them, but not sort, push or splice them in place
+// (Exercise 1, Demo 2); a change replaces the array through its setter.
 // The items themselves stay mutable (status, relevance, bookmarked).
 
 import type { CaseFile, CaseLocation, Evidence, Person, TimelineEvent } from "./types.ts";
 import type { ViewName } from "./navigation.ts";
 
 export let allEvidence: readonly Evidence[] = [];
-export let bookmarks: string[] = []; // evidence ids
+export let bookmarks: readonly string[] = []; // evidence ids
 export let currentPage: ViewName = "dashboard";
 
 export let allPeople: readonly Person[] = [];
@@ -35,7 +36,7 @@ export function setAllEvidence(value: readonly Evidence[]): void {
   allEvidence = value;
 }
 
-export function setBookmarks(value: string[]): void {
+export function setBookmarks(value: readonly string[]): void {
   bookmarks = value;
 }
 

@@ -6,7 +6,7 @@ import { loadBookmarksFromStorage, loadNotesFromStorage } from "./storage.ts";
 import { loadAllData } from "./data.ts";
 import { navigateTo } from "./navigation.ts";
 import { handleHashChange } from "./router.js";
-import { renderEvidenceList, handleSearchInput, clearFilters } from "./views/evidence.js";
+import { renderEvidenceList, handleSearchInput, clearFilters } from "./views/evidence.ts";
 import { switchPeopleTab } from "./views/people.ts";
 import { renderTimeline } from "./views/timeline.ts";
 import { saveHypothesis } from "./views/workspace.ts";

@@ -7,7 +7,7 @@ import { findEvidenceById, findLocationById } from "../utils/lookup.ts";
 import { formatDate } from "../utils/format.ts";
 import { getRequiredElement } from "../utils/dom.ts";
 import { navigateTo } from "../navigation.ts";
-import { openEvidenceDetail } from "./evidence.js";
+import { openEvidenceDetail } from "./evidence.ts";
 
 export function populateTimelineDropdowns(): void {
   const personSelect = document.getElementById("timelinePersonFilter");

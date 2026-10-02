@@ -6,7 +6,7 @@ import { allEvidence, allPeople, notesStore } from "../state.ts";
 import { STORAGE_KEY_HYPOTHESIS } from "../storage.ts";
 import { getRequiredElement } from "../utils/dom.ts";
 import { navigateTo } from "../navigation.ts";
-import { openEvidenceDetail } from "./evidence.js";
+import { openEvidenceDetail } from "./evidence.ts";
 
 // The hypothesis form as saved in localStorage (all values as the form
 // controls hold them, i.e. strings).

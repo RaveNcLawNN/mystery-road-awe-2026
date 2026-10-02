@@ -4,7 +4,7 @@
 
 import { viewRendered, setCurrentPage } from "./state.ts";
 import { renderDashboard } from "./views/dashboard.ts";
-import { renderEvidenceList } from "./views/evidence.js";
+import { renderEvidenceList } from "./views/evidence.ts";
 import { renderPeople, renderLocations } from "./views/people.ts";
 import { renderTimeline } from "./views/timeline.ts";
 import { renderWorkspace } from "./views/workspace.ts";

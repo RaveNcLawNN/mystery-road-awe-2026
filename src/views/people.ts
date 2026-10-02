@@ -7,7 +7,7 @@ import type { Person } from "../types.ts";
 import { evidenceMentionsPerson } from "../utils/lookup.ts";
 import { getRequiredElement } from "../utils/dom.ts";
 import { navigateTo } from "../navigation.ts";
-import { renderEvidenceList, clearFilters } from "./evidence.js";
+import { renderEvidenceList, clearFilters } from "./evidence.ts";
 
 export type PeopleTab = "people" | "locations";
 
