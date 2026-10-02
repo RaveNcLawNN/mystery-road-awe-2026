@@ -14,8 +14,8 @@ export function saveBookmarksToStorage() {
 
 export function loadBookmarksFromStorage() {
   try {
-    var raw = localStorage.getItem(STORAGE_KEY_BOOKMARKS);
-    var parsed = raw ? JSON.parse(raw) : [];
+    const raw = localStorage.getItem(STORAGE_KEY_BOOKMARKS);
+    const parsed = raw ? JSON.parse(raw) : [];
     setBookmarks(Array.isArray(parsed) ? parsed : []);
   } catch (err) {
     console.warn("Could not read stored bookmarks, starting empty", err);

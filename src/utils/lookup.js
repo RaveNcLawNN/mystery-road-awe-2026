@@ -5,21 +5,21 @@
 import { allEvidence, allPeople, allLocations } from "../state.js";
 
 export function findEvidenceById(id) {
-  for (var i = 0; i < allEvidence.length; i++) {
+  for (let i = 0; i < allEvidence.length; i++) {
     if (allEvidence[i].id === id) return allEvidence[i];
   }
   return null;
 }
 
 export function findPersonById(id) {
-  for (var i = 0; i < allPeople.length; i++) {
+  for (let i = 0; i < allPeople.length; i++) {
     if (allPeople[i].id === id) return allPeople[i];
   }
   return null;
 }
 
 export function findLocationById(id) {
-  for (var i = 0; i < allLocations.length; i++) {
+  for (let i = 0; i < allLocations.length; i++) {
     if (allLocations[i].id === id) return allLocations[i];
   }
   return null;
