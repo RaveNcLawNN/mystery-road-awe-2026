@@ -7,7 +7,7 @@ import { loadAllData } from "./data.ts";
 import { navigateTo } from "./navigation.ts";
 import { handleHashChange } from "./router.js";
 import { renderEvidenceList, handleSearchInput, clearFilters } from "./views/evidence.js";
-import { switchPeopleTab } from "./views/people.js";
+import { switchPeopleTab } from "./views/people.ts";
 import { renderTimeline } from "./views/timeline.js";
 import { saveHypothesis } from "./views/workspace.js";
 

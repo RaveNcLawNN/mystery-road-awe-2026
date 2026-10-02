@@ -3,15 +3,19 @@
 // ---------------------------------------------------------------------
 
 import { allEvidence, allPeople, allLocations } from "../state.ts";
+import type { Person } from "../types.ts";
 import { evidenceMentionsPerson } from "../utils/lookup.ts";
+import { getRequiredElement } from "../utils/dom.ts";
 import { navigateTo } from "../navigation.ts";
 import { renderEvidenceList, clearFilters } from "./evidence.js";
 
-export function switchPeopleTab(tab) {
-  const peoplePanel = document.getElementById("peoplePanel");
-  const locationsPanel = document.getElementById("locationsPanel");
-  const peopleTabBtn = document.getElementById("tabPeopleBtn");
-  const locationsTabBtn = document.getElementById("tabLocationsBtn");
+export type PeopleTab = "people" | "locations";
+
+export function switchPeopleTab(tab: PeopleTab): void {
+  const peoplePanel = getRequiredElement("peoplePanel", HTMLElement);
+  const locationsPanel = getRequiredElement("locationsPanel", HTMLElement);
+  const peopleTabBtn = getRequiredElement("tabPeopleBtn", HTMLButtonElement);
+  const locationsTabBtn = getRequiredElement("tabLocationsBtn", HTMLButtonElement);
 
   if (tab === "people") {
     peoplePanel.classList.remove("hidden");
@@ -26,19 +30,14 @@ export function switchPeopleTab(tab) {
   }
 }
 
-function countEvidenceForPerson(person) {
-  let count = 0;
-  for (let i = 0; i < allEvidence.length; i++) {
-    if (evidenceMentionsPerson(allEvidence[i], person)) count++;
-  }
-  return count;
+function countEvidenceForPerson(person: Person): number {
+  return allEvidence.filter((ev) => evidenceMentionsPerson(ev, person)).length;
 }
 
-export function renderPeople() {
-  const container = document.getElementById("peoplePanel");
+export function renderPeople(): void {
+  const container = getRequiredElement("peoplePanel", HTMLElement);
   let html = "";
-  for (let i = 0; i < allPeople.length; i++) {
-    const person = allPeople[i];
+  for (const person of allPeople) {
     const count = countEvidenceForPerson(person);
 
     html += '<div class="person-card">';
@@ -48,8 +47,8 @@ export function renderPeople() {
     html += "</div>";
     html += "<p><strong>Speciality:</strong> " + person.speciality + "</p>";
     html += "<ul>";
-    for (let r = 0; r < person.responsibilities.length; r++) {
-      html += "<li>" + person.responsibilities[r] + "</li>";
+    for (const responsibility of person.responsibilities) {
+      html += "<li>" + responsibility + "</li>";
     }
     html += "</ul>";
     html += '<div class="person-statement">&ldquo;' + person.statement + "&rdquo;</div>";
@@ -59,32 +58,31 @@ export function renderPeople() {
   }
   container.innerHTML = html;
 
-  const links = container.querySelectorAll(".evidence-count-link");
-  for (let l = 0; l < links.length; l++) {
-    links[l].addEventListener("click", (e) => {
-      const personId = e.target.getAttribute("data-person-id");
+  // The listener reads the id from its own button, not from event.target:
+  // the target is whatever was clicked inside the button (Exercise 1, 5.1).
+  container.querySelectorAll<HTMLButtonElement>(".evidence-count-link").forEach((link) => {
+    link.addEventListener("click", () => {
       // the link promises exactly this person's items, so leftover filters must not apply
       clearFilters();
-      document.getElementById("filterPerson").value = personId;
+      getRequiredElement("filterPerson", HTMLSelectElement).value = link.dataset.personId ?? "";
       navigateTo("evidence");
       setTimeout(() => {
         renderEvidenceList();
       }, 0);
     });
-  }
+  });
 }
 
-export function renderLocations() {
-  const container = document.getElementById("locationsPanel");
+export function renderLocations(): void {
+  const container = getRequiredElement("locationsPanel", HTMLElement);
   let html = "";
-  for (let i = 0; i < allLocations.length; i++) {
-    const loc = allLocations[i];
+  for (const loc of allLocations) {
     html += '<div class="location-card">';
     html += "<h3>" + loc.id + " &mdash; " + loc.name + "</h3>";
     html += "<p>" + loc.description + "</p>";
     html += "<p><strong>Contains:</strong></p><ul>";
-    for (let c = 0; c < loc.contains.length; c++) {
-      html += "<li>" + loc.contains[c] + "</li>";
+    for (const item of loc.contains) {
+      html += "<li>" + item + "</li>";
     }
     html += "</ul></div>";
   }
