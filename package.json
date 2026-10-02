@@ -28,6 +28,8 @@
     "vite": "^8.3.2"
   },
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   }
 }

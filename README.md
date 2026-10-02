@@ -26,6 +26,13 @@ npm run dev   # start the Vite dev server with hot module replacement
 
 Then open `http://localhost:5173`.
 
+For a production build:
+
+```bash
+npm run build     # bundle + minify into dist/
+npm run preview   # serve dist/ locally on http://localhost:4173
+```
+
 Opening `index.html` directly from the filesystem (`file://`) does not work: the app loads its case
 data with `fetch()` and is made of ES modules, and both need HTTP. A plain static file server on the
 project root no longer works either, because the runtime files live in `public/` (see below).
