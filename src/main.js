@@ -6,41 +6,31 @@ import { loadBookmarksFromStorage, loadNotesFromStorage, loadNoteAsync } from ".
 import { loadAllData } from "./data.js";
 import { navigateTo } from "./navigation.js";
 import { handleHashChange } from "./router.js";
-import {
-  renderEvidenceList,
-  handleSearchInput,
-  handleSortChange,
-  clearFilters,
-  closeEvidenceDetail,
-  saveCurrentNote
-} from "./views/evidence.js";
+import { renderEvidenceList, handleSearchInput, clearFilters } from "./views/evidence.js";
 import { switchPeopleTab } from "./views/people.js";
 import { renderTimeline } from "./views/timeline.js";
 import { saveHypothesis } from "./views/workspace.js";
 
-// Inline on*="..." attributes (in index.html and in generated markup) are
-// evaluated in global scope, where module bindings are not visible.
-Object.assign(window, {
-  navigateTo,
-  handleSortChange,
-  switchPeopleTab,
-  saveHypothesis,
-  closeEvidenceDetail,
-  saveCurrentNote,
-  renderEvidenceList
-});
-
 function setupEventListeners() {
   window.addEventListener("hashchange", handleHashChange);
 
+  // top navigation and the dashboard's "Go to ..." buttons
+  document.querySelectorAll("button[data-view]").forEach((button) => {
+    button.addEventListener("click", () => navigateTo(button.dataset.view));
+  });
+
+  document.getElementById("tabPeopleBtn").addEventListener("click", () => switchPeopleTab("people"));
+  document.getElementById("tabLocationsBtn").addEventListener("click", () => switchPeopleTab("locations"));
+  document.getElementById("saveHypothesisBtn").addEventListener("click", saveHypothesis);
+
   document.getElementById("evidenceSearch").addEventListener("input", handleSearchInput);
+  document.getElementById("sortEvidence").addEventListener("change", renderEvidenceList);
 
   document.getElementById("filterType").addEventListener("change", renderEvidenceList);
   document.getElementById("filterPerson").addEventListener("change", renderEvidenceList);
   document.getElementById("filterLocation").addEventListener("change", renderEvidenceList);
 
   document.getElementById("filterStatus").addEventListener("change", renderEvidenceList);
-  document.getElementById("filterStatus").setAttribute("onchange", "renderEvidenceList()");
 
   document.getElementById("filterRelevance").addEventListener("change", renderEvidenceList);
 

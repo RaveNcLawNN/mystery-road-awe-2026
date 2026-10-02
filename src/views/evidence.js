@@ -187,10 +187,6 @@ export function applyStoredBookmarkFlags() {
   }
 }
 
-export function handleSortChange() {
-  renderEvidenceList();
-}
-
 export function clearFilters() {
   document.getElementById("evidenceSearch").value = "";
   document.getElementById("filterType").value = "";
@@ -234,7 +230,7 @@ export function openEvidenceDetail(evidenceId) {
   section.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-export function closeEvidenceDetail() {
+function closeEvidenceDetail() {
   const section = document.getElementById("evidenceDetailSection");
   section.classList.add("hidden");
   section.innerHTML = "";
@@ -267,7 +263,7 @@ function renderEvidenceDetail(ev) {
   html += '<div class="evidence-detail-header">';
   html += "<div><h2>" + ev.title + "</h2>";
   html += '<div class="evidence-meta">' + ev.id + " &middot; " + ev.type + " &middot; " + formatDate(ev.timestamp) + "</div></div>";
-  html += '<button type="button" class="btn btn-secondary btn-small" onclick="closeEvidenceDetail()">Close</button>';
+  html += '<button type="button" id="closeEvidenceDetailBtn" class="btn btn-secondary btn-small">Close</button>';
   html += "</div>";
 
   if (ev.tags.indexOf("critical") !== -1) {
@@ -296,7 +292,7 @@ function renderEvidenceDetail(ev) {
 
   html += '<div class="detail-field"><strong>Investigator note</strong>';
   html += '<textarea id="evidenceNoteInput" class="note-textarea" rows="3" data-evidence-id="' + ev.id + '" placeholder="Add a private note about this evidence..."></textarea>';
-  html += '<button type="button" class="btn btn-primary btn-small" style="margin-top:6px;" onclick="saveCurrentNote()">Save note</button>';
+  html += '<button type="button" id="saveNoteBtn" class="btn btn-primary btn-small" style="margin-top:6px;">Save note</button>';
   html += "</div>";
 
   html += '<div class="detail-field"><strong>Note preview</strong><div id="notePreview"></div></div>';
@@ -306,6 +302,9 @@ function renderEvidenceDetail(ev) {
   // The note is user input: insert it as text, never as markup.
   document.getElementById("evidenceNoteInput").value = storedNote;
   document.getElementById("notePreview").textContent = storedNote;
+
+  document.getElementById("closeEvidenceDetailBtn").addEventListener("click", closeEvidenceDetail);
+  document.getElementById("saveNoteBtn").addEventListener("click", saveCurrentNote);
 
   document.getElementById("detailStatusSelect").addEventListener("change", function (e) {
     ev.status = e.target.value; // direct mutation of the loaded evidence object
@@ -323,7 +322,7 @@ function statusOptionHTML(current, value, label) {
   return '<option value="' + value + '"' + selected + ">" + label + "</option>";
 }
 
-export function saveCurrentNote() {
+function saveCurrentNote() {
   const textarea = document.getElementById("evidenceNoteInput");
   if (!textarea) return;
   const evidenceId = textarea.getAttribute("data-evidence-id"); // note id is read back off the DOM
