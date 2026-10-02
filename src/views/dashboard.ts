@@ -19,7 +19,7 @@ export function renderDashboard(): void {
   html += '<p><span class="badge badge-flagged">' + (caseData.status || "unknown").toUpperCase() + "</span></p>";
   const caseFacts = [
     caseData.caseId,
-    "opened " + formatDay(caseData.opened),
+    caseData.opened ? "opened " + formatDay(caseData.opened) : "",
     caseData.leadInvestigator ? "lead investigator: " + caseData.leadInvestigator : "",
   ].filter((fact) => fact);
   if (caseFacts.length > 0) {
