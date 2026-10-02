@@ -10,7 +10,7 @@ import {
   setAllLocations,
   setAllTimeline,
   setCaseData,
-  setEvidenceViewLoading
+  setEvidenceViewLoading,
 } from "./state.js";
 import { renderDashboard } from "./views/dashboard.js";
 import { populateEvidenceDropdowns, renderEvidenceList, applyStoredBookmarkFlags } from "./views/evidence.js";

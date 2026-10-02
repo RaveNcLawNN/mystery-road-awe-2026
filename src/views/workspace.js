@@ -39,8 +39,14 @@ function renderBookmarksList() {
   let html = "";
   for (let i = 0; i < bookmarkedItems.length; i++) {
     const ev = bookmarkedItems[i];
-    html += '<div class="mini-list-item"><strong>' + ev.id + "</strong> &mdash; " + ev.title +
-      ' <button type="button" class="btn btn-small btn-secondary" data-open-evidence="' + ev.id + '">Open</button></div>';
+    html +=
+      '<div class="mini-list-item"><strong>' +
+      ev.id +
+      "</strong> &mdash; " +
+      ev.title +
+      ' <button type="button" class="btn btn-small btn-secondary" data-open-evidence="' +
+      ev.id +
+      '">Open</button></div>';
   }
   container.innerHTML = html;
 
@@ -105,7 +111,8 @@ export function populateHypothesisDropdowns() {
   const selectedEvidenceIds = [...getSelectedOptions(evidenceSelect), ...pendingEvidenceSelection];
   evidenceSelect.innerHTML = "";
   for (let i = 0; i < allEvidence.length; i++) {
-    evidenceSelect.innerHTML += '<option value="' + allEvidence[i].id + '">' + allEvidence[i].id + " - " + allEvidence[i].title + "</option>";
+    evidenceSelect.innerHTML +=
+      '<option value="' + allEvidence[i].id + '">' + allEvidence[i].id + " - " + allEvidence[i].title + "</option>";
   }
   for (const option of evidenceSelect.options) {
     option.selected = selectedEvidenceIds.includes(option.value);
@@ -121,7 +128,7 @@ export function saveHypothesis() {
     confidence: document.getElementById("hypConfidence").value,
     explanation: document.getElementById("hypExplanation").value,
     alternative: document.getElementById("hypAlternative").value,
-    savedAt: new Date().toISOString()
+    savedAt: new Date().toISOString(),
   };
 
   try {

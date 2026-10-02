@@ -61,7 +61,14 @@ export function renderTimeline() {
   for (let e = 0; e < events.length; e++) {
     const item = events[e];
     html += '<div class="timeline-event certainty-' + item.certainty + '">';
-    html += '<div class="timeline-time">' + formatDate(item.time) + '&nbsp;&middot;&nbsp;<span class="badge badge-' + certaintyBadgeClass(item.certainty) + '">' + item.certainty + "</span></div>";
+    html +=
+      '<div class="timeline-time">' +
+      formatDate(item.time) +
+      '&nbsp;&middot;&nbsp;<span class="badge badge-' +
+      certaintyBadgeClass(item.certainty) +
+      '">' +
+      item.certainty +
+      "</span></div>";
     html += "<h3>" + item.title + "</h3>";
     html += "<p>" + item.description + "</p>";
 
@@ -75,7 +82,12 @@ export function renderTimeline() {
     }
 
     for (let ev2 = 0; ev2 < item.evidenceIds.length; ev2++) {
-      html += '<button type="button" class="evidence-link-btn" data-evidence-id="' + item.evidenceIds[ev2] + '">View ' + item.evidenceIds[ev2] + "</button>";
+      html +=
+        '<button type="button" class="evidence-link-btn" data-evidence-id="' +
+        item.evidenceIds[ev2] +
+        '">View ' +
+        item.evidenceIds[ev2] +
+        "</button>";
     }
     html += "</div>";
   }
@@ -116,10 +128,22 @@ function openEvidenceModal(evidenceId) {
   modal.innerHTML =
     '<div class="modal-backdrop"><div class="modal-box">' +
     '<button type="button" class="modal-close-btn" aria-label="Close">&times;</button>' +
-    "<h3>" + ev.title + "</h3>" +
-    '<p class="evidence-meta">' + ev.id + " &middot; " + ev.type + " &middot; " + formatDate(ev.timestamp) + "</p>" +
-    "<p>" + ev.summary + "</p>" +
-    '<button type="button" class="btn btn-primary btn-small" data-open-full="' + ev.id + '">Open full evidence</button>' +
+    "<h3>" +
+    ev.title +
+    "</h3>" +
+    '<p class="evidence-meta">' +
+    ev.id +
+    " &middot; " +
+    ev.type +
+    " &middot; " +
+    formatDate(ev.timestamp) +
+    "</p>" +
+    "<p>" +
+    ev.summary +
+    "</p>" +
+    '<button type="button" class="btn btn-primary btn-small" data-open-full="' +
+    ev.id +
+    '">Open full evidence</button>' +
     "</div></div>";
 }
 

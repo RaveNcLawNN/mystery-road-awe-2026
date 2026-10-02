@@ -18,7 +18,7 @@ export let evidenceViewLoading = true;
 export const viewRendered = {
   evidence: false,
   people: false,
-  timeline: false
+  timeline: false,
 };
 
 export let notesStore = {};

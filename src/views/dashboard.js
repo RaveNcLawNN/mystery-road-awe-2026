@@ -33,7 +33,8 @@ export function renderDashboard() {
 
   html += '<div class="dashboard-panel">';
   html += "<h3>Review progress</h3>";
-  html += '<div class="progress-bar-outer"><div class="progress-bar-inner" style="width:' + progressPct + '%;"></div></div>';
+  html +=
+    '<div class="progress-bar-outer"><div class="progress-bar-inner" style="width:' + progressPct + '%;"></div></div>';
   html += "<p>" + progressPct + "% of evidence reviewed</p>";
   html += "</div>";
 
@@ -46,8 +47,16 @@ export function renderDashboard() {
   }
   for (let e = 0; e < recentEvidence.length; e++) {
     const ev = recentEvidence[e];
-    html += '<div class="mini-list-item"><strong>' + ev.id + "</strong> &mdash; " + ev.title +
-      ' <span class="badge ' + getStatusBadgeClass(ev.status) + '">' + ev.status + "</span></div>";
+    html +=
+      '<div class="mini-list-item"><strong>' +
+      ev.id +
+      "</strong> &mdash; " +
+      ev.title +
+      ' <span class="badge ' +
+      getStatusBadgeClass(ev.status) +
+      '">' +
+      ev.status +
+      "</span></div>";
   }
   html += "</div>";
 
@@ -68,5 +77,11 @@ export function renderDashboard() {
 }
 
 function statCardHTML(value, label) {
-  return '<div class="stat-card"><div class="stat-value">' + value + '</div><div class="stat-label">' + label + "</div></div>";
+  return (
+    '<div class="stat-card"><div class="stat-value">' +
+    value +
+    '</div><div class="stat-label">' +
+    label +
+    "</div></div>"
+  );
 }
