@@ -16,7 +16,8 @@ export function loadBookmarksFromStorage() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY_BOOKMARKS);
     const parsed = raw ? JSON.parse(raw) : [];
-    setBookmarks(Array.isArray(parsed) ? parsed : []);
+    // valid JSON is not necessarily a list of evidence ids
+    setBookmarks(Array.isArray(parsed) ? parsed.filter((id) => typeof id === "string") : []);
   } catch (err) {
     console.warn("Could not read stored bookmarks, starting empty", err);
     setBookmarks([]);
@@ -37,7 +38,14 @@ export function loadNotesFromStorage() {
     const raw = localStorage.getItem(STORAGE_KEY_NOTES);
     const parsed = raw ? JSON.parse(raw) : {};
     const isPlainObject = parsed !== null && typeof parsed === "object" && !Array.isArray(parsed);
-    setNotesStore(isPlainObject ? parsed : {});
+    // keep only entries whose note is text
+    const notes = {};
+    if (isPlainObject) {
+      for (const [evidenceId, text] of Object.entries(parsed)) {
+        if (typeof text === "string") notes[evidenceId] = text;
+      }
+    }
+    setNotesStore(notes);
   } catch (err) {
     console.warn("Could not read stored notes, starting empty", err);
     setNotesStore({});
