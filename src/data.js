@@ -41,28 +41,21 @@ function populateAllDropdowns() {
   populateHypothesisDropdowns();
 }
 
-function loadCorePeopleAndLocations() {
-  return fetch("data/case.json").then(function (caseRes) {
-    return caseRes.json().then(function (caseJson) {
-      setCaseData(caseJson);
+// The three requests intentionally run one after another (each awaits the
+// previous one); parallel loading is a later exercise.
+async function loadCorePeopleAndLocations() {
+  const caseRes = await fetch("data/case.json");
+  setCaseData(await caseRes.json());
 
-      return fetch("data/people.json").then(function (peopleRes) {
-        return peopleRes.json().then(function (peopleJson) {
-          setAllPeople(peopleJson);
+  const peopleRes = await fetch("data/people.json");
+  setAllPeople(await peopleRes.json());
 
-          return fetch("data/locations.json").then(function (locationsRes) {
-            return locationsRes.json().then(function (locationsJson) {
-              setAllLocations(locationsJson);
+  const locationsRes = await fetch("data/locations.json");
+  setAllLocations(await locationsRes.json());
 
-              hideLoadingStep();
-              renderDashboard();
-              populateAllDropdowns();
-            });
-          });
-        });
-      });
-    });
-  });
+  hideLoadingStep();
+  renderDashboard();
+  populateAllDropdowns();
 }
 
 function loadEvidenceData() {
