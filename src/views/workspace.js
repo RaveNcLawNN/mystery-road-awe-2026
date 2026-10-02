@@ -64,13 +64,21 @@ function renderNotesList() {
     return;
   }
 
-  var html = "";
-  for (var n = 0; n < noteEntries.length; n++) {
-    var entry = noteEntries[n];
-    html += '<div class="mini-list-item"><strong>' + entry.evidenceId + "</strong> &mdash; " + entry.title;
-    html += '<div id="noteText-' + entry.index + '">' + entry.text + "</div></div>"; // unsafe innerHTML rendering, same as the note preview
-  }
-  container.innerHTML = html;
+  const items = noteEntries.map((entry) => {
+    const item = document.createElement("div");
+    item.className = "mini-list-item";
+
+    const id = document.createElement("strong");
+    id.textContent = entry.evidenceId;
+
+    const text = document.createElement("div");
+    text.id = "noteText-" + entry.index;
+    text.textContent = entry.text;
+
+    item.append(id, " — " + entry.title, text);
+    return item;
+  });
+  container.replaceChildren(...items);
 }
 
 export function populateHypothesisDropdowns() {
