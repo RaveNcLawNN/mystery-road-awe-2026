@@ -16,7 +16,7 @@ import {
 import { parseCaseFile, parseEvidence, parseLocations, parsePeople, parseTimeline } from "./validate.ts";
 import { renderDashboard } from "./views/dashboard.ts";
 import { populateEvidenceDropdowns, renderEvidenceList, applyStoredBookmarkFlags } from "./views/evidence.js";
-import { populateTimelineDropdowns, renderTimeline } from "./views/timeline.js";
+import { populateTimelineDropdowns, renderTimeline } from "./views/timeline.ts";
 import { renderPeople } from "./views/people.ts";
 import { populateHypothesisDropdowns, renderWorkspace } from "./views/workspace.js";
 

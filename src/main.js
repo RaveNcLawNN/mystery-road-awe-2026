@@ -8,7 +8,7 @@ import { navigateTo } from "./navigation.ts";
 import { handleHashChange } from "./router.js";
 import { renderEvidenceList, handleSearchInput, clearFilters } from "./views/evidence.js";
 import { switchPeopleTab } from "./views/people.ts";
-import { renderTimeline } from "./views/timeline.js";
+import { renderTimeline } from "./views/timeline.ts";
 import { saveHypothesis } from "./views/workspace.js";
 
 function setupEventListeners() {
