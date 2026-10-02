@@ -1,0 +1,45 @@
+# Development workflow: checks every push and every pull request.
+# It only reads the code; it never builds artifacts or deploys.
+name: CI
+
+on:
+  push: # any branch, so a feature branch is checked before a PR exists
+  pull_request:
+    branches: [main]
+  workflow_dispatch: # manual re-run from the Actions tab
+
+# least privilege: the job only needs to read the repository
+permissions:
+  contents: read
+
+# a newer push to the same branch makes the older, still-running check obsolete
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint, format & type-check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js (version from .nvmrc) with npm cache
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm # caches ~/.npm, keyed on package-lock.json
+
+      - name: Install dependencies (exactly as locked)
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Type-check
+        run: npm run typecheck
