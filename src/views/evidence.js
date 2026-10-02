@@ -305,12 +305,10 @@ function renderEvidenceDetail(ev) {
 
   document.getElementById("detailStatusSelect").addEventListener("change", function (e) {
     ev.status = e.target.value; // direct mutation of the loaded evidence object
-    renderEvidenceDetail(ev);
     if (viewRendered.evidence) renderEvidenceList();
   });
   document.getElementById("detailRelevanceSelect").addEventListener("change", function (e) {
     ev.relevance = e.target.value;
-    renderEvidenceDetail(ev);
     if (viewRendered.evidence) renderEvidenceList();
   });
 }
