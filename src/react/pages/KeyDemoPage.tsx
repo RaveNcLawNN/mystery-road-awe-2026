@@ -20,9 +20,9 @@ export function KeyDemoPage({ people, reversed }: KeyDemoPageProps) {
         {reversed ? <a href="#key-demo">restore the order</a> : <a href="#key-demo-reversed">reverse the order</a>}.
       </p>
       <ul>
-        {list.map((person, index) => (
-          // DELIBERATELY WRONG: the index is a position, not an identity
-          <li key={index}>
+        {list.map((person) => (
+          // the person's id: the row (and its input) moves with the person
+          <li key={person.id}>
             <strong>{person.name}</strong>{" "}
             <input type="text" placeholder="note" aria-label={"Note for " + person.name} />
           </li>
