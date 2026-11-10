@@ -2,6 +2,7 @@ import type { Evidence } from "../../../types.ts";
 import { getStatusBadgeClass } from "../../../utils/format.ts";
 import { Badge } from "../../components/Badge.tsx";
 import { MiniListItem } from "../../components/MiniListItem.tsx";
+import { Panel } from "../../components/Panel.tsx";
 
 interface RecentEvidenceListProps {
   items: Evidence[];
@@ -9,8 +10,7 @@ interface RecentEvidenceListProps {
 
 export function RecentEvidenceList({ items }: RecentEvidenceListProps) {
   return (
-    <div className="dashboard-panel">
-      <h3>Recent evidence</h3>
+    <Panel title="Recent evidence">
       {items.length === 0 && <p>No evidence loaded yet.</p>}
       {items.map((ev) => (
         <MiniListItem key={ev.id} title={ev.id}>
@@ -18,6 +18,6 @@ export function RecentEvidenceList({ items }: RecentEvidenceListProps) {
           <Badge text={ev.status} variant={getStatusBadgeClass(ev.status)} />
         </MiniListItem>
       ))}
-    </div>
+    </Panel>
   );
 }

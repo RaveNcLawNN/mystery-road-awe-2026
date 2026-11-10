@@ -1,6 +1,7 @@
 import type { TimelineEvent } from "../../../types.ts";
 import { formatDate } from "../../../utils/format.ts";
 import { MiniListItem } from "../../components/MiniListItem.tsx";
+import { Panel } from "../../components/Panel.tsx";
 
 interface RecentTimelineListProps {
   events: TimelineEvent[];
@@ -8,8 +9,7 @@ interface RecentTimelineListProps {
 
 export function RecentTimelineList({ events }: RecentTimelineListProps) {
   return (
-    <div className="dashboard-panel">
-      <h3>Recent timeline events</h3>
+    <Panel title="Recent timeline events">
       {events.length === 0 && <p>No timeline events loaded yet.</p>}
       {events.map((evt) => (
         <MiniListItem key={evt.id} title={formatDate(evt.time)}>
@@ -17,6 +17,6 @@ export function RecentTimelineList({ events }: RecentTimelineListProps) {
           {evt.title}
         </MiniListItem>
       ))}
-    </div>
+    </Panel>
   );
 }
