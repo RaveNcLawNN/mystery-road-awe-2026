@@ -1,8 +1,7 @@
 import { useState } from "react";
 import type { Evidence } from "../../types.ts";
-import { formatDate, getRelevanceBadgeClass, getStatusBadgeClass } from "../../utils/format.ts";
+import { formatDate } from "../../utils/format.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
-import { Badge } from "../components/Badge.tsx";
 
 interface EvidenceDetailProps {
   evidence: Evidence;
@@ -10,10 +9,12 @@ interface EvidenceDetailProps {
   // the saved note for this item ("" if there is none)
   note: string;
   onSaveNote: (text: string) => void;
+  // the evidence belongs to App: the detail only reports what should change
+  onReviewChange: (changes: Partial<Pick<Evidence, "status" | "relevance">>) => void;
   onClose: () => void;
 }
 
-export function EvidenceDetail({ evidence, data, note, onSaveNote, onClose }: EvidenceDetailProps) {
+export function EvidenceDetail({ evidence, data, note, onSaveNote, onReviewChange, onClose }: EvidenceDetailProps) {
   // what is typed in the textarea; saved only when "Save note" is clicked
   const [noteDraft, setNoteDraft] = useState(note);
 
@@ -64,11 +65,26 @@ export function EvidenceDetail({ evidence, data, note, onSaveNote, onClose }: Ev
       </div>
       <div className="detail-field">
         <strong>Review status</strong>
-        <Badge text={evidence.status} variant={getStatusBadgeClass(evidence.status)} />
+        {/* the data has "Reviewed" and "reviewed": compared in lower case, like the vanilla select */}
+        <select
+          value={evidence.status.toLowerCase()}
+          onChange={(event) => onReviewChange({ status: event.target.value })}
+        >
+          <option value="unreviewed">Unreviewed</option>
+          <option value="reviewed">Reviewed</option>
+          <option value="flagged">Flagged</option>
+        </select>
       </div>
       <div className="detail-field">
         <strong>Relevance</strong>
-        <Badge text={evidence.relevance} variant={getRelevanceBadgeClass(evidence.relevance)} />
+        <select
+          value={evidence.relevance.toLowerCase()}
+          onChange={(event) => onReviewChange({ relevance: event.target.value })}
+        >
+          <option value="unknown">Unknown</option>
+          <option value="relevant">Relevant</option>
+          <option value="irrelevant">Irrelevant</option>
+        </select>
       </div>
 
       <div className="detail-field">

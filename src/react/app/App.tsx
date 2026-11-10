@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { readStoredBookmarks, writeStoredBookmarks } from "../../storage.ts";
+import type { Evidence } from "../../types.ts";
 import { loadCaseData, type CaseData } from "../data/loadCaseData.ts";
 import { toggleId } from "../data/toggleId.ts";
 import { AppLayout } from "./AppLayout.tsx";
@@ -26,6 +27,18 @@ export function App() {
     const nextBookmarks = toggleId(bookmarks, evidenceId);
     setBookmarks(nextBookmarks);
     writeStoredBookmarks(nextBookmarks);
+  }
+
+  // Review status and relevance are part of the case data, which App owns.
+  // New objects instead of `ev.status = …`: a new evidence array with one
+  // new evidence object, the others are reused unchanged. Like in the
+  // vanilla app, the change is not saved (gone after a reload).
+  function updateEvidence(evidenceId: string, changes: Partial<Pick<Evidence, "status" | "relevance">>) {
+    if (data === null) return;
+    setData({
+      ...data,
+      evidence: data.evidence.map((ev) => (ev.id === evidenceId ? { ...ev, ...changes } : ev)),
+    });
   }
 
   // Runs once after the first render ([] = no dependencies).
@@ -59,7 +72,14 @@ export function App() {
         <Route path="/" element={<DashboardPage data={data} bookmarks={bookmarks} />} />
         <Route
           path="/evidence"
-          element={<EvidencePage data={data} bookmarks={bookmarks} onToggleBookmark={toggleBookmark} />}
+          element={
+            <EvidencePage
+              data={data}
+              bookmarks={bookmarks}
+              onToggleBookmark={toggleBookmark}
+              onUpdateEvidence={updateEvidence}
+            />
+          }
         />
         <Route path="/team" element={<Navigate to="/team/people" replace />} />
         <Route path="/team/people" element={<PeoplePage data={data} tab="people" />} />

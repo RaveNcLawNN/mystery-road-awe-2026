@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { readStoredNotes, writeStoredNotes } from "../../storage.ts";
+import type { Evidence } from "../../types.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
 import { EvidenceToolbar } from "./EvidenceToolbar.tsx";
 import { EvidenceCard } from "./EvidenceCard.tsx";
@@ -11,9 +12,11 @@ interface EvidencePageProps {
   // owned by App, so the Dashboard and the Workspace see the same bookmarks
   bookmarks: readonly string[];
   onToggleBookmark: (evidenceId: string) => void;
+  // the case data is owned by App as well; this asks App to change one item
+  onUpdateEvidence: (evidenceId: string, changes: Partial<Pick<Evidence, "status" | "relevance">>) => void;
 }
 
-export function EvidencePage({ data, bookmarks, onToggleBookmark }: EvidencePageProps) {
+export function EvidencePage({ data, bookmarks, onToggleBookmark, onUpdateEvidence }: EvidencePageProps) {
   const [filters, setFilters] = useState<EvidenceFilters>(NO_FILTERS);
   const [notes, setNotes] = useState(readStoredNotes);
   // id of the evidence item shown in the detail view, null = none open
@@ -47,6 +50,7 @@ export function EvidencePage({ data, bookmarks, onToggleBookmark }: EvidencePage
           data={data}
           note={notes[openEvidence.id] ?? ""}
           onSaveNote={(text) => saveNote(openEvidence.id, text)}
+          onReviewChange={(changes) => onUpdateEvidence(openEvidence.id, changes)}
           onClose={() => setOpenId(null)}
         />
       )}
