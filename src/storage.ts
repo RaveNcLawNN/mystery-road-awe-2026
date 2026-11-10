@@ -12,17 +12,23 @@ export function saveBookmarksToStorage(): void {
   localStorage.setItem(STORAGE_KEY_BOOKMARKS, JSON.stringify(bookmarks));
 }
 
-export function loadBookmarksFromStorage(): void {
+// Returns the stored evidence ids without touching the shared state, so the
+// React version can use it too.
+export function readStoredBookmarks(): string[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY_BOOKMARKS);
     // JSON.parse returns any; unknown forces the checks below
     const parsed: unknown = raw ? JSON.parse(raw) : [];
     // valid JSON is not necessarily a list of evidence ids
-    setBookmarks(Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === "string") : []);
+    return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === "string") : [];
   } catch (err) {
     console.warn("Could not read stored bookmarks, starting empty", err);
-    setBookmarks([]);
+    return [];
   }
+}
+
+export function loadBookmarksFromStorage(): void {
+  setBookmarks(readStoredBookmarks());
 }
 
 export function saveNoteForEvidence(evidenceId: string, text: string): void {

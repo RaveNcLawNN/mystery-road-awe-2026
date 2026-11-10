@@ -14,6 +14,7 @@ import {
   setEvidenceViewLoading,
 } from "./state.ts";
 import { parseCaseFile, parseEvidence, parseLocations, parsePeople, parseTimeline } from "./validate.ts";
+import { fetchJson } from "./utils/fetchJson.ts";
 import { renderDashboard } from "./views/dashboard.ts";
 import { populateEvidenceDropdowns, renderEvidenceList, applyStoredBookmarkFlags } from "./views/evidence.ts";
 import { populateTimelineDropdowns, renderTimeline } from "./views/timeline.ts";
@@ -48,17 +49,6 @@ function showLoadingError(msg: string): void {
   const spinner = document.querySelector<HTMLElement>("#loadingOverlay .spinner");
   if (text) text.textContent = msg;
   if (spinner) spinner.hidden = true;
-}
-
-// fetch() only rejects on network failure; a 404/500 resolves normally, so
-// the status has to be checked before the body is parsed as JSON.
-// res.json() is typed any; returning unknown forces every caller to
-// validate the data before it can be used as a domain type.
-async function fetchJson(url: string): Promise<unknown> {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`${url} responded with HTTP ${res.status}`);
-  const data: unknown = await res.json();
-  return data;
 }
 
 // The three requests intentionally run one after another (each awaits the
