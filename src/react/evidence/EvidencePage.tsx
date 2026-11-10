@@ -16,12 +16,15 @@ export function EvidencePage({ data }: EvidencePageProps) {
   // id of the evidence item shown in the detail view, null = none open
   const [openId, setOpenId] = useState<string | null>(null);
 
+  // DELIBERATELY WRONG (Exercise 5, Demo 3): changes the state array in place
   function toggleBookmark(evidenceId: string) {
-    const nextBookmarks = bookmarks.includes(evidenceId)
-      ? bookmarks.filter((id) => id !== evidenceId)
-      : [...bookmarks, evidenceId];
-    setBookmarks(nextBookmarks);
-    writeStoredBookmarks(nextBookmarks);
+    if (bookmarks.includes(evidenceId)) {
+      bookmarks.splice(bookmarks.indexOf(evidenceId), 1);
+    } else {
+      bookmarks.push(evidenceId);
+    }
+    setBookmarks(bookmarks);
+    writeStoredBookmarks(bookmarks);
   }
 
   function saveNote(evidenceId: string, text: string) {
