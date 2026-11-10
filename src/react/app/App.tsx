@@ -9,7 +9,6 @@ import { PersonDetailPage } from "../people-locations/PersonDetailPage.tsx";
 import { TimelinePage } from "../timeline/TimelinePage.tsx";
 import { PlaceholderPage } from "./PlaceholderPage.tsx";
 import { NotFoundPage } from "./NotFoundPage.tsx";
-import { KeyDemoPage } from "../key-demo/KeyDemoPage.tsx";
 
 export function App() {
   // The case data lives here, above all pages, so it is loaded once and
@@ -55,9 +54,6 @@ export function App() {
         <Route path="/team/locations" element={<PeoplePage data={data} tab="locations" />} />
         <Route path="/timeline" element={<TimelinePage data={data} />} />
         <Route path="/workspace" element={<PlaceholderPage title="Investigator Workspace" />} />
-        {/* throwaway example for Exercise 4, Demo 4 (key={index} vs. a stable id) */}
-        <Route path="/key-demo" element={<KeyDemoPage people={data.people} reversed={false} />} />
-        <Route path="/key-demo/reversed" element={<KeyDemoPage people={data.people} reversed={true} />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     );
