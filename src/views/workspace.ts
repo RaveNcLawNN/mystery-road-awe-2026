@@ -3,22 +3,10 @@
 // ---------------------------------------------------------------------
 
 import { allEvidence, allPeople, notesStore } from "../state.ts";
-import { STORAGE_KEY_HYPOTHESIS } from "../storage.ts";
+import { readStoredHypothesis, writeStoredHypothesis, type HypothesisDraft } from "../storage.ts";
 import { getRequiredElement } from "../utils/dom.ts";
 import { navigateTo } from "../navigation.ts";
 import { openEvidenceDetail } from "./evidence.ts";
-
-// The hypothesis form as saved in localStorage (all values as the form
-// controls hold them, i.e. strings).
-interface HypothesisDraft {
-  suspectId: string;
-  nature: string;
-  evidenceIds: string[];
-  confidence: string;
-  explanation: string;
-  alternative: string;
-  savedAt: string;
-}
 
 let savedMessageTimer: number | undefined;
 let hypothesisDraftRestored = false;
@@ -142,7 +130,7 @@ export function saveHypothesis(): void {
   };
 
   try {
-    localStorage.setItem(STORAGE_KEY_HYPOTHESIS, JSON.stringify(draft));
+    writeStoredHypothesis(draft);
   } catch (err) {
     console.error("Could not save hypothesis draft", err);
     alert("Your hypothesis could not be saved to local storage.");
@@ -161,36 +149,8 @@ function getSelectedOptions(selectEl: HTMLSelectElement): string[] {
   return [...selectEl.options].filter((option) => option.selected).map((option) => option.value);
 }
 
-// Valid JSON is not necessarily a valid draft: a field is only used if it
-// has the type saveHypothesis() writes, otherwise it gets the empty default.
-function parseHypothesisDraft(json: unknown): HypothesisDraft | null {
-  if (json === null || typeof json !== "object") return null;
-  // safe: an object whose property values are still unknown
-  const fields = json as Record<string, unknown>;
-  const text = (value: unknown): string => (typeof value === "string" ? value : "");
-  const evidenceIds = fields.evidenceIds;
-  return {
-    suspectId: text(fields.suspectId),
-    nature: text(fields.nature),
-    evidenceIds: Array.isArray(evidenceIds) ? evidenceIds.filter((id): id is string => typeof id === "string") : [],
-    confidence: text(fields.confidence) || "50",
-    explanation: text(fields.explanation),
-    alternative: text(fields.alternative),
-    savedAt: text(fields.savedAt),
-  };
-}
-
 function loadHypothesisFromStorage(): void {
-  const raw = localStorage.getItem(STORAGE_KEY_HYPOTHESIS);
-  if (!raw) return;
-
-  let draft: HypothesisDraft | null;
-  try {
-    draft = parseHypothesisDraft(JSON.parse(raw));
-  } catch (err) {
-    console.warn("Could not read stored hypothesis draft, ignoring it", err);
-    return;
-  }
+  const draft = readStoredHypothesis();
   if (!draft) return;
 
   getRequiredElement("hypSuspect", HTMLSelectElement).value = draft.suspectId;

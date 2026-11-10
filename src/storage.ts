@@ -8,7 +8,7 @@ import { bookmarks, notesStore, setBookmarks, setNotesStore } from "./state.ts";
 
 const STORAGE_KEY_BOOKMARKS = "remotion_bookmarks";
 const STORAGE_KEY_NOTES = "remotion_notes";
-export const STORAGE_KEY_HYPOTHESIS = "remotion_hypothesis";
+const STORAGE_KEY_HYPOTHESIS = "remotion_hypothesis";
 
 export function readStoredBookmarks(): string[] {
   try {
@@ -49,6 +49,53 @@ export function readStoredNotes(): Record<string, string> {
 
 export function writeStoredNotes(notes: Record<string, string>): void {
   localStorage.setItem(STORAGE_KEY_NOTES, JSON.stringify(notes));
+}
+
+// The hypothesis form as saved in localStorage (all values as the form
+// controls hold them, i.e. strings).
+export interface HypothesisDraft {
+  suspectId: string;
+  nature: string;
+  evidenceIds: string[];
+  confidence: string;
+  explanation: string;
+  alternative: string;
+  savedAt: string;
+}
+
+// Valid JSON is not necessarily a valid draft: a field is only used if it
+// has the type the form writes, otherwise it gets the empty default.
+function parseHypothesisDraft(json: unknown): HypothesisDraft | null {
+  if (json === null || typeof json !== "object") return null;
+  // safe: an object whose property values are still unknown
+  const fields = json as Record<string, unknown>;
+  const text = (value: unknown): string => (typeof value === "string" ? value : "");
+  const evidenceIds = fields.evidenceIds;
+  return {
+    suspectId: text(fields.suspectId),
+    nature: text(fields.nature),
+    evidenceIds: Array.isArray(evidenceIds) ? evidenceIds.filter((id): id is string => typeof id === "string") : [],
+    confidence: text(fields.confidence) || "50",
+    explanation: text(fields.explanation),
+    alternative: text(fields.alternative),
+    savedAt: text(fields.savedAt),
+  };
+}
+
+// null if nothing (usable) is stored
+export function readStoredHypothesis(): HypothesisDraft | null {
+  const raw = localStorage.getItem(STORAGE_KEY_HYPOTHESIS);
+  if (!raw) return null;
+  try {
+    return parseHypothesisDraft(JSON.parse(raw));
+  } catch (err) {
+    console.warn("Could not read stored hypothesis draft, ignoring it", err);
+    return null;
+  }
+}
+
+export function writeStoredHypothesis(draft: HypothesisDraft): void {
+  localStorage.setItem(STORAGE_KEY_HYPOTHESIS, JSON.stringify(draft));
 }
 
 // --- vanilla app -------------------------------------------------------
