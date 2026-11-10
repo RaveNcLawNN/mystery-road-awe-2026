@@ -112,11 +112,17 @@ presentational.
 | `PeoplePage`                                | feature                 | gets `CaseData`, counts the evidence per person                                                                                  |
 | `TimelinePage`                              | feature                 | gets `CaseData`, sorts the events, resolves location ids to names                                                                |
 | `TimelineFilters`                           | feature (borderline)    | turns people, locations and events into option lists (incl. the set of event types); the dropdowns themselves are `FilterSelect` |
+| `EvidencePage`                              | feature                 | holds search term, bookmarks, notes and the open item in state; filters and sorts the evidence; saves to localStorage            |
+| `WorkspacePage`                             | feature                 | reads bookmarks and notes from localStorage and picks the matching evidence                                                      |
+| `EvidenceDetail`                            | feature (borderline)    | holds the unsaved note draft; looks up people and location names in `CaseData`                                                   |
+| `EvidenceToolbar`, `HypothesisForm`         | feature (borderline)    | build their option lists from `CaseData`                                                                                         |
 | `AppLayout`, `NavBar`, `HowToCard`          | presentational          | the frame, the nav and the intro card; navigation is plain links (`NavLink`/`Link`) to fixed paths                               |
 | `Badge`                                     | presentational (shared) | generic, knows nothing about the case; used by two features                                                                      |
-| `Panel`, `BulletList`, `FilterSelect`       | presentational          | generic building blocks, so far used inside one feature each                                                                     |
+| `FilterSelect`                              | presentational (shared) | one labelled dropdown; used by the Evidence and Timeline toolbars                                                                |
+| `Panel`, `BulletList`                       | presentational          | generic building blocks, so far used inside one feature each                                                                     |
 | `CaseSummary`, `StatCard`, `ReviewProgress` | presentational          | show the values they get (`CaseSummary` only formats the facts line)                                                             |
 | `RecentEvidenceList`, `RecentTimelineList`  | presentational          | render the already selected items                                                                                                |
 | `PersonCard`, `LocationCard`                | presentational          | one record each; the evidence count comes in as a number                                                                         |
+| `EvidenceCard`                              | presentational          | one evidence item; bookmark state and both click actions come in as props                                                        |
 | `TimelineEventCard` (with `LocationLine`)   | presentational          | one event; location names come in resolved; certainty → badge color is a display decision                                        |
-| `PlaceholderPage`, `NotFoundPage`           | presentational          | static text; `NotFoundPage` shows the unmatched path from `useLocation()`                                                        |
+| `NotFoundPage`                              | presentational          | `NotFoundPage` shows the unmatched path from `useLocation()`                                                                     |

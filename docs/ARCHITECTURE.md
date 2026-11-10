@@ -19,18 +19,20 @@ functions, so that module ends up in the React bundle unused. Navigation in Reac
 src/react/
 ├── main.tsx               entry point: mounts <App /> into #root
 ├── app/                   the shell: App (data, loading/error, routes), AppLayout, NavBar,
-│                          NotFoundPage, PlaceholderPage
+│                          NotFoundPage
 ├── data/                  loadCaseData.ts: loads and validates the case files, the CaseData type
-├── components/            UI pieces used by more than one feature: Badge
+├── components/            UI pieces used by more than one feature: Badge, FilterSelect
 ├── dashboard/             DashboardPage + CaseSummary, HowToCard, StatCard, ReviewProgress, Panel,
 │                          RecentEvidenceList, RecentTimelineList
 ├── people-locations/      PeoplePage, PersonDetailPage, PersonCard, LocationCard, BulletList
-└── timeline/              TimelinePage, TimelineEventCard, TimelineFilters, FilterSelect
+├── timeline/              TimelinePage, TimelineEventCard, TimelineFilters
+├── evidence/              EvidencePage, EvidenceToolbar, EvidenceCard, EvidenceDetail
+└── workspace/             WorkspacePage, HypothesisForm
 ```
 
 One folder per feature (= one view of the app), plus `app/` for what surrounds all views, `components/` for UI pieces
-several features use, and `data/` for the data access every feature depends on. Evidence and Workspace get their own
-folders when they are migrated.
+several features use, and `data/` for the data access every feature depends on. All five views are in
+React now.
 
 ## Rule: shared or feature-local?
 
@@ -60,8 +62,8 @@ Examples:
 | `#/team/people/:personId` | one person, e.g. `#/team/people/nova-byte`; unknown id → "Person not found" |
 | `#/team/locations`        | People & Locations, Locations tab                                           |
 | `#/timeline`              | Timeline                                                                    |
-| `#/evidence`              | placeholder (Exercise 5)                                                    |
-| `#/workspace`             | placeholder (Exercise 5)                                                    |
+| `#/evidence`              | Evidence Catalogue                                                          |
+| `#/workspace`             | Investigator Workspace                                                      |
 | anything else             | "Page not found"                                                            |
 
 Why `HashRouter` and not `BrowserRouter`: with real paths (`/team/people`) the server must answer every unknown path
