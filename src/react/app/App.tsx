@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router";
-import { EMPTY_HYPOTHESIS_DRAFT, readStoredHypothesis, readStoredNotes, writeStoredNotes } from "../../storage.ts";
+import {
+  EMPTY_HYPOTHESIS_DRAFT,
+  readStoredHypothesis,
+  readStoredNotes,
+  readStoredReviews,
+  writeStoredNotes,
+  writeStoredReviews,
+} from "../../storage.ts";
 import type { Evidence } from "../../types.ts";
 import { loadCaseData, type CaseData } from "../data/loadCaseData.ts";
 import { BookmarksProvider } from "../data/BookmarksContext.tsx";
@@ -14,9 +21,12 @@ import { WorkspacePage } from "../workspace/WorkspacePage.tsx";
 import { NotFoundPage } from "./NotFoundPage.tsx";
 
 export function App() {
-  // The case data lives here, above all pages, so it is loaded once and
-  // survives switching between pages. null = not loaded yet.
+  // The case data as loaded from the JSON files, once; never changed afterwards.
+  // null = not loaded yet.
   const [data, setData] = useState<CaseData | null>(null);
+  // Review status / relevance changed by the user, per evidence id, saved in
+  // localStorage. The single source for these changes (see caseData below).
+  const [reviews, setReviews] = useState(readStoredReviews);
   const [loadFailed, setLoadFailed] = useState(false);
   // evidence id -> note text; the single source for the Evidence detail and the Workspace list
   const [notes, setNotes] = useState(readStoredNotes);
@@ -30,16 +40,12 @@ export function App() {
     setNotes(nextNotes);
     writeStoredNotes(nextNotes);
   }
-  // Review status and relevance are part of the case data, which App owns.
-  // New objects instead of `ev.status = …`: a new evidence array with one
-  // new evidence object, the others are reused unchanged. Like in the
-  // vanilla app, the change is not saved (gone after a reload).
+  // Records a status/relevance change for one item (new objects, never
+  // `ev.status = …`) and saves it, so it survives a reload.
   function updateEvidence(evidenceId: string, changes: Partial<Pick<Evidence, "status" | "relevance">>) {
-    if (data === null) return;
-    setData({
-      ...data,
-      evidence: data.evidence.map((ev) => (ev.id === evidenceId ? { ...ev, ...changes } : ev)),
-    });
+    const nextReviews = { ...reviews, [evidenceId]: { ...reviews[evidenceId], ...changes } };
+    setReviews(nextReviews);
+    writeStoredReviews(nextReviews);
   }
 
   // Runs once after the first render ([] = no dependencies).
@@ -66,25 +72,34 @@ export function App() {
       </div>
     );
   } else {
+    // What every page sees: the loaded evidence with the user's review changes
+    // applied. Derived on every render, never stored.
+    const caseData: CaseData = {
+      ...data,
+      evidence: data.evidence.map((ev) => ({ ...ev, ...reviews[ev.id] })),
+    };
+
     // React Router renders the element of the first route whose path
     // matches the URL; "*" matches everything that is left.
     content = (
       <Routes>
-        <Route path="/" element={<DashboardPage data={data} />} />
+        <Route path="/" element={<DashboardPage data={caseData} />} />
         <Route
           path="/evidence"
-          element={<EvidencePage data={data} onUpdateEvidence={updateEvidence} notes={notes} onSaveNote={saveNote} />}
+          element={
+            <EvidencePage data={caseData} onUpdateEvidence={updateEvidence} notes={notes} onSaveNote={saveNote} />
+          }
         />
         <Route path="/team" element={<Navigate to="/team/people" replace />} />
-        <Route path="/team/people" element={<PeoplePage data={data} tab="people" />} />
-        <Route path="/team/people/:personId" element={<PersonDetailPage data={data} />} />
-        <Route path="/team/locations" element={<PeoplePage data={data} tab="locations" />} />
-        <Route path="/timeline" element={<TimelinePage data={data} />} />
+        <Route path="/team/people" element={<PeoplePage data={caseData} tab="people" />} />
+        <Route path="/team/people/:personId" element={<PersonDetailPage data={caseData} />} />
+        <Route path="/team/locations" element={<PeoplePage data={caseData} tab="locations" />} />
+        <Route path="/timeline" element={<TimelinePage data={caseData} />} />
         <Route
           path="/workspace"
           element={
             <WorkspacePage
-              data={data}
+              data={caseData}
               notes={notes}
               hypothesisDraft={hypothesisDraft}
               onHypothesisDraftChange={setHypothesisDraft}

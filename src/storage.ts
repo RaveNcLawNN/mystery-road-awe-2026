@@ -8,6 +8,7 @@
 const STORAGE_KEY_BOOKMARKS = "remotion_bookmarks";
 const STORAGE_KEY_NOTES = "remotion_notes";
 const STORAGE_KEY_HYPOTHESIS = "remotion_hypothesis";
+const STORAGE_KEY_REVIEWS = "remotion_reviews";
 
 export function readStoredBookmarks(): string[] {
   try {
@@ -48,6 +49,36 @@ export function readStoredNotes(): Record<string, string> {
 
 export function writeStoredNotes(notes: Record<string, string>): void {
   localStorage.setItem(STORAGE_KEY_NOTES, JSON.stringify(notes));
+}
+
+// Review status / relevance changed in the app, per evidence id. Only the
+// changes are stored; evidence.json itself stays as it is.
+export type StoredReviews = Record<string, { status?: string; relevance?: string }>;
+
+export function readStoredReviews(): StoredReviews {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_REVIEWS);
+    const parsed: unknown = raw ? JSON.parse(raw) : {};
+    const reviews: StoredReviews = {};
+    if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) return reviews;
+    // keep only entries that are objects, and only their string fields
+    for (const [evidenceId, entry] of Object.entries(parsed)) {
+      if (entry === null || typeof entry !== "object") continue;
+      const fields = entry as Record<string, unknown>;
+      const review: { status?: string; relevance?: string } = {};
+      if (typeof fields.status === "string") review.status = fields.status;
+      if (typeof fields.relevance === "string") review.relevance = fields.relevance;
+      reviews[evidenceId] = review;
+    }
+    return reviews;
+  } catch (err) {
+    console.warn("Could not read stored review changes, ignoring them", err);
+    return {};
+  }
+}
+
+export function writeStoredReviews(reviews: StoredReviews): void {
+  localStorage.setItem(STORAGE_KEY_REVIEWS, JSON.stringify(reviews));
 }
 
 // The hypothesis form as saved in localStorage (all values as the form
