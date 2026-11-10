@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { navigateTo } from "../navigation.ts";
 import { readStoredBookmarks } from "../storage.ts";
 import { loadCaseData, type CaseData } from "./loadCaseData.ts";
-import { Header } from "./components/Header.tsx";
-import { NavBar } from "./components/NavBar.tsx";
+import { AppLayout } from "./components/AppLayout.tsx";
 import { DashboardPage } from "./pages/DashboardPage.tsx";
 import { PeoplePage } from "./pages/PeoplePage.tsx";
 import { TimelinePage } from "./pages/TimelinePage.tsx";
@@ -86,17 +85,8 @@ export function App() {
   }
 
   return (
-    <>
-      <Header>
-        <NavBar currentRoute={route} onNavigate={navigateTo} />
-      </Header>
-      <main className="app-main">{content}</main>
-      <footer className="app-footer">
-        <p>
-          Project ReMotion Investigation Portal &mdash; Research Center AI, Software and IT-Security of HCW (fictional
-          case study)
-        </p>
-      </footer>
-    </>
+    <AppLayout currentRoute={route} onNavigate={navigateTo}>
+      {content}
+    </AppLayout>
   );
 }
