@@ -63,6 +63,17 @@ export interface HypothesisDraft {
   savedAt: string;
 }
 
+// the form before anything was entered or saved
+export const EMPTY_HYPOTHESIS_DRAFT: HypothesisDraft = {
+  suspectId: "",
+  nature: "",
+  evidenceIds: [],
+  confidence: "50",
+  explanation: "",
+  alternative: "",
+  savedAt: "",
+};
+
 // Valid JSON is not necessarily a valid draft: a field is only used if it
 // has the type the form writes, otherwise it gets the empty default.
 function parseHypothesisDraft(json: unknown): HypothesisDraft | null {

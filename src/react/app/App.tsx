@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router";
-import { readStoredNotes, writeStoredNotes } from "../../storage.ts";
+import { EMPTY_HYPOTHESIS_DRAFT, readStoredHypothesis, readStoredNotes, writeStoredNotes } from "../../storage.ts";
 import type { Evidence } from "../../types.ts";
 import { loadCaseData, type CaseData } from "../data/loadCaseData.ts";
 import { BookmarksProvider } from "../data/BookmarksContext.tsx";
@@ -20,6 +20,10 @@ export function App() {
   const [loadFailed, setLoadFailed] = useState(false);
   // evidence id -> note text; the single source for the Evidence detail and the Workspace list
   const [notes, setNotes] = useState(readStoredNotes);
+
+  // The hypothesis form's current (possibly unsaved) input. Kept here, not in
+  // the form, so it survives leaving and re-entering the Workspace.
+  const [hypothesisDraft, setHypothesisDraft] = useState(() => readStoredHypothesis() ?? EMPTY_HYPOTHESIS_DRAFT);
 
   function saveNote(evidenceId: string, text: string) {
     const nextNotes = { ...notes, [evidenceId]: text };
@@ -76,7 +80,17 @@ export function App() {
         <Route path="/team/people/:personId" element={<PersonDetailPage data={data} />} />
         <Route path="/team/locations" element={<PeoplePage data={data} tab="locations" />} />
         <Route path="/timeline" element={<TimelinePage data={data} />} />
-        <Route path="/workspace" element={<WorkspacePage data={data} notes={notes} />} />
+        <Route
+          path="/workspace"
+          element={
+            <WorkspacePage
+              data={data}
+              notes={notes}
+              hypothesisDraft={hypothesisDraft}
+              onHypothesisDraftChange={setHypothesisDraft}
+            />
+          }
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     );

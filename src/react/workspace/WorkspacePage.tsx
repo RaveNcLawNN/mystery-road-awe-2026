@@ -1,3 +1,4 @@
+import type { HypothesisDraft } from "../../storage.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
 import { useBookmarks } from "../data/BookmarksContext.tsx";
 import { HypothesisForm } from "./HypothesisForm.tsx";
@@ -6,9 +7,11 @@ interface WorkspacePageProps {
   data: CaseData;
   // owned by App (saved from the Evidence detail)
   notes: Record<string, string>;
+  hypothesisDraft: HypothesisDraft;
+  onHypothesisDraftChange: (draft: HypothesisDraft) => void;
 }
 
-export function WorkspacePage({ data, notes }: WorkspacePageProps) {
+export function WorkspacePage({ data, notes, hypothesisDraft, onHypothesisDraftChange }: WorkspacePageProps) {
   const { bookmarks } = useBookmarks();
   // derived from the bookmarks in context, not stored here
   const bookmarkedEvidence = data.evidence.filter((ev) => bookmarks.includes(ev.id));
@@ -54,7 +57,7 @@ export function WorkspacePage({ data, notes }: WorkspacePageProps) {
         </div>
       </div>
 
-      <HypothesisForm data={data} />
+      <HypothesisForm data={data} draft={hypothesisDraft} onDraftChange={onHypothesisDraftChange} />
     </section>
   );
 }

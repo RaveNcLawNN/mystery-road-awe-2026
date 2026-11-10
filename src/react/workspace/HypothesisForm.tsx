@@ -1,30 +1,19 @@
-import { useState } from "react";
-import { readStoredHypothesis, writeStoredHypothesis, type HypothesisDraft } from "../../storage.ts";
+import { writeStoredHypothesis, type HypothesisDraft } from "../../storage.ts";
 import { formatDate } from "../../utils/format.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
 
-const EMPTY_DRAFT: HypothesisDraft = {
-  suspectId: "",
-  nature: "",
-  evidenceIds: [],
-  confidence: "50",
-  explanation: "",
-  alternative: "",
-  savedAt: "",
-};
-
 interface HypothesisFormProps {
   data: CaseData;
+  // The draft is owned by App: the form unmounts when the Workspace is left,
+  // App does not, so unsaved edits survive switching pages.
+  draft: HypothesisDraft;
+  onDraftChange: (draft: HypothesisDraft) => void;
 }
 
-export function HypothesisForm({ data }: HypothesisFormProps) {
-  // One object for the whole form: it is loaded and saved as one draft.
-  // The function form of useState reads localStorage only on the first render.
-  const [draft, setDraft] = useState(() => readStoredHypothesis() ?? EMPTY_DRAFT);
-
+export function HypothesisForm({ data, draft, onDraftChange }: HypothesisFormProps) {
   // copies the draft and overwrites the changed fields (never changes `draft` itself)
   function update(changes: Partial<HypothesisDraft>) {
-    setDraft({ ...draft, ...changes });
+    onDraftChange({ ...draft, ...changes });
   }
 
   function save() {
@@ -36,7 +25,7 @@ export function HypothesisForm({ data }: HypothesisFormProps) {
       alert("Your hypothesis could not be saved to local storage.");
       return;
     }
-    setDraft(savedDraft);
+    onDraftChange(savedDraft);
   }
 
   return (
