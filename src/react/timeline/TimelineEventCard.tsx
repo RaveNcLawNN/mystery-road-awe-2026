@@ -1,16 +1,16 @@
 import type { TimelineEvent } from "../../types.ts";
 import { formatDate } from "../../utils/format.ts";
-import { Badge } from "../components/Badge.tsx";
+import { Badge, type BadgeVariant } from "../components/Badge.tsx";
 
 // Lookup table: certainty -> badge color. A value that is not listed
 // (e.g. a new certainty in the data) falls back to the neutral badge.
-const CERTAINTY_BADGE_VARIANTS: Record<string, string> = {
+const CERTAINTY_BADGE_VARIANTS: Record<string, BadgeVariant> = {
   confirmed: "badge-reviewed",
   reported: "badge-flagged",
   contradictory: "badge-critical",
 };
 
-function certaintyBadgeVariant(certainty: string): string {
+function certaintyBadgeVariant(certainty: string): BadgeVariant {
   return CERTAINTY_BADGE_VARIANTS[certainty] ?? "badge-unreviewed";
 }
 

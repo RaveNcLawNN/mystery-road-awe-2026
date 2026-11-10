@@ -1,7 +1,13 @@
+import type { RelevanceBadgeClass, StatusBadgeClass } from "../../utils/format.ts";
+
+// Exactly the color classes styles.css defines (.badge-critical,
+// .badge-unreviewed, .badge-reviewed, .badge-flagged, .badge-relevant), so
+// a typo is a type error instead of a silently uncolored badge.
+export type BadgeVariant = StatusBadgeClass | RelevanceBadgeClass | "badge-critical";
+
 interface BadgeProps {
   text: string;
-  // the color variant, e.g. "badge-reviewed" (see getStatusBadgeClass in utils/format.ts)
-  variant: string;
+  variant: BadgeVariant;
 }
 
 export function Badge({ text, variant }: BadgeProps) {
