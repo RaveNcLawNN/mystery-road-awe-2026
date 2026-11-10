@@ -42,7 +42,7 @@ export function EvidencePage({ data }: EvidencePageProps) {
   return (
     <section>
       <h2>Evidence Catalogue</h2>
-      <EvidenceToolbar data={data} onSearchChange={setSearchTerm} />
+      <EvidenceToolbar data={data} searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
       {openEvidence && (
         <EvidenceDetail

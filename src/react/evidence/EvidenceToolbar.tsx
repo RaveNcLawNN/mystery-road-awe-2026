@@ -3,12 +3,13 @@ import { FilterSelect } from "../components/FilterSelect.tsx";
 
 interface EvidenceToolbarProps {
   data: CaseData;
+  searchTerm: string;
   onSearchChange: (term: string) => void;
 }
 
-// Same controls as the vanilla toolbar. The search box works; the dropdowns
+// Same controls as the vanilla toolbar. The search box is controlled; the dropdowns
 // are display only until they get their state (Exercise 5, Demo 7).
-export function EvidenceToolbar({ data, onSearchChange }: EvidenceToolbarProps) {
+export function EvidenceToolbar({ data, searchTerm, onSearchChange }: EvidenceToolbarProps) {
   // every type once, lowercased like the vanilla filter ("Test-Report" = "test-report")
   const types = [...new Set(data.evidence.map((ev) => ev.type.toLowerCase()))];
 
@@ -23,6 +24,8 @@ export function EvidenceToolbar({ data, onSearchChange }: EvidenceToolbarProps) 
           id="evidenceSearch"
           placeholder="Search evidence by title, summary, or tag…"
           autoComplete="off"
+          // controlled: the box always shows the state, and every keystroke goes through the state
+          value={searchTerm}
           onChange={(event) => onSearchChange(event.target.value)}
         />
         <FilterSelect
