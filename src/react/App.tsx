@@ -5,6 +5,7 @@ import { loadCaseData, type CaseData } from "./loadCaseData.ts";
 import { Header } from "./components/Header.tsx";
 import { NavBar } from "./components/NavBar.tsx";
 import { DashboardPage } from "./pages/DashboardPage.tsx";
+import { PeoplePage } from "./pages/PeoplePage.tsx";
 import { PlaceholderPage } from "./pages/PlaceholderPage.tsx";
 import { NotFoundPage } from "./pages/NotFoundPage.tsx";
 
@@ -20,7 +21,7 @@ function renderPage(route: string, data: CaseData, bookmarks: string[]) {
     case "evidence":
       return <PlaceholderPage title="Evidence Catalogue" />;
     case "people":
-      return <PlaceholderPage title="People & Locations" />;
+      return <PeoplePage data={data} />;
     case "timeline":
       return <PlaceholderPage title="Investigation Timeline" />;
     case "workspace":
