@@ -11,7 +11,11 @@ interface DashboardPageProps {
   data: CaseData;
 }
 
+// How often the Dashboard was opened since the page was loaded.
+let dashboardVisits = 0;
+
 export function DashboardPage({ data }: DashboardPageProps) {
+  dashboardVisits += 1;
   const { bookmarks } = useBookmarks();
   // Derived values: calculated on every render from the current data, never
   // stored, so they cannot get out of date.
@@ -33,6 +37,7 @@ export function DashboardPage({ data }: DashboardPageProps) {
         <StatCard value={data.locations.length} label="Locations" />
         <StatCard value={bookmarks.length} label="Bookmarked" />
         <StatCard value={reviewedCount} label="Reviewed" />
+        <StatCard value={dashboardVisits} label="Dashboard visits" />
       </div>
 
       <ReviewProgress percent={progressPercent} />
