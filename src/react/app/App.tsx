@@ -7,7 +7,8 @@ import { DashboardPage } from "../dashboard/DashboardPage.tsx";
 import { PeoplePage } from "../people-locations/PeoplePage.tsx";
 import { PersonDetailPage } from "../people-locations/PersonDetailPage.tsx";
 import { TimelinePage } from "../timeline/TimelinePage.tsx";
-import { PlaceholderPage } from "./PlaceholderPage.tsx";
+import { EvidencePage } from "../evidence/EvidencePage.tsx";
+import { WorkspacePage } from "../workspace/WorkspacePage.tsx";
 import { NotFoundPage } from "./NotFoundPage.tsx";
 
 export function App() {
@@ -48,13 +49,13 @@ export function App() {
     content = (
       <Routes>
         <Route path="/" element={<DashboardPage data={data} bookmarks={bookmarks} />} />
-        <Route path="/evidence" element={<PlaceholderPage title="Evidence Catalogue" />} />
+        <Route path="/evidence" element={<EvidencePage data={data} />} />
         <Route path="/team" element={<Navigate to="/team/people" replace />} />
         <Route path="/team/people" element={<PeoplePage data={data} tab="people" />} />
         <Route path="/team/people/:personId" element={<PersonDetailPage data={data} />} />
         <Route path="/team/locations" element={<PeoplePage data={data} tab="locations" />} />
         <Route path="/timeline" element={<TimelinePage data={data} />} />
-        <Route path="/workspace" element={<PlaceholderPage title="Investigator Workspace" />} />
+        <Route path="/workspace" element={<WorkspacePage data={data} />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     );

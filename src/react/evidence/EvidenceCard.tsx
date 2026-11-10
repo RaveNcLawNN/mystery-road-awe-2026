@@ -1,0 +1,45 @@
+import type { Evidence } from "../../types.ts";
+import { formatDate, getRelevanceBadgeClass, getStatusBadgeClass } from "../../utils/format.ts";
+import { Badge } from "../components/Badge.tsx";
+
+interface EvidenceCardProps {
+  evidence: Evidence;
+  isBookmarked: boolean;
+  onToggleBookmark: () => void;
+  onOpen: () => void;
+}
+
+export function EvidenceCard({ evidence, isBookmarked, onToggleBookmark, onOpen }: EvidenceCardProps) {
+  return (
+    <div className="evidence-card" onClick={onOpen}>
+      <button
+        type="button"
+        className={isBookmarked ? "bookmark-btn active" : "bookmark-btn"}
+        aria-label={"Toggle bookmark for " + evidence.title}
+        onClick={(event) => {
+          // the button sits inside the card: without this the click would
+          // also reach the card's onClick and open the detail
+          event.stopPropagation();
+          onToggleBookmark();
+        }}
+      >
+        <span className="bookmark-icon">{isBookmarked ? "★" : "☆"}</span>
+      </button>
+      <h3>{evidence.title}</h3>
+      <div className="evidence-meta">
+        {evidence.id} &middot; {evidence.type} &middot; {formatDate(evidence.timestamp)}
+      </div>
+      <div className="evidence-summary">{evidence.summary}</div>
+      {evidence.tags.includes("critical") && <Badge text="Critical" variant="badge-critical" />}
+      <Badge text={evidence.status} variant={getStatusBadgeClass(evidence.status)} />
+      <Badge text={evidence.relevance} variant={getRelevanceBadgeClass(evidence.relevance)} />
+      <div>
+        {evidence.tags.map((tag) => (
+          <span key={tag} className="tag-chip">
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
