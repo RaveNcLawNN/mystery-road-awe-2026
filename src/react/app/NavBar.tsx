@@ -1,6 +1,7 @@
 import { NavLink } from "react-router";
 
-const NAV_ITEMS: { to: string; label: string }[] = [
+// also used by App for the document title
+export const NAV_ITEMS: { to: string; label: string }[] = [
   { to: "/", label: "Dashboard" },
   { to: "/evidence", label: "Evidence" },
   // active for /team/people and /team/locations

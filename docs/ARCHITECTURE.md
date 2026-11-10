@@ -25,7 +25,7 @@ shared modules; `src/vanilla/main.ts` reaches only `src/vanilla/` and the same f
 ```
 src/react/
 ├── main.tsx               entry point: mounts <App /> into #root
-├── app/                   the shell: App (data, loading/error, routes), AppLayout, NavBar,
+├── app/                   the shell: App (data, loading/error, routes, tab title), AppLayout, NavBar,
 │                          NotFoundPage
 ├── data/                  loadCaseData.ts: loads and validates the case files, the CaseData type
 ├── components/            UI pieces used by more than one feature: Badge, FilterSelect

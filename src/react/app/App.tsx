@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, Route, Routes } from "react-router";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 import {
   EMPTY_HYPOTHESIS_DRAFT,
   readStoredHypothesis,
@@ -12,6 +12,7 @@ import type { Evidence } from "../../types.ts";
 import { loadCaseData, type CaseData } from "../data/loadCaseData.ts";
 import { BookmarksProvider } from "../data/BookmarksContext.tsx";
 import { AppLayout } from "./AppLayout.tsx";
+import { NAV_ITEMS } from "./NavBar.tsx";
 import { DashboardPage } from "../dashboard/DashboardPage.tsx";
 import { PeoplePage } from "../people-locations/PeoplePage.tsx";
 import { PersonDetailPage } from "../people-locations/PersonDetailPage.tsx";
@@ -35,6 +36,12 @@ export function App() {
   // the form, so it survives leaving and re-entering the Workspace.
   const [hypothesisDraft, setHypothesisDraft] = useState(() => readStoredHypothesis() ?? EMPTY_HYPOTHESIS_DRAFT);
 
+  // The name of the page the URL points to, e.g. "/team/people/P03" -> "People & Locations".
+  // Derived from the URL on every render.
+  const { pathname } = useLocation();
+  const currentPage = NAV_ITEMS.find((item) => pathname === item.to || pathname.startsWith(item.to + "/"));
+  const pageName = currentPage?.label ?? "Page not found";
+
   function saveNote(evidenceId: string, text: string) {
     const nextNotes = { ...notes, [evidenceId]: text };
     setNotes(nextNotes);
@@ -47,6 +54,13 @@ export function App() {
     setReviews(nextReviews);
     writeStoredReviews(nextReviews);
   }
+
+  // The browser tab title is outside of what React renders (#root), so it is
+  // set in an effect: after the first render, and again after every render
+  // in which pageName is a different string than in the render before.
+  useEffect(() => {
+    document.title = `${pageName} – Project ReMotion`;
+  }, [pageName]);
 
   // Runs once after the first render ([] = no dependencies).
   useEffect(() => {
