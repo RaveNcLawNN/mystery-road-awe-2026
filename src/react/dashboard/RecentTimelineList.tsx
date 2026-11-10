@@ -1,7 +1,7 @@
-import type { TimelineEvent } from "../../../types.ts";
-import { formatDate } from "../../../utils/format.ts";
-import { MiniListItem } from "../../components/MiniListItem.tsx";
-import { Panel } from "../../components/Panel.tsx";
+import type { TimelineEvent } from "../../types.ts";
+import { formatDate } from "../../utils/format.ts";
+import { MiniListItem } from "../components/MiniListItem.tsx";
+import { Panel } from "../components/Panel.tsx";
 
 interface RecentTimelineListProps {
   events: TimelineEvent[];

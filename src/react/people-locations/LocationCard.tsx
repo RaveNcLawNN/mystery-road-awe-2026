@@ -1,5 +1,5 @@
-import type { CaseLocation } from "../../../types.ts";
-import { BulletList } from "../../components/BulletList.tsx";
+import type { CaseLocation } from "../../types.ts";
+import { BulletList } from "../components/BulletList.tsx";
 
 interface LocationCardProps {
   location: CaseLocation;

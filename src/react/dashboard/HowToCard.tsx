@@ -1,4 +1,4 @@
-import { navigateTo } from "../../../navigation.ts";
+import { navigateTo } from "../../navigation.ts";
 
 // Static introduction, the same text as in index.html.
 export function HowToCard() {

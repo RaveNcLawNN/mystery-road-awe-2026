@@ -1,8 +1,8 @@
-import type { Evidence } from "../../../types.ts";
-import { getStatusBadgeClass } from "../../../utils/format.ts";
-import { Badge } from "../../components/Badge.tsx";
-import { MiniListItem } from "../../components/MiniListItem.tsx";
-import { Panel } from "../../components/Panel.tsx";
+import type { Evidence } from "../../types.ts";
+import { getStatusBadgeClass } from "../../utils/format.ts";
+import { Badge } from "../components/Badge.tsx";
+import { MiniListItem } from "../components/MiniListItem.tsx";
+import { Panel } from "../components/Panel.tsx";
 
 interface RecentEvidenceListProps {
   items: Evidence[];

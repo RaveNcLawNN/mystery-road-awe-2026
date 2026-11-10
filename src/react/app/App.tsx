@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { navigateTo } from "../navigation.ts";
-import { readStoredBookmarks } from "../storage.ts";
-import { loadCaseData, type CaseData } from "./loadCaseData.ts";
-import { AppLayout } from "./components/AppLayout.tsx";
-import { DashboardPage } from "./pages/DashboardPage.tsx";
-import { PeoplePage } from "./pages/PeoplePage.tsx";
-import { TimelinePage } from "./pages/TimelinePage.tsx";
-import { PlaceholderPage } from "./pages/PlaceholderPage.tsx";
-import { NotFoundPage } from "./pages/NotFoundPage.tsx";
-import { KeyDemoPage } from "./pages/KeyDemoPage.tsx";
+import { navigateTo } from "../../navigation.ts";
+import { readStoredBookmarks } from "../../storage.ts";
+import { loadCaseData, type CaseData } from "../data/loadCaseData.ts";
+import { AppLayout } from "./AppLayout.tsx";
+import { DashboardPage } from "../dashboard/DashboardPage.tsx";
+import { PeoplePage } from "../people-locations/PeoplePage.tsx";
+import { TimelinePage } from "../timeline/TimelinePage.tsx";
+import { PlaceholderPage } from "./PlaceholderPage.tsx";
+import { NotFoundPage } from "./NotFoundPage.tsx";
+import { KeyDemoPage } from "../key-demo/KeyDemoPage.tsx";
 
 // "#evidence" -> "evidence"; no hash at all -> "dashboard"
 function readRouteFromHash(): string {

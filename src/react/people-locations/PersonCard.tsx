@@ -1,5 +1,5 @@
-import type { Person } from "../../../types.ts";
-import { BulletList } from "../../components/BulletList.tsx";
+import type { Person } from "../../types.ts";
+import { BulletList } from "../components/BulletList.tsx";
 
 interface PersonCardProps {
   person: Person;

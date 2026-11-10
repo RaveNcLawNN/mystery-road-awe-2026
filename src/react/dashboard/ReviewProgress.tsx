@@ -1,4 +1,4 @@
-import { Panel } from "../../components/Panel.tsx";
+import { Panel } from "../components/Panel.tsx";
 
 interface ReviewProgressProps {
   percent: number;

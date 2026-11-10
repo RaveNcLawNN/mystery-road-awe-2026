@@ -1,6 +1,6 @@
-import type { CaseData } from "../loadCaseData.ts";
-import { PersonCard } from "./people/PersonCard.tsx";
-import { LocationCard } from "./people/LocationCard.tsx";
+import type { CaseData } from "../data/loadCaseData.ts";
+import { PersonCard } from "./PersonCard.tsx";
+import { LocationCard } from "./LocationCard.tsx";
 
 interface PeoplePageProps {
   data: CaseData;

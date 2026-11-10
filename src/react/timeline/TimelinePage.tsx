@@ -1,6 +1,6 @@
-import type { CaseData } from "../loadCaseData.ts";
-import { TimelineFilters } from "./timeline/TimelineFilters.tsx";
-import { TimelineEventCard } from "./timeline/TimelineEventCard.tsx";
+import type { CaseData } from "../data/loadCaseData.ts";
+import { TimelineFilters } from "./TimelineFilters.tsx";
+import { TimelineEventCard } from "./TimelineEventCard.tsx";
 
 interface TimelinePageProps {
   data: CaseData;

@@ -2,9 +2,9 @@
 // files, fetch helper and validation as the vanilla app (data.ts), but
 // returns the data instead of writing it into the shared state.
 
-import type { CaseFile, CaseLocation, Evidence, Person, TimelineEvent } from "../types.ts";
-import { parseCaseFile, parseEvidence, parseLocations, parsePeople, parseTimeline } from "../validate.ts";
-import { fetchJson } from "../utils/fetchJson.ts";
+import type { CaseFile, CaseLocation, Evidence, Person, TimelineEvent } from "../../types.ts";
+import { parseCaseFile, parseEvidence, parseLocations, parsePeople, parseTimeline } from "../../validate.ts";
+import { fetchJson } from "../../utils/fetchJson.ts";
 
 export interface CaseData {
   caseFile: CaseFile;

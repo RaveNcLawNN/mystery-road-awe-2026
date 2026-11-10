@@ -1,10 +1,10 @@
-import type { CaseData } from "../loadCaseData.ts";
-import { HowToCard } from "./dashboard/HowToCard.tsx";
-import { CaseSummary } from "./dashboard/CaseSummary.tsx";
-import { StatCard } from "./dashboard/StatCard.tsx";
-import { ReviewProgress } from "./dashboard/ReviewProgress.tsx";
-import { RecentEvidenceList } from "./dashboard/RecentEvidenceList.tsx";
-import { RecentTimelineList } from "./dashboard/RecentTimelineList.tsx";
+import type { CaseData } from "../data/loadCaseData.ts";
+import { HowToCard } from "./HowToCard.tsx";
+import { CaseSummary } from "./CaseSummary.tsx";
+import { StatCard } from "./StatCard.tsx";
+import { ReviewProgress } from "./ReviewProgress.tsx";
+import { RecentEvidenceList } from "./RecentEvidenceList.tsx";
+import { RecentTimelineList } from "./RecentTimelineList.tsx";
 
 interface DashboardPageProps {
   data: CaseData;

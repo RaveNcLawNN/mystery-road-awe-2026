@@ -1,6 +1,6 @@
-import type { CaseFile } from "../../../types.ts";
-import { formatDay } from "../../../utils/format.ts";
-import { Badge } from "../../components/Badge.tsx";
+import type { CaseFile } from "../../types.ts";
+import { formatDay } from "../../utils/format.ts";
+import { Badge } from "../components/Badge.tsx";
 
 interface CaseSummaryProps {
   caseFile: CaseFile;

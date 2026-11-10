@@ -1,6 +1,6 @@
-import type { TimelineEvent } from "../../../types.ts";
-import { formatDate } from "../../../utils/format.ts";
-import { Badge } from "../../components/Badge.tsx";
+import type { TimelineEvent } from "../../types.ts";
+import { formatDate } from "../../utils/format.ts";
+import { Badge } from "../components/Badge.tsx";
 
 // Lookup table: certainty -> badge color. A value that is not listed
 // (e.g. a new certainty in the data) falls back to the neutral badge.
