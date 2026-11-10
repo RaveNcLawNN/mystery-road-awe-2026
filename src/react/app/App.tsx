@@ -15,8 +15,9 @@ export function App() {
   // survives switching between pages. null = not loaded yet.
   const [data, setData] = useState<CaseData | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
-  // read once from localStorage; nothing in the React version changes them yet
-  const [bookmarks] = useState(readStoredBookmarks);
+  // nothing in the React version changes the bookmarks yet, so they are
+  // simply read from localStorage (no state needed)
+  const bookmarks = readStoredBookmarks();
 
   // Runs once after the first render ([] = no dependencies).
   useEffect(() => {
