@@ -1,16 +1,16 @@
 import type { CaseData } from "../data/loadCaseData.ts";
 import { FilterSelect } from "../components/FilterSelect.tsx";
-import type { EvidenceFilters } from "./evidenceFilters.ts";
+import type { EvidenceFilters, FilterAction } from "./evidenceFilters.ts";
 
 interface EvidenceToolbarProps {
   data: CaseData;
   filters: EvidenceFilters;
-  // gets only the fields that changed, e.g. { status: "reviewed" }
-  onFiltersChange: (changes: Partial<EvidenceFilters>) => void;
+  // sends an action to the filters reducer in EvidencePage
+  dispatch: (action: FilterAction) => void;
 }
 
 // Same controls as the vanilla toolbar, all controlled by the filters state.
-export function EvidenceToolbar({ data, filters, onFiltersChange }: EvidenceToolbarProps) {
+export function EvidenceToolbar({ data, filters, dispatch }: EvidenceToolbarProps) {
   // every type once, lowercased like the vanilla filter ("Test-Report" = "test-report")
   const types = [...new Set(data.evidence.map((ev) => ev.type.toLowerCase()))];
 
@@ -27,19 +27,19 @@ export function EvidenceToolbar({ data, filters, onFiltersChange }: EvidenceTool
           autoComplete="off"
           // controlled: the box always shows the state, and every keystroke goes through the state
           value={filters.search}
-          onChange={(event) => onFiltersChange({ search: event.target.value })}
+          onChange={(event) => dispatch({ type: "SET_FILTER", field: "search", value: event.target.value })}
         />
         <FilterSelect
           id="filterType"
           value={filters.type}
-          onChange={(type) => onFiltersChange({ type })}
+          onChange={(value) => dispatch({ type: "SET_FILTER", field: "type", value })}
           label="Filter by type"
           options={[{ value: "", label: "All types" }, ...types.map((type) => ({ value: type, label: type }))]}
         />
         <FilterSelect
           id="filterPerson"
           value={filters.personId}
-          onChange={(personId) => onFiltersChange({ personId })}
+          onChange={(value) => dispatch({ type: "SET_FILTER", field: "personId", value })}
           label="Filter by person"
           options={[
             { value: "", label: "All people" },
@@ -49,7 +49,7 @@ export function EvidenceToolbar({ data, filters, onFiltersChange }: EvidenceTool
         <FilterSelect
           id="filterLocation"
           value={filters.locationId}
-          onChange={(locationId) => onFiltersChange({ locationId })}
+          onChange={(value) => dispatch({ type: "SET_FILTER", field: "locationId", value })}
           label="Filter by location"
           options={[
             { value: "", label: "All locations" },
@@ -61,7 +61,7 @@ export function EvidenceToolbar({ data, filters, onFiltersChange }: EvidenceTool
         <FilterSelect
           id="filterStatus"
           value={filters.status}
-          onChange={(status) => onFiltersChange({ status })}
+          onChange={(value) => dispatch({ type: "SET_FILTER", field: "status", value })}
           label="Filter by status"
           options={[
             { value: "", label: "All statuses" },
@@ -73,7 +73,7 @@ export function EvidenceToolbar({ data, filters, onFiltersChange }: EvidenceTool
         <FilterSelect
           id="filterRelevance"
           value={filters.relevance}
-          onChange={(relevance) => onFiltersChange({ relevance })}
+          onChange={(value) => dispatch({ type: "SET_FILTER", field: "relevance", value })}
           label="Filter by relevance"
           options={[
             { value: "", label: "All relevance" },
@@ -85,7 +85,7 @@ export function EvidenceToolbar({ data, filters, onFiltersChange }: EvidenceTool
         <FilterSelect
           id="sortEvidence"
           value={filters.sort}
-          onChange={(sort) => onFiltersChange({ sort })}
+          onChange={(sort) => dispatch({ type: "SET_SORT", sort })}
           label="Sort evidence"
           options={[
             { value: "date-desc", label: "Newest first" },
@@ -94,6 +94,9 @@ export function EvidenceToolbar({ data, filters, onFiltersChange }: EvidenceTool
             { value: "title-desc", label: "Title (Z–A)" },
           ]}
         />
+        <button type="button" className="btn btn-secondary" onClick={() => dispatch({ type: "CLEAR_FILTERS" })}>
+          Clear filters
+        </button>
       </div>
     </div>
   );

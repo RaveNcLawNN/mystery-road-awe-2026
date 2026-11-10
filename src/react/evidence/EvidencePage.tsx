@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { readStoredNotes, writeStoredNotes } from "../../storage.ts";
 import type { Evidence } from "../../types.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
 import { EvidenceToolbar } from "./EvidenceToolbar.tsx";
 import { EvidenceCard } from "./EvidenceCard.tsx";
 import { EvidenceDetail } from "./EvidenceDetail.tsx";
-import { filterAndSortEvidence, NO_FILTERS, type EvidenceFilters } from "./evidenceFilters.ts";
+import { filterAndSortEvidence, filtersReducer, NO_FILTERS } from "./evidenceFilters.ts";
 
 interface EvidencePageProps {
   data: CaseData;
@@ -17,7 +17,8 @@ interface EvidencePageProps {
 }
 
 export function EvidencePage({ data, bookmarks, onToggleBookmark, onUpdateEvidence }: EvidencePageProps) {
-  const [filters, setFilters] = useState<EvidenceFilters>(NO_FILTERS);
+  // all seven filter values in one reducer: every change is an action (see filtersReducer)
+  const [filters, dispatch] = useReducer(filtersReducer, NO_FILTERS);
   const [notes, setNotes] = useState(readStoredNotes);
   // id of the evidence item shown in the detail view, null = none open
   const [openId, setOpenId] = useState<string | null>(null);
@@ -36,11 +37,7 @@ export function EvidencePage({ data, bookmarks, onToggleBookmark, onUpdateEviden
   return (
     <section>
       <h2>Evidence Catalogue</h2>
-      <EvidenceToolbar
-        data={data}
-        filters={filters}
-        onFiltersChange={(changes) => setFilters({ ...filters, ...changes })}
-      />
+      <EvidenceToolbar data={data} filters={filters} dispatch={dispatch} />
 
       {openEvidence && (
         <EvidenceDetail
