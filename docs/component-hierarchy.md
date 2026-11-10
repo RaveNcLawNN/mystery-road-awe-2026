@@ -22,6 +22,7 @@ flowchart TD
   App --> PeoplePage
   App --> TimelinePage
   App --> WorkspacePage
+  App --> NotFoundPage
 
   DashboardPage --> HowToCard
   DashboardPage --> CaseSummary
@@ -71,7 +72,7 @@ flowchart TD
 
   classDef now fill:#d4edda,stroke:#2e7d32,color:#000
   classDef shared fill:#fff3cd,stroke:#b8860b,color:#000
-  class App,Header,NavBar,DashboardPage,HowToCard,CaseSummary,StatCard,ReviewProgress,RecentEvidenceList,RecentTimelineList now
+  class App,Header,NavBar,NotFoundPage,DashboardPage,HowToCard,CaseSummary,StatCard,ReviewProgress,RecentEvidenceList,RecentTimelineList now
   class Badge,EvidenceMeta,TagChip,MiniListItem,FilterSelect shared
 ```
 
@@ -90,13 +91,13 @@ exercise can replace it (e.g. with React Context).
 
 ## Props of selected components
 
-| Component        | Props                                                                                               | Where the data comes from                                                                          |
-| ---------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `NavBar`         | `currentView: ViewName`, `onNavigate: (view: ViewName) => void`                                     | `App` (it holds the current view in state, Demo 9)                                                 |
-| `StatCard`       | `value: number`, `label: string`                                                                    | `DashboardPage` counts the loaded arrays, e.g. `evidence.length`, `bookmarks.length`               |
-| `CaseSummary`    | `caseFile: Partial<CaseFile>`                                                                       | `case.json`, loaded by `App`, passed through `DashboardPage`                                       |
-| `ReviewProgress` | `percent: number`                                                                                   | `DashboardPage` calculates it from `evidence.json` (reviewed / total)                              |
-| `Badge`          | `text: string`, `className: string`                                                                 | the parent: e.g. `evidence.status` + `getStatusBadgeClass()` from `utils/format.ts`                |
-| `MiniListItem`   | `title: string`, `children: ReactNode`                                                              | the parent list: an evidence id, a formatted date, a note text, ...                                |
-| `EvidenceCard`   | `evidence: Evidence`, `isBookmarked: boolean`, `onToggleBookmark: () => void`, `onOpen: () => void` | `evidence.json` + bookmarks from `localStorage`, both held in `App`, passed through `EvidencePage` |
-| `PersonCard`     | `person: Person`, `evidenceCount: number`                                                           | `people.json`; `PeoplePage` counts the person's evidence items                                     |
+| Component        | Props                                                                                               | Where the data comes from                                                                                          |
+| ---------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `NavBar`         | `currentRoute: string`, `onNavigate: (view: ViewName) => void`                                      | `App` (it holds the route from the URL hash in state, Demo 9); a string, because the hash can name an unknown view |
+| `StatCard`       | `value: number`, `label: string`                                                                    | `DashboardPage` counts the loaded arrays, e.g. `evidence.length`, `bookmarks.length`                               |
+| `CaseSummary`    | `caseFile: Partial<CaseFile>`                                                                       | `case.json`, loaded by `App`, passed through `DashboardPage`                                                       |
+| `ReviewProgress` | `percent: number`                                                                                   | `DashboardPage` calculates it from `evidence.json` (reviewed / total)                                              |
+| `Badge`          | `text: string`, `className: string`                                                                 | the parent: e.g. `evidence.status` + `getStatusBadgeClass()` from `utils/format.ts`                                |
+| `MiniListItem`   | `title: string`, `children: ReactNode`                                                              | the parent list: an evidence id, a formatted date, a note text, ...                                                |
+| `EvidenceCard`   | `evidence: Evidence`, `isBookmarked: boolean`, `onToggleBookmark: () => void`, `onOpen: () => void` | `evidence.json` + bookmarks from `localStorage`, both held in `App`, passed through `EvidencePage`                 |
+| `PersonCard`     | `person: Person`, `evidenceCount: number`                                                           | `people.json`; `PeoplePage` counts the person's evidence items                                                     |
