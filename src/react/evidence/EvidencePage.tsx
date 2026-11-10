@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 import type { Evidence } from "../../types.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
 import { EvidenceToolbar } from "./EvidenceToolbar.tsx";
@@ -20,17 +20,6 @@ export function EvidencePage({ data, onUpdateEvidence, notes, onSaveNote }: Evid
   const [filters, dispatch] = useReducer(filtersReducer, NO_FILTERS);
   // id of the evidence item shown in the detail view, null = none open
   const [openId, setOpenId] = useState<string | null>(null);
-
-  // THROWAWAY (Exercise 6 Demo 2): the same effect with the three kinds of dependency array
-  useEffect(() => {
-    console.log("[]               : after the first render only");
-  }, []);
-  useEffect(() => {
-    console.log("[filters.search] : after the first render, and after a render in which the search text changed");
-  }, [filters.search]);
-  useEffect(() => {
-    console.log("no array         : after every render");
-  });
 
   // derived, not stored: recalculated from the full list and the filters on every render
   const visibleEvidence = filterAndSortEvidence(data.evidence, filters);
