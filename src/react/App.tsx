@@ -9,6 +9,7 @@ import { PeoplePage } from "./pages/PeoplePage.tsx";
 import { TimelinePage } from "./pages/TimelinePage.tsx";
 import { PlaceholderPage } from "./pages/PlaceholderPage.tsx";
 import { NotFoundPage } from "./pages/NotFoundPage.tsx";
+import { KeyDemoPage } from "./pages/KeyDemoPage.tsx";
 
 // "#evidence" -> "evidence"; no hash at all -> "dashboard"
 function readRouteFromHash(): string {
@@ -27,6 +28,11 @@ function renderPage(route: string, data: CaseData, bookmarks: string[]) {
       return <TimelinePage data={data} />;
     case "workspace":
       return <PlaceholderPage title="Investigator Workspace" />;
+    // throwaway example for Exercise 4, Demo 4 (key={index} vs. a stable id)
+    case "key-demo":
+      return <KeyDemoPage people={data.people} reversed={false} />;
+    case "key-demo-reversed":
+      return <KeyDemoPage people={data.people} reversed={true} />;
     default:
       return <NotFoundPage route={route} onBackToDashboard={() => navigateTo("dashboard")} />;
   }
