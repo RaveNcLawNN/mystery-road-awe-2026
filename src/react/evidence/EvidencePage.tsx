@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { readStoredBookmarks, readStoredNotes, writeStoredBookmarks, writeStoredNotes } from "../../storage.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
+import { toggleId } from "../data/toggleId.ts";
 import { EvidenceToolbar } from "./EvidenceToolbar.tsx";
 import { EvidenceCard } from "./EvidenceCard.tsx";
 import { EvidenceDetail } from "./EvidenceDetail.tsx";
@@ -11,20 +12,16 @@ interface EvidencePageProps {
 
 export function EvidencePage({ data }: EvidencePageProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [bookmarks, setBookmarks] = useState(readStoredBookmarks);
+  // readonly: push/splice on the state array are a type error, so it can only be replaced
+  const [bookmarks, setBookmarks] = useState<readonly string[]>(readStoredBookmarks);
   const [notes, setNotes] = useState(readStoredNotes);
   // id of the evidence item shown in the detail view, null = none open
   const [openId, setOpenId] = useState<string | null>(null);
 
-  // DELIBERATELY WRONG (Exercise 5, Demo 3): changes the state array in place
   function toggleBookmark(evidenceId: string) {
-    if (bookmarks.includes(evidenceId)) {
-      bookmarks.splice(bookmarks.indexOf(evidenceId), 1);
-    } else {
-      bookmarks.push(evidenceId);
-    }
-    setBookmarks(bookmarks);
-    writeStoredBookmarks(bookmarks);
+    const nextBookmarks = toggleId(bookmarks, evidenceId);
+    setBookmarks(nextBookmarks);
+    writeStoredBookmarks(nextBookmarks);
   }
 
   function saveNote(evidenceId: string, text: string) {
