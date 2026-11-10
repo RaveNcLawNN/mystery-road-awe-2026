@@ -57,6 +57,21 @@ Examples:
 - `StatCard` stays in `dashboard/` although it is generic: nothing else uses it yet. It moves when a second feature
   does.
 
+## Rule: render, event handler or effect?
+
+1. **Render only calculates.** The body of a component turns props, state and context into JSX. Values derived from
+   them (`filterAndSortEvidence(...)`, the Dashboard counts) belong here. It changes nothing outside the component, so
+   React may call it twice, or again at any time, with the same result.
+2. **A change the user caused goes into the event handler**: set state, save to `localStorage` (`toggleBookmark`,
+   `saveNote`, `updateEvidence`).
+3. **Work that is needed because the component is on screen goes into an effect** (`useEffect`): loading the data,
+   timers, listeners on `window`, the document title.
+
+Test: "Would it matter if React called this function twice?" If yes, it does not belong in render.
+
+The `useState(readStoredNotes)` initializers read `localStorage` during the first render. That is a read, done once,
+and a second call gives the same value; a write would not be allowed there.
+
 ## Routing (React Router, hash URLs)
 
 `main.tsx` wraps `App` in `<HashRouter>`; `App` declares the routes with `<Routes>`/`<Route>`.
