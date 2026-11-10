@@ -1,5 +1,4 @@
 import { useReducer, useState } from "react";
-import { readStoredNotes, writeStoredNotes } from "../../storage.ts";
 import type { Evidence } from "../../types.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
 import { EvidenceToolbar } from "./EvidenceToolbar.tsx";
@@ -11,20 +10,16 @@ interface EvidencePageProps {
   data: CaseData;
   // the case data is owned by App as well; this asks App to change one item
   onUpdateEvidence: (evidenceId: string, changes: Partial<Pick<Evidence, "status" | "relevance">>) => void;
+  // owned by App, so the Workspace shows the same notes
+  notes: Record<string, string>;
+  onSaveNote: (evidenceId: string, text: string) => void;
 }
 
-export function EvidencePage({ data, onUpdateEvidence }: EvidencePageProps) {
+export function EvidencePage({ data, onUpdateEvidence, notes, onSaveNote }: EvidencePageProps) {
   // all seven filter values in one reducer: every change is an action (see filtersReducer)
   const [filters, dispatch] = useReducer(filtersReducer, NO_FILTERS);
-  const [notes, setNotes] = useState(readStoredNotes);
   // id of the evidence item shown in the detail view, null = none open
   const [openId, setOpenId] = useState<string | null>(null);
-
-  function saveNote(evidenceId: string, text: string) {
-    const nextNotes = { ...notes, [evidenceId]: text };
-    setNotes(nextNotes);
-    writeStoredNotes(nextNotes);
-  }
 
   // derived, not stored: recalculated from the full list and the filters on every render
   const visibleEvidence = filterAndSortEvidence(data.evidence, filters);
@@ -43,7 +38,7 @@ export function EvidencePage({ data, onUpdateEvidence }: EvidencePageProps) {
           evidence={openEvidence}
           data={data}
           note={notes[openEvidence.id] ?? ""}
-          onSaveNote={(text) => saveNote(openEvidence.id, text)}
+          onSaveNote={(text) => onSaveNote(openEvidence.id, text)}
           onReviewChange={(changes) => onUpdateEvidence(openEvidence.id, changes)}
           onClose={() => setOpenId(null)}
         />

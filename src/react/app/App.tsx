@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router";
+import { readStoredNotes, writeStoredNotes } from "../../storage.ts";
 import type { Evidence } from "../../types.ts";
 import { loadCaseData, type CaseData } from "../data/loadCaseData.ts";
 import { BookmarksProvider } from "../data/BookmarksContext.tsx";
@@ -17,6 +18,14 @@ export function App() {
   // survives switching between pages. null = not loaded yet.
   const [data, setData] = useState<CaseData | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
+  // evidence id -> note text; the single source for the Evidence detail and the Workspace list
+  const [notes, setNotes] = useState(readStoredNotes);
+
+  function saveNote(evidenceId: string, text: string) {
+    const nextNotes = { ...notes, [evidenceId]: text };
+    setNotes(nextNotes);
+    writeStoredNotes(nextNotes);
+  }
   // Review status and relevance are part of the case data, which App owns.
   // New objects instead of `ev.status = …`: a new evidence array with one
   // new evidence object, the others are reused unchanged. Like in the
@@ -58,13 +67,16 @@ export function App() {
     content = (
       <Routes>
         <Route path="/" element={<DashboardPage data={data} />} />
-        <Route path="/evidence" element={<EvidencePage data={data} onUpdateEvidence={updateEvidence} />} />
+        <Route
+          path="/evidence"
+          element={<EvidencePage data={data} onUpdateEvidence={updateEvidence} notes={notes} onSaveNote={saveNote} />}
+        />
         <Route path="/team" element={<Navigate to="/team/people" replace />} />
         <Route path="/team/people" element={<PeoplePage data={data} tab="people" />} />
         <Route path="/team/people/:personId" element={<PersonDetailPage data={data} />} />
         <Route path="/team/locations" element={<PeoplePage data={data} tab="locations" />} />
         <Route path="/timeline" element={<TimelinePage data={data} />} />
-        <Route path="/workspace" element={<WorkspacePage data={data} />} />
+        <Route path="/workspace" element={<WorkspacePage data={data} notes={notes} />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     );
