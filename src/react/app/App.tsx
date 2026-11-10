@@ -5,6 +5,7 @@ import { loadCaseData, type CaseData } from "../data/loadCaseData.ts";
 import { AppLayout } from "./AppLayout.tsx";
 import { DashboardPage } from "../dashboard/DashboardPage.tsx";
 import { PeoplePage } from "../people-locations/PeoplePage.tsx";
+import { PersonDetailPage } from "../people-locations/PersonDetailPage.tsx";
 import { TimelinePage } from "../timeline/TimelinePage.tsx";
 import { PlaceholderPage } from "./PlaceholderPage.tsx";
 import { NotFoundPage } from "./NotFoundPage.tsx";
@@ -50,6 +51,7 @@ export function App() {
         <Route path="/evidence" element={<PlaceholderPage title="Evidence Catalogue" />} />
         <Route path="/team" element={<Navigate to="/team/people" replace />} />
         <Route path="/team/people" element={<PeoplePage data={data} tab="people" />} />
+        <Route path="/team/people/:personId" element={<PersonDetailPage data={data} />} />
         <Route path="/team/locations" element={<PeoplePage data={data} tab="locations" />} />
         <Route path="/timeline" element={<TimelinePage data={data} />} />
         <Route path="/workspace" element={<PlaceholderPage title="Investigator Workspace" />} />

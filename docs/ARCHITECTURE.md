@@ -24,7 +24,7 @@ src/react/
 ├── components/            shared UI building blocks: Badge, BulletList, FilterSelect, MiniListItem, Panel
 ├── dashboard/             DashboardPage + CaseSummary, HowToCard, StatCard, ReviewProgress,
 │                          RecentEvidenceList, RecentTimelineList
-├── people-locations/      PeoplePage, PersonCard, LocationCard
+├── people-locations/      PeoplePage, PersonDetailPage, PersonCard, LocationCard
 ├── timeline/              TimelinePage, TimelineEventCard, TimelineFilters
 └── key-demo/              KeyDemoPage (throwaway example for key={index}, Exercise 4 Demo 4)
 ```
@@ -53,17 +53,18 @@ Examples:
 
 `main.tsx` wraps `App` in `<HashRouter>`; `App` declares the routes with `<Routes>`/`<Route>`.
 
-| URL (`react.html#…`) | Page                                                           |
-| -------------------- | -------------------------------------------------------------- |
-| `#/`                 | Dashboard                                                      |
-| `#/team`             | redirects to `#/team/people`                                   |
-| `#/team/people`      | People & Locations, People tab                                 |
-| `#/team/locations`   | People & Locations, Locations tab                              |
-| `#/timeline`         | Timeline                                                       |
-| `#/evidence`         | placeholder (Exercise 5)                                       |
-| `#/workspace`        | placeholder (Exercise 5)                                       |
-| `#/key-demo`         | throwaway key example (Exercise 4 Demo 4), `/reversed` variant |
-| anything else        | "Page not found"                                               |
+| URL (`react.html#…`)      | Page                                                                        |
+| ------------------------- | --------------------------------------------------------------------------- |
+| `#/`                      | Dashboard                                                                   |
+| `#/team`                  | redirects to `#/team/people`                                                |
+| `#/team/people`           | People & Locations, People tab                                              |
+| `#/team/people/:personId` | one person, e.g. `#/team/people/nova-byte`; unknown id → "Person not found" |
+| `#/team/locations`        | People & Locations, Locations tab                                           |
+| `#/timeline`              | Timeline                                                                    |
+| `#/evidence`              | placeholder (Exercise 5)                                                    |
+| `#/workspace`             | placeholder (Exercise 5)                                                    |
+| `#/key-demo`              | throwaway key example (Exercise 4 Demo 4), `/reversed` variant              |
+| anything else             | "Page not found"                                                            |
 
 Why `HashRouter` and not `BrowserRouter`: with real paths (`/team/people`) the server must answer every unknown path
 with the app's HTML. GitHub Pages cannot do that for a project site, and the dev server runs with `appType: "mpa"`

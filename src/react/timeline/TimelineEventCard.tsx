@@ -1,4 +1,5 @@
-import type { TimelineEvent } from "../../types.ts";
+import { Link } from "react-router";
+import type { Person, TimelineEvent } from "../../types.ts";
 import { formatDate } from "../../utils/format.ts";
 import { Badge, type BadgeVariant } from "../components/Badge.tsx";
 
@@ -18,9 +19,11 @@ interface TimelineEventCardProps {
   event: TimelineEvent;
   // "L01 - Robotics Lab", resolved by the page
   locationNames: string[];
+  // the people involved, resolved by the page
+  people: Person[];
 }
 
-export function TimelineEventCard({ event, locationNames }: TimelineEventCardProps) {
+export function TimelineEventCard({ event, locationNames, people }: TimelineEventCardProps) {
   return (
     <div className={"timeline-event certainty-" + event.certainty}>
       <div className="timeline-time">
@@ -30,6 +33,17 @@ export function TimelineEventCard({ event, locationNames }: TimelineEventCardPro
       <h3>{event.title}</h3>
       <p>{event.description}</p>
       <LocationLine names={locationNames} />
+      {people.length > 0 && (
+        <p className="evidence-meta">
+          People:{" "}
+          {people.map((person, index) => (
+            <span key={person.id}>
+              {index > 0 && ", "}
+              <Link to={"/team/people/" + person.id}>{person.name}</Link>
+            </span>
+          ))}
+        </p>
+      )}
       {event.evidenceIds.length > 0 && <p className="evidence-meta">Evidence: {event.evidenceIds.join(", ")}</p>}
     </div>
   );

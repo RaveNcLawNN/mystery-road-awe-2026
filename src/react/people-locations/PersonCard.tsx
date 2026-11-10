@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import type { Person } from "../../types.ts";
 import { BulletList } from "../components/BulletList.tsx";
 
@@ -13,7 +14,9 @@ export function PersonCard({ person, evidenceCount }: PersonCardProps) {
       <div className="person-card-header">
         <img className="person-avatar" src={person.avatar} alt={"Portrait of " + person.name} />
         <div>
-          <h3>{person.name}</h3>
+          <h3>
+            <Link to={"/team/people/" + person.id}>{person.name}</Link>
+          </h3>
           <div className="person-role">{person.role}</div>
         </div>
       </div>

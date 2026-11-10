@@ -1,3 +1,4 @@
+import type { Person } from "../../types.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
 import { TimelineFilters } from "./TimelineFilters.tsx";
 import { TimelineEventCard } from "./TimelineEventCard.tsx";
@@ -18,6 +19,11 @@ export function TimelinePage({ data }: TimelinePageProps) {
     });
   }
 
+  // person ids -> Person records (ids are checked against people.json when loading)
+  function peopleFor(personIds: string[]): Person[] {
+    return data.people.filter((person) => personIds.includes(person.id));
+  }
+
   return (
     <section>
       <h2>Investigation Timeline</h2>
@@ -27,7 +33,12 @@ export function TimelinePage({ data }: TimelinePageProps) {
           <p>No timeline events match the current filters.</p>
         ) : (
           events.map((event) => (
-            <TimelineEventCard key={event.id} event={event} locationNames={locationNamesFor(event.locationIds)} />
+            <TimelineEventCard
+              key={event.id}
+              event={event}
+              locationNames={locationNamesFor(event.locationIds)}
+              people={peopleFor(event.personIds)}
+            />
           ))
         )}
       </div>
