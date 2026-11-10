@@ -9,7 +9,7 @@
 // (Exercise 1, Demo 2); a change replaces the array through its setter.
 // The items themselves stay mutable (status, relevance, bookmarked).
 
-import type { CaseFile, CaseLocation, Evidence, Person, TimelineEvent } from "./types.ts";
+import type { CaseFile, CaseLocation, Evidence, Person, TimelineEvent } from "../types.ts";
 import type { ViewName } from "./navigation.ts";
 
 export let allEvidence: readonly Evidence[] = [];

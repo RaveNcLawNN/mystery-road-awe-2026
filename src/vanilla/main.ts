@@ -2,7 +2,7 @@
 // ENTRY POINT: event listener setup & app start
 // ---------------------------------------------------------------------
 
-import { loadBookmarksFromStorage, loadNotesFromStorage } from "./storage.ts";
+import { loadBookmarksFromStorage, loadNotesFromStorage } from "./vanillaStorage.ts";
 import { loadAllData } from "./data.ts";
 import { isViewName, navigateTo } from "./navigation.ts";
 import { handleHashChange } from "./router.ts";

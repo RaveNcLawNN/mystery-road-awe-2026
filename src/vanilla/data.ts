@@ -13,8 +13,8 @@ import {
   setCaseData,
   setEvidenceViewLoading,
 } from "./state.ts";
-import { parseCaseFile, parseEvidence, parseLocations, parsePeople, parseTimeline } from "./validate.ts";
-import { fetchJson } from "./utils/fetchJson.ts";
+import { parseCaseFile, parseEvidence, parseLocations, parsePeople, parseTimeline } from "../validate.ts";
+import { fetchJson } from "../utils/fetchJson.ts";
 import { renderDashboard } from "./views/dashboard.ts";
 import { populateEvidenceDropdowns, renderEvidenceList, applyStoredBookmarkFlags } from "./views/evidence.ts";
 import { populateTimelineDropdowns, renderTimeline } from "./views/timeline.ts";

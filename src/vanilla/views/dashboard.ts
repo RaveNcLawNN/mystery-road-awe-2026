@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------
 
 import { allEvidence, allPeople, allLocations, allTimeline, bookmarks, caseData } from "../state.ts";
-import { formatDate, formatDay, getStatusBadgeClass } from "../utils/format.ts";
+import { formatDate, formatDay, getStatusBadgeClass } from "../../utils/format.ts";
 
 export function renderDashboard(): void {
   const container = document.getElementById("dashboardContent");

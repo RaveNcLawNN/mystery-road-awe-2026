@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------
 
 import { allEvidence, allPeople, notesStore } from "../state.ts";
-import { readStoredHypothesis, writeStoredHypothesis, type HypothesisDraft } from "../storage.ts";
+import { readStoredHypothesis, writeStoredHypothesis, type HypothesisDraft } from "../../storage.ts";
 import { getRequiredElement } from "../utils/dom.ts";
 import { navigateTo } from "../navigation.ts";
 import { openEvidenceDetail } from "./evidence.ts";

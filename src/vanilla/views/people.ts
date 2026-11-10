@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------
 
 import { allEvidence, allPeople, allLocations } from "../state.ts";
-import type { Person } from "../types.ts";
+import type { Person } from "../../types.ts";
 import { evidenceMentionsPerson } from "../utils/lookup.ts";
 import { getRequiredElement } from "../utils/dom.ts";
 import { navigateTo } from "../navigation.ts";

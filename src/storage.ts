@@ -1,10 +1,9 @@
 // ---------------------------------------------------------------------
-// LOCAL STORAGE HELPERS (bookmarks & notes)
+// LOCAL STORAGE HELPERS (bookmarks, notes, hypothesis draft)
 // ---------------------------------------------------------------------
-// read…/write… work on plain values and are used by both versions; the
-// other functions connect them to the vanilla app's shared state.
-
-import { bookmarks, notesStore, setBookmarks, setNotesStore } from "./state.ts";
+// Plain read…/write… functions, used by the React app and the vanilla app.
+// The vanilla app's wrappers around its shared state are in
+// vanilla/vanillaStorage.ts.
 
 const STORAGE_KEY_BOOKMARKS = "remotion_bookmarks";
 const STORAGE_KEY_NOTES = "remotion_notes";
@@ -107,27 +106,4 @@ export function readStoredHypothesis(): HypothesisDraft | null {
 
 export function writeStoredHypothesis(draft: HypothesisDraft): void {
   localStorage.setItem(STORAGE_KEY_HYPOTHESIS, JSON.stringify(draft));
-}
-
-// --- vanilla app -------------------------------------------------------
-
-export function saveBookmarksToStorage(): void {
-  writeStoredBookmarks(bookmarks);
-}
-
-export function loadBookmarksFromStorage(): void {
-  setBookmarks(readStoredBookmarks());
-}
-
-export function saveNoteForEvidence(evidenceId: string, text: string): void {
-  notesStore[evidenceId] = text;
-  writeStoredNotes(notesStore);
-}
-
-export function loadNoteForEvidence(evidenceId: string): string {
-  return notesStore[evidenceId] || "";
-}
-
-export function loadNotesFromStorage(): void {
-  setNotesStore(readStoredNotes());
 }

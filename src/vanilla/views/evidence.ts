@@ -12,11 +12,11 @@ import {
   viewRendered,
   setBookmarks,
 } from "../state.ts";
-import type { Evidence } from "../types.ts";
+import type { Evidence } from "../../types.ts";
 import { findEvidenceById, findPersonById, findLocationById, evidenceMentionsPerson } from "../utils/lookup.ts";
-import { formatDate, getStatusBadgeClass, getRelevanceBadgeClass } from "../utils/format.ts";
+import { formatDate, getStatusBadgeClass, getRelevanceBadgeClass } from "../../utils/format.ts";
 import { getRequiredElement } from "../utils/dom.ts";
-import { saveBookmarksToStorage, saveNoteForEvidence, loadNoteForEvidence } from "../storage.ts";
+import { saveBookmarksToStorage, saveNoteForEvidence, loadNoteForEvidence } from "../vanillaStorage.ts";
 
 let latestSearchRequestId = 0;
 

@@ -3,7 +3,7 @@
 // ---------------------------------------------------------------------
 
 import { allEvidence, allPeople, allLocations } from "../state.ts";
-import type { CaseLocation, Evidence, Person } from "../types.ts";
+import type { CaseLocation, Evidence, Person } from "../../types.ts";
 
 // The id parameters are plain strings: they also come from <select> values,
 // data-* attributes and localStorage, and an unknown id simply finds nothing.
