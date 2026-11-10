@@ -9,14 +9,11 @@ import { filterAndSortEvidence, filtersReducer, NO_FILTERS } from "./evidenceFil
 
 interface EvidencePageProps {
   data: CaseData;
-  // owned by App, so the Dashboard and the Workspace see the same bookmarks
-  bookmarks: readonly string[];
-  onToggleBookmark: (evidenceId: string) => void;
   // the case data is owned by App as well; this asks App to change one item
   onUpdateEvidence: (evidenceId: string, changes: Partial<Pick<Evidence, "status" | "relevance">>) => void;
 }
 
-export function EvidencePage({ data, bookmarks, onToggleBookmark, onUpdateEvidence }: EvidencePageProps) {
+export function EvidencePage({ data, onUpdateEvidence }: EvidencePageProps) {
   // all seven filter values in one reducer: every change is an action (see filtersReducer)
   const [filters, dispatch] = useReducer(filtersReducer, NO_FILTERS);
   const [notes, setNotes] = useState(readStoredNotes);
@@ -56,15 +53,7 @@ export function EvidencePage({ data, bookmarks, onToggleBookmark, onUpdateEviden
         {visibleEvidence.length === 0 ? (
           <p>No evidence matches the current filters.</p>
         ) : (
-          visibleEvidence.map((ev) => (
-            <EvidenceCard
-              key={ev.id}
-              evidence={ev}
-              isBookmarked={bookmarks.includes(ev.id)}
-              onToggleBookmark={() => onToggleBookmark(ev.id)}
-              onOpen={() => setOpenId(ev.id)}
-            />
-          ))
+          visibleEvidence.map((ev) => <EvidenceCard key={ev.id} evidence={ev} onOpen={() => setOpenId(ev.id)} />)
         )}
       </div>
     </section>

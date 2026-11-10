@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router";
-import { readStoredBookmarks, writeStoredBookmarks } from "../../storage.ts";
 import type { Evidence } from "../../types.ts";
 import { loadCaseData, type CaseData } from "../data/loadCaseData.ts";
-import { toggleId } from "../data/toggleId.ts";
+import { BookmarksProvider } from "../data/BookmarksContext.tsx";
 import { AppLayout } from "./AppLayout.tsx";
 import { DashboardPage } from "../dashboard/DashboardPage.tsx";
 import { PeoplePage } from "../people-locations/PeoplePage.tsx";
@@ -18,17 +17,6 @@ export function App() {
   // survives switching between pages. null = not loaded yet.
   const [data, setData] = useState<CaseData | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
-  // The one source of truth for bookmarks: the Dashboard count, the Evidence
-  // stars and the Workspace list are all derived from this array.
-  // readonly: push/splice are a type error, so it can only be replaced.
-  const [bookmarks, setBookmarks] = useState<readonly string[]>(readStoredBookmarks);
-
-  function toggleBookmark(evidenceId: string) {
-    const nextBookmarks = toggleId(bookmarks, evidenceId);
-    setBookmarks(nextBookmarks);
-    writeStoredBookmarks(nextBookmarks);
-  }
-
   // Review status and relevance are part of the case data, which App owns.
   // New objects instead of `ev.status = …`: a new evidence array with one
   // new evidence object, the others are reused unchanged. Like in the
@@ -69,28 +57,23 @@ export function App() {
     // matches the URL; "*" matches everything that is left.
     content = (
       <Routes>
-        <Route path="/" element={<DashboardPage data={data} bookmarks={bookmarks} />} />
-        <Route
-          path="/evidence"
-          element={
-            <EvidencePage
-              data={data}
-              bookmarks={bookmarks}
-              onToggleBookmark={toggleBookmark}
-              onUpdateEvidence={updateEvidence}
-            />
-          }
-        />
+        <Route path="/" element={<DashboardPage data={data} />} />
+        <Route path="/evidence" element={<EvidencePage data={data} onUpdateEvidence={updateEvidence} />} />
         <Route path="/team" element={<Navigate to="/team/people" replace />} />
         <Route path="/team/people" element={<PeoplePage data={data} tab="people" />} />
         <Route path="/team/people/:personId" element={<PersonDetailPage data={data} />} />
         <Route path="/team/locations" element={<PeoplePage data={data} tab="locations" />} />
         <Route path="/timeline" element={<TimelinePage data={data} />} />
-        <Route path="/workspace" element={<WorkspacePage data={data} bookmarks={bookmarks} />} />
+        <Route path="/workspace" element={<WorkspacePage data={data} />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     );
   }
 
-  return <AppLayout>{content}</AppLayout>;
+  // the bookmarks are provided to every page through context (see BookmarksContext.tsx)
+  return (
+    <BookmarksProvider>
+      <AppLayout>{content}</AppLayout>
+    </BookmarksProvider>
+  );
 }

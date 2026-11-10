@@ -1,15 +1,18 @@
 import type { Evidence } from "../../types.ts";
 import { formatDate, getRelevanceBadgeClass, getStatusBadgeClass } from "../../utils/format.ts";
 import { Badge } from "../components/Badge.tsx";
+import { useBookmarks } from "../data/BookmarksContext.tsx";
 
 interface EvidenceCardProps {
   evidence: Evidence;
-  isBookmarked: boolean;
-  onToggleBookmark: () => void;
   onOpen: () => void;
 }
 
-export function EvidenceCard({ evidence, isBookmarked, onToggleBookmark, onOpen }: EvidenceCardProps) {
+export function EvidenceCard({ evidence, onOpen }: EvidenceCardProps) {
+  // straight from context: EvidencePage no longer passes the bookmarks through
+  const { bookmarks, toggleBookmark } = useBookmarks();
+  const isBookmarked = bookmarks.includes(evidence.id);
+
   return (
     <div className="evidence-card" onClick={onOpen}>
       <button
@@ -20,7 +23,7 @@ export function EvidenceCard({ evidence, isBookmarked, onToggleBookmark, onOpen 
           // the button sits inside the card: without this the click would
           // also reach the card's onClick and open the detail
           event.stopPropagation();
-          onToggleBookmark();
+          toggleBookmark(evidence.id);
         }}
       >
         <span className="bookmark-icon">{isBookmarked ? "★" : "☆"}</span>

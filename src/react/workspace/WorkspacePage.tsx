@@ -1,15 +1,16 @@
 import { readStoredNotes } from "../../storage.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
+import { useBookmarks } from "../data/BookmarksContext.tsx";
 import { HypothesisForm } from "./HypothesisForm.tsx";
 
 interface WorkspacePageProps {
   data: CaseData;
-  bookmarks: readonly string[];
 }
 
-export function WorkspacePage({ data, bookmarks }: WorkspacePageProps) {
+export function WorkspacePage({ data }: WorkspacePageProps) {
+  const { bookmarks } = useBookmarks();
   const notes = readStoredNotes();
-  // derived from the bookmarks owned by App, not stored here
+  // derived from the bookmarks in context, not stored here
   const bookmarkedEvidence = data.evidence.filter((ev) => bookmarks.includes(ev.id));
   const notedEvidence = data.evidence.filter((ev) => notes[ev.id]);
 

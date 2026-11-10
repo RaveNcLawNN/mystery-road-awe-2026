@@ -1,4 +1,5 @@
 import type { CaseData } from "../data/loadCaseData.ts";
+import { useBookmarks } from "../data/BookmarksContext.tsx";
 import { HowToCard } from "./HowToCard.tsx";
 import { CaseSummary } from "./CaseSummary.tsx";
 import { StatCard } from "./StatCard.tsx";
@@ -8,10 +9,10 @@ import { RecentTimelineList } from "./RecentTimelineList.tsx";
 
 interface DashboardPageProps {
   data: CaseData;
-  bookmarks: readonly string[];
 }
 
-export function DashboardPage({ data, bookmarks }: DashboardPageProps) {
+export function DashboardPage({ data }: DashboardPageProps) {
+  const { bookmarks } = useBookmarks();
   // Derived values: calculated on every render from the current data, never
   // stored, so they cannot get out of date.
   const reviewedCount = data.evidence.filter((ev) => ev.status.toLowerCase() === "reviewed").length;
