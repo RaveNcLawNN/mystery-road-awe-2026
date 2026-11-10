@@ -6,6 +6,7 @@ import { Header } from "./components/Header.tsx";
 import { NavBar } from "./components/NavBar.tsx";
 import { DashboardPage } from "./pages/DashboardPage.tsx";
 import { PeoplePage } from "./pages/PeoplePage.tsx";
+import { TimelinePage } from "./pages/TimelinePage.tsx";
 import { PlaceholderPage } from "./pages/PlaceholderPage.tsx";
 import { NotFoundPage } from "./pages/NotFoundPage.tsx";
 
@@ -23,7 +24,7 @@ function renderPage(route: string, data: CaseData, bookmarks: string[]) {
     case "people":
       return <PeoplePage data={data} />;
     case "timeline":
-      return <PlaceholderPage title="Investigation Timeline" />;
+      return <TimelinePage data={data} />;
     case "workspace":
       return <PlaceholderPage title="Investigator Workspace" />;
     default:
