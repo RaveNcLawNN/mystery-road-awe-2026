@@ -101,3 +101,28 @@ exercise can replace it (e.g. with React Context).
 | `MiniListItem`   | `title: string`, `children: ReactNode`                                                              | the parent list: an evidence id, a formatted date, a note text, ...                                                |
 | `EvidenceCard`   | `evidence: Evidence`, `isBookmarked: boolean`, `onToggleBookmark: () => void`, `onOpen: () => void` | `evidence.json` + bookmarks from `localStorage`, both held in `App`, passed through `EvidencePage`                 |
 | `PersonCard`     | `person: Person`, `evidenceCount: number`                                                           | `people.json`; `PeoplePage` counts the person's evidence items                                                     |
+
+## Presentational vs. feature components
+
+**Rule used:** a component is a **feature** component if it knows _where data comes from or what it means for the app_:
+it holds state or effects, receives the whole `CaseData`, sorts / filters / counts / combines data, or triggers app
+navigation itself. A component is **presentational** if it receives exactly what it shows as props and only turns that
+into markup. Formatting a value for display (`formatDate`) or picking a CSS class for a value still counts as
+presentational.
+
+| Component                                                      | Kind                    | Why                                                                                                                              |
+| -------------------------------------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `App`                                                          | feature                 | holds the route, the case data and the bookmarks in state; loads data in an effect; decides what to render                       |
+| `DashboardPage`                                                | feature                 | gets `CaseData`, calculates counts, review percentage and the "recent" lists                                                     |
+| `PeoplePage`                                                   | feature                 | gets `CaseData`, counts the evidence per person                                                                                  |
+| `TimelinePage`                                                 | feature                 | gets `CaseData`, sorts the events, resolves location ids to names                                                                |
+| `TimelineFilters`                                              | feature (borderline)    | turns people, locations and events into option lists (incl. the set of event types); the dropdowns themselves are `FilterSelect` |
+| `HowToCard`                                                    | feature (borderline)    | static text, but calls `navigateTo()` itself instead of receiving a callback                                                     |
+| `KeyDemoPage`                                                  | feature                 | throwaway demo; reverses the list it gets                                                                                        |
+| `AppLayout`, `Header`, `NavBar`                                | presentational          | the frame and the nav buttons; route and click handler come in as props                                                          |
+| `Panel`, `Badge`, `MiniListItem`, `BulletList`, `FilterSelect` | presentational (shared) | generic building blocks, know nothing about the case                                                                             |
+| `CaseSummary`, `StatCard`, `ReviewProgress`                    | presentational          | show the values they get (`CaseSummary` only formats the facts line)                                                             |
+| `RecentEvidenceList`, `RecentTimelineList`                     | presentational          | render the already selected items                                                                                                |
+| `PersonCard`, `LocationCard`                                   | presentational          | one record each; the evidence count comes in as a number                                                                         |
+| `TimelineEventCard` (with `LocationLine`)                      | presentational          | one event; location names come in resolved; certainty → badge color is a display decision                                        |
+| `PlaceholderPage`, `NotFoundPage`                              | presentational          | static text; `NotFoundPage` gets its button action as a prop                                                                     |
