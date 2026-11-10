@@ -24,6 +24,16 @@ export default defineConfig({
   // default ("spa") a missing data file is answered with index.html and
   // status 200, which defeats the res.ok check in fetchJson.
   appType: "mpa",
+  build: {
+    // Two pages during the migration: the vanilla app stays at index.html,
+    // the React version is built from react.html next to it.
+    rolldownOptions: {
+      input: {
+        main: "index.html",
+        react: "react.html",
+      },
+    },
+  },
   server: {
     port: 5173,
     strictPort: true,
