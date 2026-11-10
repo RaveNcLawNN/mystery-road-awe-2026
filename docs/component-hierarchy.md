@@ -91,16 +91,16 @@ exercise can replace it (e.g. with React Context).
 
 ## Props of selected components
 
-| Component        | Props                                                                                               | Where the data comes from                                                                                          |
-| ---------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `NavBar`         | `currentRoute: string`, `onNavigate: (view: ViewName) => void`                                      | `App` (it holds the route from the URL hash in state, Demo 9); a string, because the hash can name an unknown view |
-| `StatCard`       | `value: number`, `label: string`                                                                    | `DashboardPage` counts the loaded arrays, e.g. `evidence.length`, `bookmarks.length`                               |
-| `CaseSummary`    | `caseFile: CaseFile`                                                                                | `case.json`, loaded by `App`, passed through `DashboardPage`                                                       |
-| `ReviewProgress` | `percent: number`                                                                                   | `DashboardPage` calculates it from `evidence.json` (reviewed / total)                                              |
-| `Badge`          | `text: string`, `variant: string`                                                                   | the parent: e.g. `evidence.status` + `getStatusBadgeClass()` from `utils/format.ts`                                |
-| `MiniListItem`   | `title: string`, `children: ReactNode`                                                              | the parent list: an evidence id, a formatted date, a note text, ...                                                |
-| `EvidenceCard`   | `evidence: Evidence`, `isBookmarked: boolean`, `onToggleBookmark: () => void`, `onOpen: () => void` | `evidence.json` + bookmarks from `localStorage`, both held in `App`, passed through `EvidencePage`                 |
-| `PersonCard`     | `person: Person`, `evidenceCount: number`                                                           | `people.json`; `PeoplePage` counts the person's evidence items                                                     |
+| Component        | Props                                                                                               | Where the data comes from                                                                          |
+| ---------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `NavBar`         | none                                                                                                | the current URL, read by React Router's `NavLink` (marks the matching link as active)              |
+| `StatCard`       | `value: number`, `label: string`                                                                    | `DashboardPage` counts the loaded arrays, e.g. `evidence.length`, `bookmarks.length`               |
+| `CaseSummary`    | `caseFile: CaseFile`                                                                                | `case.json`, loaded by `App`, passed through `DashboardPage`                                       |
+| `ReviewProgress` | `percent: number`                                                                                   | `DashboardPage` calculates it from `evidence.json` (reviewed / total)                              |
+| `Badge`          | `text: string`, `variant: string`                                                                   | the parent: e.g. `evidence.status` + `getStatusBadgeClass()` from `utils/format.ts`                |
+| `MiniListItem`   | `title: string`, `children: ReactNode`                                                              | the parent list: an evidence id, a formatted date, a note text, ...                                |
+| `EvidenceCard`   | `evidence: Evidence`, `isBookmarked: boolean`, `onToggleBookmark: () => void`, `onOpen: () => void` | `evidence.json` + bookmarks from `localStorage`, both held in `App`, passed through `EvidencePage` |
+| `PersonCard`     | `person: Person`, `evidenceCount: number`                                                           | `people.json`; `PeoplePage` counts the person's evidence items                                     |
 
 ## Presentational vs. feature components
 
@@ -117,12 +117,11 @@ presentational.
 | `PeoplePage`                                                   | feature                 | gets `CaseData`, counts the evidence per person                                                                                  |
 | `TimelinePage`                                                 | feature                 | gets `CaseData`, sorts the events, resolves location ids to names                                                                |
 | `TimelineFilters`                                              | feature (borderline)    | turns people, locations and events into option lists (incl. the set of event types); the dropdowns themselves are `FilterSelect` |
-| `HowToCard`                                                    | feature (borderline)    | static text, but calls `navigateTo()` itself instead of receiving a callback                                                     |
 | `KeyDemoPage`                                                  | feature                 | throwaway demo; reverses the list it gets                                                                                        |
-| `AppLayout`, `Header`, `NavBar`                                | presentational          | the frame and the nav buttons; route and click handler come in as props                                                          |
+| `AppLayout`, `Header`, `NavBar`, `HowToCard`                   | presentational          | the frame, the nav and the intro card; navigation is plain links (`NavLink`/`Link`) to fixed paths                               |
 | `Panel`, `Badge`, `MiniListItem`, `BulletList`, `FilterSelect` | presentational (shared) | generic building blocks, know nothing about the case                                                                             |
 | `CaseSummary`, `StatCard`, `ReviewProgress`                    | presentational          | show the values they get (`CaseSummary` only formats the facts line)                                                             |
 | `RecentEvidenceList`, `RecentTimelineList`                     | presentational          | render the already selected items                                                                                                |
 | `PersonCard`, `LocationCard`                                   | presentational          | one record each; the evidence count comes in as a number                                                                         |
 | `TimelineEventCard` (with `LocationLine`)                      | presentational          | one event; location names come in resolved; certainty → badge color is a display decision                                        |
-| `PlaceholderPage`, `NotFoundPage`                              | presentational          | static text; `NotFoundPage` gets its button action as a prop                                                                     |
+| `PlaceholderPage`, `NotFoundPage`                              | presentational          | static text; `NotFoundPage` shows the unmatched path from `useLocation()`                                                        |

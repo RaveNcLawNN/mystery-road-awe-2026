@@ -8,16 +8,17 @@
 | `react.html` | `src/react/main.tsx` | the React version: everything in `src/react/`                                  |
 
 Modules that hold no UI and no app state are used by both: `src/types.ts` (domain types), `src/validate.ts` (checking
-the JSON files), `src/utils/fetchJson.ts`, `src/utils/format.ts`, `src/storage.ts` (`readStoredBookmarks`),
-`src/navigation.ts` (`ViewName`, `navigateTo`). The React code never imports a vanilla view or `src/state.ts` itself;
-`storage.ts` still imports `state.ts` for its vanilla functions, so that module ends up in the React bundle unused.
+the JSON files), `src/utils/fetchJson.ts`, `src/utils/format.ts`, `src/storage.ts` (`readStoredBookmarks`). The React
+code never imports a vanilla view or `src/state.ts` itself; `storage.ts` still imports `state.ts` for its vanilla
+functions, so that module ends up in the React bundle unused. Navigation in React is done by React Router, not by
+`src/navigation.ts`.
 
 ## Folder structure of the React version: by feature
 
 ```
 src/react/
 ├── main.tsx               entry point: mounts <App /> into #root
-├── app/                   the shell: App (route, data, loading/error), AppLayout, Header, NavBar,
+├── app/                   the shell: App (data, loading/error, routes), AppLayout, Header, NavBar,
 │                          NotFoundPage, PlaceholderPage
 ├── data/                  loadCaseData.ts: loads and validates the case files, the CaseData type
 ├── components/            shared UI building blocks: Badge, BulletList, FilterSelect, MiniListItem, Panel
@@ -47,3 +48,23 @@ Examples:
 - `PersonCard` is in `people-locations/`: only the People page uses it, and it is built around a `Person`.
 - `StatCard` stays in `dashboard/` although it is generic: nothing else uses it yet. It moves when a second feature
   does.
+
+## Routing (React Router, hash URLs)
+
+`main.tsx` wraps `App` in `<HashRouter>`; `App` declares the routes with `<Routes>`/`<Route>`.
+
+| URL (`react.html#…`) | Page                                                           |
+| -------------------- | -------------------------------------------------------------- |
+| `#/`                 | Dashboard                                                      |
+| `#/team`             | redirects to `#/team/people`                                   |
+| `#/team/people`      | People & Locations, People tab                                 |
+| `#/team/locations`   | People & Locations, Locations tab                              |
+| `#/timeline`         | Timeline                                                       |
+| `#/evidence`         | placeholder (Exercise 5)                                       |
+| `#/workspace`        | placeholder (Exercise 5)                                       |
+| `#/key-demo`         | throwaway key example (Exercise 4 Demo 4), `/reversed` variant |
+| anything else        | "Page not found"                                               |
+
+Why `HashRouter` and not `BrowserRouter`: with real paths (`/team/people`) the server must answer every unknown path
+with the app's HTML. GitHub Pages cannot do that for a project site, and the dev server runs with `appType: "mpa"`
+(no SPA fallback, see `vite.config.js`). Hash URLs need no server support and are still real, bookmarkable addresses.
