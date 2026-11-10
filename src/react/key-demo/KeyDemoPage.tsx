@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import type { Person } from "../../types.ts";
 
 interface KeyDemoPageProps {
@@ -5,7 +6,7 @@ interface KeyDemoPageProps {
   reversed: boolean;
 }
 
-// Throwaway example for Exercise 4, Demo 4 (react.html#key-demo, not in the
+// Throwaway example for Exercise 4, Demo 4 (react.html#/key-demo, not in the
 // navigation). The note inputs are uncontrolled: the browser keeps what was
 // typed in each <input> element. Reversing the list shows whether React
 // moves those elements together with their person.
@@ -17,7 +18,12 @@ export function KeyDemoPage({ people, reversed }: KeyDemoPageProps) {
       <h2>Key demo</h2>
       <p>
         Type a note next to the first person, then{" "}
-        {reversed ? <a href="#key-demo">restore the order</a> : <a href="#key-demo-reversed">reverse the order</a>}.
+        {reversed ? (
+          <Link to="/key-demo">restore the order</Link>
+        ) : (
+          <Link to="/key-demo/reversed">reverse the order</Link>
+        )}
+        .
       </p>
       <ul>
         {list.map((person) => (

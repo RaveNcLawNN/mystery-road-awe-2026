@@ -1,31 +1,28 @@
-import type { ViewName } from "../../navigation.ts";
+import { NavLink } from "react-router";
 
-const NAV_ITEMS: { view: ViewName; label: string }[] = [
-  { view: "dashboard", label: "Dashboard" },
-  { view: "evidence", label: "Evidence" },
-  { view: "people", label: "People & Locations" },
-  { view: "timeline", label: "Timeline" },
-  { view: "workspace", label: "Workspace" },
+const NAV_ITEMS: { to: string; label: string }[] = [
+  { to: "/", label: "Dashboard" },
+  { to: "/evidence", label: "Evidence" },
+  // active for /team/people and /team/locations
+  { to: "/team", label: "People & Locations" },
+  { to: "/timeline", label: "Timeline" },
+  { to: "/workspace", label: "Workspace" },
 ];
 
-interface NavBarProps {
-  // the route from the URL hash; may be an unknown view (then no button is active)
-  currentRoute: string;
-  onNavigate: (view: ViewName) => void;
-}
-
-export function NavBar({ currentRoute, onNavigate }: NavBarProps) {
+// NavLink knows the current URL itself and tells us whether it matches.
+export function NavBar() {
   return (
     <nav className="main-nav" aria-label="Main navigation">
       {NAV_ITEMS.map((item) => (
-        <button
-          key={item.view}
-          type="button"
-          className={item.view === currentRoute ? "nav-btn active" : "nav-btn"}
-          onClick={() => onNavigate(item.view)}
+        <NavLink
+          key={item.to}
+          to={item.to}
+          // "/" would match every URL; end = only the exact path counts
+          end={item.to === "/"}
+          className={({ isActive }) => (isActive ? "nav-btn active" : "nav-btn")}
         >
           {item.label}
-        </button>
+        </NavLink>
       ))}
     </nav>
   );

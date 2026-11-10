@@ -1,16 +1,16 @@
-interface NotFoundPageProps {
-  route: string;
-  onBackToDashboard: () => void;
-}
+import { Link, useLocation } from "react-router";
 
-export function NotFoundPage({ route, onBackToDashboard }: NotFoundPageProps) {
+// Rendered by the catch-all route (path="*") for every URL no other route matches.
+export function NotFoundPage() {
+  const { pathname } = useLocation();
+
   return (
     <section>
       <h2>Page not found</h2>
-      <p>There is no view called &ldquo;{route}&rdquo;.</p>
-      <button type="button" className="btn btn-primary" onClick={onBackToDashboard}>
+      <p>There is no page at &ldquo;{pathname}&rdquo;.</p>
+      <Link to="/" className="btn btn-primary">
         Go to the Dashboard
-      </button>
+      </Link>
     </section>
   );
 }

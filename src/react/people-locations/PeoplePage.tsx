@@ -1,35 +1,50 @@
+import { NavLink } from "react-router";
 import type { CaseData } from "../data/loadCaseData.ts";
 import { PersonCard } from "./PersonCard.tsx";
 import { LocationCard } from "./LocationCard.tsx";
 
 interface PeoplePageProps {
   data: CaseData;
+  // which tab to show; comes from the route (/team/people or /team/locations)
+  tab: "people" | "locations";
 }
 
-// Both lists one below the other for now; the vanilla app's People/Locations
-// tabs come back as two real routes (Exercise 4, Demo 8).
-export function PeoplePage({ data }: PeoplePageProps) {
+function tabClass({ isActive }: { isActive: boolean }): string {
+  return isActive ? "tab-btn active" : "tab-btn";
+}
+
+export function PeoplePage({ data, tab }: PeoplePageProps) {
   return (
     <section>
       <h2>People &amp; Locations</h2>
 
-      <h3>People</h3>
-      <div className="people-grid">
-        {data.people.map((person) => (
-          <PersonCard
-            key={person.id}
-            person={person}
-            evidenceCount={data.evidence.filter((ev) => ev.personIds.includes(person.id)).length}
-          />
-        ))}
+      {/* The tabs are links: switching tabs changes the URL. */}
+      <div className="tab-bar">
+        <NavLink to="/team/people" className={tabClass}>
+          People
+        </NavLink>
+        <NavLink to="/team/locations" className={tabClass}>
+          Locations
+        </NavLink>
       </div>
 
-      <h3>Locations</h3>
-      <div className="locations-grid">
-        {data.locations.map((location) => (
-          <LocationCard key={location.id} location={location} />
-        ))}
-      </div>
+      {tab === "people" ? (
+        <div className="people-grid">
+          {data.people.map((person) => (
+            <PersonCard
+              key={person.id}
+              person={person}
+              evidenceCount={data.evidence.filter((ev) => ev.personIds.includes(person.id)).length}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="locations-grid">
+          {data.locations.map((location) => (
+            <LocationCard key={location.id} location={location} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

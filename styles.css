@@ -385,6 +385,20 @@ a:focus-visible {
   font-size: 0.78rem;
 }
 
+/* The React version renders navigation, tabs and "Go to" buttons as links
+   (React Router's Link/NavLink), because they change the URL. They should
+   look like the buttons of the vanilla app. */
+a.btn,
+a.nav-btn,
+a.tab-btn {
+  display: inline-block;
+  text-decoration: none;
+}
+
+a.tab-btn {
+  color: var(--color-text);
+}
+
 /* Evidence grid */
 .evidence-grid {
   display: grid;

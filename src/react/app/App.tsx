@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { navigateTo } from "../../navigation.ts";
+import { Navigate, Route, Routes } from "react-router";
 import { readStoredBookmarks } from "../../storage.ts";
 import { loadCaseData, type CaseData } from "../data/loadCaseData.ts";
 import { AppLayout } from "./AppLayout.tsx";
@@ -10,52 +10,13 @@ import { PlaceholderPage } from "./PlaceholderPage.tsx";
 import { NotFoundPage } from "./NotFoundPage.tsx";
 import { KeyDemoPage } from "../key-demo/KeyDemoPage.tsx";
 
-// "#evidence" -> "evidence"; no hash at all -> "dashboard"
-function readRouteFromHash(): string {
-  return window.location.hash.slice(1) || "dashboard";
-}
-
-function renderPage(route: string, data: CaseData, bookmarks: string[]) {
-  switch (route) {
-    case "dashboard":
-      return <DashboardPage data={data} bookmarks={bookmarks} />;
-    case "evidence":
-      return <PlaceholderPage title="Evidence Catalogue" />;
-    case "people":
-      return <PeoplePage data={data} />;
-    case "timeline":
-      return <TimelinePage data={data} />;
-    case "workspace":
-      return <PlaceholderPage title="Investigator Workspace" />;
-    // throwaway example for Exercise 4, Demo 4 (key={index} vs. a stable id)
-    case "key-demo":
-      return <KeyDemoPage people={data.people} reversed={false} />;
-    case "key-demo-reversed":
-      return <KeyDemoPage people={data.people} reversed={true} />;
-    default:
-      return <NotFoundPage route={route} onBackToDashboard={() => navigateTo("dashboard")} />;
-  }
-}
-
 export function App() {
-  // The URL hash is the source of truth, as in the vanilla app: the nav
-  // buttons only change the hash, and this state follows it. That keeps
-  // the back button and links like react.html#timeline working.
-  const [route, setRoute] = useState(readRouteFromHash);
-
   // The case data lives here, above all pages, so it is loaded once and
   // survives switching between pages. null = not loaded yet.
   const [data, setData] = useState<CaseData | null>(null);
   const [loadFailed, setLoadFailed] = useState(false);
   // read once from localStorage; nothing in the React version changes them yet
   const [bookmarks] = useState(readStoredBookmarks);
-
-  useEffect(() => {
-    const handleHashChange = () => setRoute(readRouteFromHash());
-    window.addEventListener("hashchange", handleHashChange);
-    // cleanup: remove the listener when App is removed from the page
-    return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
 
   // Runs once after the first render ([] = no dependencies).
   useEffect(() => {
@@ -81,12 +42,24 @@ export function App() {
       </div>
     );
   } else {
-    content = renderPage(route, data, bookmarks);
+    // React Router renders the element of the first route whose path
+    // matches the URL; "*" matches everything that is left.
+    content = (
+      <Routes>
+        <Route path="/" element={<DashboardPage data={data} bookmarks={bookmarks} />} />
+        <Route path="/evidence" element={<PlaceholderPage title="Evidence Catalogue" />} />
+        <Route path="/team" element={<Navigate to="/team/people" replace />} />
+        <Route path="/team/people" element={<PeoplePage data={data} tab="people" />} />
+        <Route path="/team/locations" element={<PeoplePage data={data} tab="locations" />} />
+        <Route path="/timeline" element={<TimelinePage data={data} />} />
+        <Route path="/workspace" element={<PlaceholderPage title="Investigator Workspace" />} />
+        {/* throwaway example for Exercise 4, Demo 4 (key={index} vs. a stable id) */}
+        <Route path="/key-demo" element={<KeyDemoPage people={data.people} reversed={false} />} />
+        <Route path="/key-demo/reversed" element={<KeyDemoPage people={data.people} reversed={true} />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    );
   }
 
-  return (
-    <AppLayout currentRoute={route} onNavigate={navigateTo}>
-      {content}
-    </AppLayout>
-  );
+  return <AppLayout>{content}</AppLayout>;
 }

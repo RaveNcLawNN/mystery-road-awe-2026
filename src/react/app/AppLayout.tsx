@@ -1,22 +1,19 @@
 import type { ReactNode } from "react";
-import type { ViewName } from "../../navigation.ts";
 import { Header } from "./Header.tsx";
 import { NavBar } from "./NavBar.tsx";
 
 interface AppLayoutProps {
-  currentRoute: string;
-  onNavigate: (view: ViewName) => void;
   // the current page (or the loading / error message)
   children: ReactNode;
 }
 
 // The frame around every page: header with navigation, main area, footer.
 // It only arranges what it is given; it does not know about data or routing.
-export function AppLayout({ currentRoute, onNavigate, children }: AppLayoutProps) {
+export function AppLayout({ children }: AppLayoutProps) {
   return (
     <>
       <Header>
-        <NavBar currentRoute={currentRoute} onNavigate={onNavigate} />
+        <NavBar />
       </Header>
       <main className="app-main">{children}</main>
       <footer className="app-footer">

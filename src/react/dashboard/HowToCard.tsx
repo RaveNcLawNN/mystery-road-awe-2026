@@ -1,4 +1,4 @@
-import { navigateTo } from "../../navigation.ts";
+import { Link } from "react-router";
 
 // Static introduction, the same text as in index.html.
 export function HowToCard() {
@@ -16,9 +16,9 @@ export function HowToCard() {
             Search, filter, and sort every evidence item. Open one for full details, related people and locations, and
             to add a private note.
           </p>
-          <button type="button" className="btn btn-secondary btn-small" onClick={() => navigateTo("evidence")}>
+          <Link to="/evidence" className="btn btn-secondary btn-small">
             Go to Evidence
-          </button>
+          </Link>
         </div>
         <div className="howto-item">
           <h4>2. People &amp; Locations</h4>
@@ -26,9 +26,9 @@ export function HowToCard() {
             Read profiles and statements from the six team members involved, and look up the six key locations in the
             investigation.
           </p>
-          <button type="button" className="btn btn-secondary btn-small" onClick={() => navigateTo("people")}>
+          <Link to="/team/people" className="btn btn-secondary btn-small">
             Go to People &amp; Locations
-          </button>
+          </Link>
         </div>
         <div className="howto-item">
           <h4>3. Timeline</h4>
@@ -36,9 +36,9 @@ export function HowToCard() {
             Walk through events in chronological order, filter by person, location, or type, and jump straight to the
             evidence behind any event.
           </p>
-          <button type="button" className="btn btn-secondary btn-small" onClick={() => navigateTo("timeline")}>
+          <Link to="/timeline" className="btn btn-secondary btn-small">
             Go to Timeline
-          </button>
+          </Link>
         </div>
         <div className="howto-item">
           <h4>4. Investigator Workspace</h4>
@@ -46,9 +46,9 @@ export function HowToCard() {
             Your bookmarked evidence and notes collect here. Draft a hypothesis — who you suspect, why, and how
             confident you are — it&apos;s saved automatically in your browser.
           </p>
-          <button type="button" className="btn btn-secondary btn-small" onClick={() => navigateTo("workspace")}>
+          <Link to="/workspace" className="btn btn-secondary btn-small">
             Go to Workspace
-          </button>
+          </Link>
         </div>
       </div>
     </div>
