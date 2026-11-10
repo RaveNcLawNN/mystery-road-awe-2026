@@ -1,6 +1,7 @@
 # ADR 0001: Keep the app a single-page application and build it with React
 
-- **Status:** accepted
+- **Status:** accepted; implemented (Exercise 5: all five views in React, `index.html` is the React app, the vanilla app
+  remains at `vanilla.html`)
 - **Date:** 2026-11-10
 - **Context of the decision:** Exercise 3 (React migration of the shell and the Dashboard)
 

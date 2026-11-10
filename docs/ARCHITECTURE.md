@@ -1,14 +1,14 @@
 # Architecture
 
-## Two apps side by side (during the migration)
+## Two pages: the React app and the previous vanilla app
 
-| Page         | Entry point          | Code                                                                           |
-| ------------ | -------------------- | ------------------------------------------------------------------------------ |
-| `index.html` | `src/main.ts`        | the vanilla TypeScript app: `src/views/`, `src/router.ts`, `src/state.ts`, ... |
-| `react.html` | `src/react/main.tsx` | the React version: everything in `src/react/`                                  |
+| Page           | Entry point          | Code                                                                                                         |
+| -------------- | -------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `index.html`   | `src/react/main.tsx` | **the app** (React, all five views): everything in `src/react/`                                              |
+| `vanilla.html` | `src/main.ts`        | the previous vanilla TypeScript app, kept for comparison: `src/views/`, `src/router.ts`, `src/state.ts`, ... |
 
 Modules that hold no UI and no app state are used by both: `src/types.ts` (domain types), `src/validate.ts` (checking
-the JSON files), `src/utils/fetchJson.ts`, `src/utils/format.ts`, `src/storage.ts` (`readStoredBookmarks`). The React
+the JSON files), `src/utils/fetchJson.ts`, `src/utils/format.ts`, `src/storage.ts` (`read…`/`write…` helpers for bookmarks, notes and the hypothesis draft). The React
 code never imports a vanilla view or `src/state.ts` itself; `storage.ts` still imports `state.ts` for its vanilla
 functions, so that module ends up in the React bundle unused. Navigation in React is done by React Router, not by
 `src/navigation.ts`.
@@ -54,7 +54,7 @@ Examples:
 
 `main.tsx` wraps `App` in `<HashRouter>`; `App` declares the routes with `<Routes>`/`<Route>`.
 
-| URL (`react.html#…`)      | Page                                                                        |
+| URL (`index.html#…`)      | Page                                                                        |
 | ------------------------- | --------------------------------------------------------------------------- |
 | `#/`                      | Dashboard                                                                   |
 | `#/team`                  | redirects to `#/team/people`                                                |
@@ -64,6 +64,7 @@ Examples:
 | `#/timeline`              | Timeline                                                                    |
 | `#/evidence`              | Evidence Catalogue                                                          |
 | `#/workspace`             | Investigator Workspace                                                      |
+| `#people`, `#dashboard`   | old vanilla links: redirect to `#/team/people` and `#/`                     |
 | anything else             | "Page not found"                                                            |
 
 Why `HashRouter` and not `BrowserRouter`: with real paths (`/team/people`) the server must answer every unknown path

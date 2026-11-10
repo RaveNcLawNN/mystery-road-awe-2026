@@ -48,7 +48,8 @@ project root no longer works either, because the runtime files live in `public/`
 
 ### Project layout
 
-- `index.html`: entry page, loads `src/main.ts`
+- `index.html`: the app, loads `src/react/main.tsx` (React; code in `src/react/`, see `docs/ARCHITECTURE.md`)
+- `vanilla.html`: the previous vanilla version, loads `src/main.ts`, kept for comparison
 - `src/`: application code, TypeScript ES modules (`types.ts`: the data model, `validate.ts`:
   runtime checks of the JSON files, `views/`: one module per view)
 - `tsconfig.json`: TypeScript settings (type-checking only, Vite does the compiling)
