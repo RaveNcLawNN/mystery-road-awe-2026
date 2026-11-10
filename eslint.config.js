@@ -1,6 +1,7 @@
 import js from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+import reactHooks from "eslint-plugin-react-hooks";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
 import { defineConfig, globalIgnores } from "eslint/config";
 
@@ -37,6 +38,12 @@ export default defineConfig([
         tsconfigRootDir: import.meta.dirname,
       },
     },
+  },
+  {
+    // React components: the rules of hooks (only call hooks at the top
+    // level of a component) and complete useEffect dependency lists
+    files: ["src/**/*.tsx"],
+    extends: [reactHooks.configs.flat.recommended],
   },
   {
     // tool configuration files run in Node
