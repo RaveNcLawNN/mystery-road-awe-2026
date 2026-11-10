@@ -25,12 +25,12 @@ export default defineConfig({
   // status 200, which defeats the res.ok check in fetchJson.
   appType: "mpa",
   build: {
-    // Two pages during the migration: the vanilla app stays at index.html,
-    // the React version is built from react.html next to it.
+    // Two pages: the React app is the main page (index.html); the previous
+    // vanilla app stays available at vanilla.html for comparison.
     rolldownOptions: {
       input: {
         main: "index.html",
-        react: "react.html",
+        vanilla: "vanilla.html",
       },
     },
   },

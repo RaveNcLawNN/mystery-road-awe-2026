@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-// Static introduction, the same text as in index.html.
+// Static introduction, the same text as in the vanilla app (vanilla.html).
 export function HowToCard() {
   return (
     <div className="intro-card">

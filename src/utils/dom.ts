@@ -2,7 +2,7 @@
 // DOM HELPERS
 // ---------------------------------------------------------------------
 
-// For elements the page always contains (index.html, or markup the view has
+// For elements the page always contains (vanilla.html, or markup the view has
 // just rendered). getElementById() returns HTMLElement | null and knows
 // nothing about the element's kind; this checks both at runtime, so a
 // renamed id or a changed tag fails here with a clear message instead of as

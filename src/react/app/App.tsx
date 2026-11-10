@@ -91,6 +91,9 @@ export function App() {
             />
           }
         />
+        {/* old vanilla links (index.html#people, #dashboard) whose React path differs */}
+        <Route path="/people" element={<Navigate to="/team/people" replace />} />
+        <Route path="/dashboard" element={<Navigate to="/" replace />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     );

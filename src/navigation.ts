@@ -4,7 +4,7 @@
 // Kept separate from router.ts so views can navigate without importing
 // the router, which itself imports every view.
 
-// one per <section id="view-…"> in index.html
+// one per <section id="view-…"> in vanilla.html
 export const VIEW_NAMES = ["dashboard", "evidence", "people", "timeline", "workspace"] as const;
 export type ViewName = (typeof VIEW_NAMES)[number];
 
