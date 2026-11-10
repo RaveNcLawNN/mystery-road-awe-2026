@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { readStoredBookmarks, readStoredNotes, writeStoredBookmarks, writeStoredNotes } from "../../storage.ts";
+import { readStoredNotes, writeStoredNotes } from "../../storage.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
-import { toggleId } from "../data/toggleId.ts";
 import { EvidenceToolbar } from "./EvidenceToolbar.tsx";
 import { EvidenceCard } from "./EvidenceCard.tsx";
 import { EvidenceDetail } from "./EvidenceDetail.tsx";
@@ -9,21 +8,16 @@ import { filterAndSortEvidence, NO_FILTERS, type EvidenceFilters } from "./evide
 
 interface EvidencePageProps {
   data: CaseData;
+  // owned by App, so the Dashboard and the Workspace see the same bookmarks
+  bookmarks: readonly string[];
+  onToggleBookmark: (evidenceId: string) => void;
 }
 
-export function EvidencePage({ data }: EvidencePageProps) {
+export function EvidencePage({ data, bookmarks, onToggleBookmark }: EvidencePageProps) {
   const [filters, setFilters] = useState<EvidenceFilters>(NO_FILTERS);
-  // readonly: push/splice on the state array are a type error, so it can only be replaced
-  const [bookmarks, setBookmarks] = useState<readonly string[]>(readStoredBookmarks);
   const [notes, setNotes] = useState(readStoredNotes);
   // id of the evidence item shown in the detail view, null = none open
   const [openId, setOpenId] = useState<string | null>(null);
-
-  function toggleBookmark(evidenceId: string) {
-    const nextBookmarks = toggleId(bookmarks, evidenceId);
-    setBookmarks(nextBookmarks);
-    writeStoredBookmarks(nextBookmarks);
-  }
 
   function saveNote(evidenceId: string, text: string) {
     const nextNotes = { ...notes, [evidenceId]: text };
@@ -66,7 +60,7 @@ export function EvidencePage({ data }: EvidencePageProps) {
               key={ev.id}
               evidence={ev}
               isBookmarked={bookmarks.includes(ev.id)}
-              onToggleBookmark={() => toggleBookmark(ev.id)}
+              onToggleBookmark={() => onToggleBookmark(ev.id)}
               onOpen={() => setOpenId(ev.id)}
             />
           ))

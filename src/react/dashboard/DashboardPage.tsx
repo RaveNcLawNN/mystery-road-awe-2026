@@ -8,7 +8,7 @@ import { RecentTimelineList } from "./RecentTimelineList.tsx";
 
 interface DashboardPageProps {
   data: CaseData;
-  bookmarks: string[];
+  bookmarks: readonly string[];
 }
 
 export function DashboardPage({ data, bookmarks }: DashboardPageProps) {
