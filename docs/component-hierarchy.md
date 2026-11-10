@@ -3,7 +3,7 @@
 The planned component tree for the **whole** app. Only the shell (Exercise 3, Demo 9) and the Dashboard (Demo 10) are
 built in this exercise; the other pages follow in Exercises 4 and 5.
 
-Derived from the current vanilla views in `src/views/`: every block of markup that a view builds as an HTML string
+Derived from the vanilla views (now `src/vanilla/views/`): every block of markup that a view builds as an HTML string
 became a candidate component.
 
 ## Diagram

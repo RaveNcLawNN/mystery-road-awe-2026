@@ -2,16 +2,23 @@
 
 ## Two pages: the React app and the previous vanilla app
 
-| Page           | Entry point          | Code                                                                                                         |
-| -------------- | -------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `index.html`   | `src/react/main.tsx` | **the app** (React, all five views): everything in `src/react/`                                              |
-| `vanilla.html` | `src/main.ts`        | the previous vanilla TypeScript app, kept for comparison: `src/views/`, `src/router.ts`, `src/state.ts`, ... |
+| Page           | Entry point           | Code                                                                                                            |
+| -------------- | --------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `index.html`   | `src/react/main.tsx`  | **the app** (React, all five views): everything in `src/react/`                                                 |
+| `vanilla.html` | `src/vanilla/main.ts` | the previous vanilla TypeScript app, kept for comparison: everything in `src/vanilla/` (legacy, see its README) |
 
-Modules that hold no UI and no app state are used by both: `src/types.ts` (domain types), `src/validate.ts` (checking
-the JSON files), `src/utils/fetchJson.ts`, `src/utils/format.ts`, `src/storage.ts` (`read…`/`write…` helpers for bookmarks, notes and the hypothesis draft). The React
-code never imports a vanilla view or `src/state.ts` itself; `storage.ts` still imports `state.ts` for its vanilla
-functions, so that module ends up in the React bundle unused. Navigation in React is done by React Router, not by
-`src/navigation.ts`.
+```
+src/
+├── react/          the app (index.html)
+├── vanilla/        the previous vanilla app (vanilla.html) – legacy, nothing in react/ imports it
+├── types.ts        ┐
+├── validate.ts     │ shared by both: no UI, no app state
+├── storage.ts      │ (domain types, JSON validation, localStorage read/write helpers,
+└── utils/          ┘  fetchJson.ts, format.ts)
+```
+
+Checked by following the imports from each entry point: `src/react/main.tsx` reaches only `src/react/` and the five
+shared modules; `src/vanilla/main.ts` reaches only `src/vanilla/` and the same five.
 
 ## Folder structure of the React version: by feature
 

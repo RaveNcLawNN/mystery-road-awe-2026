@@ -49,9 +49,11 @@ project root no longer works either, because the runtime files live in `public/`
 ### Project layout
 
 - `index.html`: the app, loads `src/react/main.tsx` (React; code in `src/react/`, see `docs/ARCHITECTURE.md`)
-- `vanilla.html`: the previous vanilla version, loads `src/main.ts`, kept for comparison
-- `src/`: application code, TypeScript ES modules (`types.ts`: the data model, `validate.ts`:
-  runtime checks of the JSON files, `views/`: one module per view)
+- `vanilla.html`: the previous vanilla version, loads `src/vanilla/main.ts`, kept for comparison only
+- `src/react/`: the React app
+- `src/vanilla/`: the previous vanilla app (legacy, not used by the React app)
+- `src/types.ts`, `src/validate.ts`, `src/storage.ts`, `src/utils/`: shared by both (data model, runtime checks of
+  the JSON files, localStorage helpers, formatting)
 - `tsconfig.json`: TypeScript settings (type-checking only, Vite does the compiling)
 - `styles.css`, `assets/logo/`: processed by Vite
 - `public/data/*.json`, `public/assets/people/*.png`: copied as-is and served from the site root,
