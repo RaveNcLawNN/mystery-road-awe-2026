@@ -35,6 +35,9 @@ export function PersonDetailPage({ data }: PersonDetailPageProps) {
       />
       <h3>Background</h3>
       <p>{person.background}</p>
+      <p>
+        <Link to={"/timeline?person=" + person.id}>Timeline events involving {person.name}</Link>
+      </p>
     </section>
   );
 }
