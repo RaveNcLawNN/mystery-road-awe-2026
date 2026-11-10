@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { Header } from "./Header.tsx";
+// importing the file lets Vite include it in the build and return its final URL
+import logoUrl from "../../../assets/logo/logo.svg";
 import { NavBar } from "./NavBar.tsx";
 
 interface AppLayoutProps {
@@ -12,9 +13,18 @@ interface AppLayoutProps {
 export function AppLayout({ children }: AppLayoutProps) {
   return (
     <>
-      <Header>
-        <NavBar />
-      </Header>
+      <header className="app-header">
+        <div className="header-inner">
+          <div className="brand">
+            <img src={logoUrl} alt="Project ReMotion logo" className="brand-logo" />
+            <div>
+              <h1>Project ReMotion</h1>
+              <p className="subtitle">Investigate the failure of an AI-assisted rehabilitation robot.</p>
+            </div>
+          </div>
+          <NavBar />
+        </div>
+      </header>
       <main className="app-main">{children}</main>
       <footer className="app-footer">
         <p>
