@@ -8,7 +8,7 @@ export default defineConfig([
   globalIgnores(["dist/", "resources/"]),
   {
     // application code: ES modules running in the browser
-    files: ["src/**/*.{js,ts}"],
+    files: ["src/**/*.{js,ts,tsx}"],
     extends: [js.configs.recommended],
     languageOptions: {
       ecmaVersion: "latest",
@@ -29,7 +29,7 @@ export default defineConfig([
     // tsconfig.json), e.g. no-unsafe-* for any-typed values from library
     // APIs such as JSON.parse, and no-floating-promises. no-explicit-any is
     // included. Type errors themselves are reported by tsc, not by ESLint.
-    files: ["src/**/*.ts"],
+    files: ["src/**/*.{ts,tsx}"],
     extends: [tseslint.configs.recommendedTypeChecked],
     languageOptions: {
       parserOptions: {

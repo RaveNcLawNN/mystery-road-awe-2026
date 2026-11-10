@@ -1,8 +1,12 @@
 import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 import checker from "vite-plugin-checker";
 
 export default defineConfig({
   plugins: [
+    // Compiles JSX in .tsx files to react/jsx-runtime calls and enables
+    // Fast Refresh (component edits keep their state in the dev server).
+    react(),
     // Vite only strips types and never reports type errors. The checker runs
     // tsc in watch mode next to the dev server and shows errors in the
     // terminal and as a browser overlay. Builds are checked by the "build"
