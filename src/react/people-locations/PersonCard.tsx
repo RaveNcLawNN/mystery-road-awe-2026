@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import type { Person } from "../../types.ts";
-import { BulletList } from "../components/BulletList.tsx";
+import { BulletList } from "./BulletList.tsx";
 
 interface PersonCardProps {
   person: Person;

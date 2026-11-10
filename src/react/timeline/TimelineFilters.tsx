@@ -1,5 +1,5 @@
 import type { CaseLocation, Person, TimelineEvent } from "../../types.ts";
-import { FilterSelect } from "../components/FilterSelect.tsx";
+import { FilterSelect } from "./FilterSelect.tsx";
 
 interface TimelineFiltersProps {
   people: Person[];
