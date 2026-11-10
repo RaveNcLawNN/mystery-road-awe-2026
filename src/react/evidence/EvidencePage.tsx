@@ -5,13 +5,14 @@ import { toggleId } from "../data/toggleId.ts";
 import { EvidenceToolbar } from "./EvidenceToolbar.tsx";
 import { EvidenceCard } from "./EvidenceCard.tsx";
 import { EvidenceDetail } from "./EvidenceDetail.tsx";
+import { filterAndSortEvidence, NO_FILTERS, type EvidenceFilters } from "./evidenceFilters.ts";
 
 interface EvidencePageProps {
   data: CaseData;
 }
 
 export function EvidencePage({ data }: EvidencePageProps) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [filters, setFilters] = useState<EvidenceFilters>(NO_FILTERS);
   // readonly: push/splice on the state array are a type error, so it can only be replaced
   const [bookmarks, setBookmarks] = useState<readonly string[]>(readStoredBookmarks);
   const [notes, setNotes] = useState(readStoredNotes);
@@ -30,19 +31,19 @@ export function EvidencePage({ data }: EvidencePageProps) {
     writeStoredNotes(nextNotes);
   }
 
-  // matches the vanilla search: title, summary and tags, ignoring case
-  const term = searchTerm.trim().toLowerCase();
-  const visibleEvidence = data.evidence
-    .filter((ev) => (ev.title + " " + ev.summary + " " + ev.tags.join(" ")).toLowerCase().includes(term))
-    // newest first; filter() returned a new array, so sorting it leaves data.evidence alone
-    .sort((a, b) => Date.parse(b.timestamp) - Date.parse(a.timestamp));
+  // derived, not stored: recalculated from the full list and the filters on every render
+  const visibleEvidence = filterAndSortEvidence(data.evidence, filters);
 
   const openEvidence = data.evidence.find((ev) => ev.id === openId);
 
   return (
     <section>
       <h2>Evidence Catalogue</h2>
-      <EvidenceToolbar data={data} searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <EvidenceToolbar
+        data={data}
+        filters={filters}
+        onFiltersChange={(changes) => setFilters({ ...filters, ...changes })}
+      />
 
       {openEvidence && (
         <EvidenceDetail

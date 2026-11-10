@@ -8,19 +8,25 @@ interface FilterSelectProps {
   // screen-reader label (visually hidden, as in the vanilla toolbar)
   label: string;
   options: SelectOption[];
-  // the option selected when the select first appears (e.g. from the URL)
+  // Either controlled (value + onChange, the Evidence toolbar) or display
+  // only with an initial selection (defaultValue, the Timeline toolbar).
+  value?: string;
+  onChange?: (value: string) => void;
   defaultValue?: string;
 }
 
-// Display only for now: no onChange yet, the browser keeps the selection
-// itself (wiring it up is Exercise 5).
-export function FilterSelect({ id, label, options, defaultValue }: FilterSelectProps) {
+export function FilterSelect({ id, label, options, value, onChange, defaultValue }: FilterSelectProps) {
   return (
     <>
       <label htmlFor={id} className="visually-hidden">
         {label}
       </label>
-      <select id={id} defaultValue={defaultValue}>
+      <select
+        id={id}
+        value={value}
+        defaultValue={defaultValue}
+        onChange={onChange && ((event) => onChange(event.target.value))}
+      >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}

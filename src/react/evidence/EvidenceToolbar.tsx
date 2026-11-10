@@ -1,15 +1,16 @@
 import type { CaseData } from "../data/loadCaseData.ts";
 import { FilterSelect } from "../components/FilterSelect.tsx";
+import type { EvidenceFilters } from "./evidenceFilters.ts";
 
 interface EvidenceToolbarProps {
   data: CaseData;
-  searchTerm: string;
-  onSearchChange: (term: string) => void;
+  filters: EvidenceFilters;
+  // gets only the fields that changed, e.g. { status: "reviewed" }
+  onFiltersChange: (changes: Partial<EvidenceFilters>) => void;
 }
 
-// Same controls as the vanilla toolbar. The search box is controlled; the dropdowns
-// are display only until they get their state (Exercise 5, Demo 7).
-export function EvidenceToolbar({ data, searchTerm, onSearchChange }: EvidenceToolbarProps) {
+// Same controls as the vanilla toolbar, all controlled by the filters state.
+export function EvidenceToolbar({ data, filters, onFiltersChange }: EvidenceToolbarProps) {
   // every type once, lowercased like the vanilla filter ("Test-Report" = "test-report")
   const types = [...new Set(data.evidence.map((ev) => ev.type.toLowerCase()))];
 
@@ -25,16 +26,20 @@ export function EvidenceToolbar({ data, searchTerm, onSearchChange }: EvidenceTo
           placeholder="Search evidence by title, summary, or tag…"
           autoComplete="off"
           // controlled: the box always shows the state, and every keystroke goes through the state
-          value={searchTerm}
-          onChange={(event) => onSearchChange(event.target.value)}
+          value={filters.search}
+          onChange={(event) => onFiltersChange({ search: event.target.value })}
         />
         <FilterSelect
           id="filterType"
+          value={filters.type}
+          onChange={(type) => onFiltersChange({ type })}
           label="Filter by type"
           options={[{ value: "", label: "All types" }, ...types.map((type) => ({ value: type, label: type }))]}
         />
         <FilterSelect
           id="filterPerson"
+          value={filters.personId}
+          onChange={(personId) => onFiltersChange({ personId })}
           label="Filter by person"
           options={[
             { value: "", label: "All people" },
@@ -43,6 +48,8 @@ export function EvidenceToolbar({ data, searchTerm, onSearchChange }: EvidenceTo
         />
         <FilterSelect
           id="filterLocation"
+          value={filters.locationId}
+          onChange={(locationId) => onFiltersChange({ locationId })}
           label="Filter by location"
           options={[
             { value: "", label: "All locations" },
@@ -53,6 +60,8 @@ export function EvidenceToolbar({ data, searchTerm, onSearchChange }: EvidenceTo
       <div className="toolbar-row">
         <FilterSelect
           id="filterStatus"
+          value={filters.status}
+          onChange={(status) => onFiltersChange({ status })}
           label="Filter by status"
           options={[
             { value: "", label: "All statuses" },
@@ -63,6 +72,8 @@ export function EvidenceToolbar({ data, searchTerm, onSearchChange }: EvidenceTo
         />
         <FilterSelect
           id="filterRelevance"
+          value={filters.relevance}
+          onChange={(relevance) => onFiltersChange({ relevance })}
           label="Filter by relevance"
           options={[
             { value: "", label: "All relevance" },
@@ -73,6 +84,8 @@ export function EvidenceToolbar({ data, searchTerm, onSearchChange }: EvidenceTo
         />
         <FilterSelect
           id="sortEvidence"
+          value={filters.sort}
+          onChange={(sort) => onFiltersChange({ sort })}
           label="Sort evidence"
           options={[
             { value: "date-desc", label: "Newest first" },
