@@ -18,15 +18,14 @@ functions, so that module ends up in the React bundle unused. Navigation in Reac
 ```
 src/react/
 ├── main.tsx               entry point: mounts <App /> into #root
-├── app/                   the shell: App (data, loading/error, routes), AppLayout, Header, NavBar,
+├── app/                   the shell: App (data, loading/error, routes), AppLayout, NavBar,
 │                          NotFoundPage, PlaceholderPage
 ├── data/                  loadCaseData.ts: loads and validates the case files, the CaseData type
-├── components/            shared UI building blocks: Badge, BulletList, FilterSelect, MiniListItem, Panel
-├── dashboard/             DashboardPage + CaseSummary, HowToCard, StatCard, ReviewProgress,
+├── components/            UI pieces used by more than one feature: Badge
+├── dashboard/             DashboardPage + CaseSummary, HowToCard, StatCard, ReviewProgress, Panel,
 │                          RecentEvidenceList, RecentTimelineList
-├── people-locations/      PeoplePage, PersonDetailPage, PersonCard, LocationCard
-├── timeline/              TimelinePage, TimelineEventCard, TimelineFilters
-└── key-demo/              KeyDemoPage (throwaway example for key={index}, Exercise 4 Demo 4)
+├── people-locations/      PeoplePage, PersonDetailPage, PersonCard, LocationCard, BulletList
+└── timeline/              TimelinePage, TimelineEventCard, TimelineFilters, FilterSelect
 ```
 
 One folder per feature (= one view of the app), plus `app/` for what surrounds all views, `components/` for UI pieces
@@ -63,7 +62,6 @@ Examples:
 | `#/timeline`              | Timeline                                                                    |
 | `#/evidence`              | placeholder (Exercise 5)                                                    |
 | `#/workspace`             | placeholder (Exercise 5)                                                    |
-| `#/key-demo`              | throwaway key example (Exercise 4 Demo 4), `/reversed` variant              |
 | anything else             | "Page not found"                                                            |
 
 Why `HashRouter` and not `BrowserRouter`: with real paths (`/team/people`) the server must answer every unknown path
