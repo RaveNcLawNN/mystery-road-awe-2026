@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { writeStoredHypothesis, type HypothesisDraft } from "../../storage.ts";
 import { formatDate } from "../../utils/format.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
@@ -11,6 +12,9 @@ interface HypothesisFormProps {
 }
 
 export function HypothesisForm({ data, draft, onDraftChange }: HypothesisFormProps) {
+  // only for the message below; true after a save that localStorage refused
+  const [saveFailed, setSaveFailed] = useState(false);
+
   // copies the draft and overwrites the changed fields (never changes `draft` itself)
   function update(changes: Partial<HypothesisDraft>) {
     onDraftChange({ ...draft, ...changes });
@@ -22,9 +26,10 @@ export function HypothesisForm({ data, draft, onDraftChange }: HypothesisFormPro
       writeStoredHypothesis(savedDraft);
     } catch (err) {
       console.error("Could not save hypothesis draft", err);
-      alert("Your hypothesis could not be saved to local storage.");
+      setSaveFailed(true);
       return;
     }
+    setSaveFailed(false);
     onDraftChange(savedDraft);
   }
 
@@ -125,6 +130,7 @@ export function HypothesisForm({ data, draft, onDraftChange }: HypothesisFormPro
           </button>
           {draft.savedAt !== "" && <span className="saved-msg">Last saved: {formatDate(draft.savedAt)}</span>}
         </div>
+        {saveFailed && <p className="warning-banner">Your hypothesis could not be saved to local storage.</p>}
       </form>
     </div>
   );
