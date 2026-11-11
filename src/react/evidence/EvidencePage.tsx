@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import type { Evidence } from "../../types.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
 import { EvidenceToolbar } from "./EvidenceToolbar.tsx";
@@ -20,6 +20,23 @@ export function EvidencePage({ data, onUpdateEvidence, notes, onSaveNote }: Evid
   const [filters, dispatch] = useReducer(filtersReducer, NO_FILTERS);
   // id of the evidence item shown in the detail view, null = none open
   const [openId, setOpenId] = useState<string | null>(null);
+
+  // useEffect examples for demo
+
+  // empty array: run only at mount (first render)
+  useEffect(() => {
+    console.log("[]: onMount");
+  }, []);
+
+  // array with a value: run at mount and after every render in which that value changed
+  useEffect(() => {
+    console.log("[filters.search]: onMount and OnChange");
+  }, [filters.search]);
+
+  // no array: run after every render
+  useEffect(() => {
+    console.log("onRender");
+  });
 
   // derived, not stored: recalculated from the full list and the filters on every render
   const visibleEvidence = filterAndSortEvidence(data.evidence, filters);
