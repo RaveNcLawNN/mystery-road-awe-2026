@@ -18,7 +18,7 @@ export function EvidenceDetail({ evidence, data, note, onSaveNote, onReviewChang
   // saved only on "Save note"
   const [noteDraft, setNoteDraft] = useState(note);
 
-  // Escape closes the detail. THROWAWAY logs and no cleanup (Exercise 6 Demo 3)
+  // Escape closes the detail. THROWAWAY logs (Exercise 6 Demo 3)
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -28,6 +28,11 @@ export function EvidenceDetail({ evidence, data, note, onSaveNote, onReviewChang
     }
     console.log(`effect:  add listener (${evidence.id})`);
     window.addEventListener("keydown", handleKeyDown);
+    // cleanup: React calls it before the effect runs again and when the detail unmounts
+    return () => {
+      console.log(`cleanup: remove listener (${evidence.id})`);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [evidence.id, onClose]);
 
   const personNames = evidence.personIds.map((id) => data.people.find((p) => p.id === id)?.name ?? id);
