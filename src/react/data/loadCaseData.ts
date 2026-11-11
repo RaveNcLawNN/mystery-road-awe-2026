@@ -12,14 +12,18 @@ export interface CaseData {
   timeline: TimelineEvent[];
 }
 
+// dev: from the backend (npm run server), e.g. "/api/evidence";
+// the GitHub Pages build has no backend, so the static file, e.g. "data/evidence.json"
+function dataUrl(name: string): string {
+  return import.meta.env.DEV ? `/api/${name}` : `data/${name}.json`;
+}
+
 // people first: evidence and timeline resolve their person references against them
 export async function loadCaseData(): Promise<CaseData> {
-  const caseFile = parseCaseFile(await fetchJson("data/case.json"));
-  const people = parsePeople(await fetchJson("data/people.json"));
-  const locations = parseLocations(await fetchJson("data/locations.json"));
-  // dev: from the backend (npm run server); the GitHub Pages build has no backend, so the static file
-  const evidenceUrl = import.meta.env.DEV ? "/api/evidence" : "data/evidence.json";
-  const evidence = parseEvidence(await fetchJson(evidenceUrl), people);
-  const timeline = parseTimeline(await fetchJson("data/timeline.json"), people);
+  const caseFile = parseCaseFile(await fetchJson(dataUrl("case")));
+  const people = parsePeople(await fetchJson(dataUrl("people")));
+  const locations = parseLocations(await fetchJson(dataUrl("locations")));
+  const evidence = parseEvidence(await fetchJson(dataUrl("evidence")), people);
+  const timeline = parseTimeline(await fetchJson(dataUrl("timeline")), people);
   return { caseFile, evidence, people, locations, timeline };
 }
