@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Evidence } from "../../types.ts";
 import { formatDate } from "../../utils/format.ts";
 import type { CaseData } from "../data/loadCaseData.ts";
@@ -17,6 +17,18 @@ interface EvidenceDetailProps {
 export function EvidenceDetail({ evidence, data, note, onSaveNote, onReviewChange, onClose }: EvidenceDetailProps) {
   // saved only on "Save note"
   const [noteDraft, setNoteDraft] = useState(note);
+
+  // Escape closes the detail. THROWAWAY logs and no cleanup (Exercise 6 Demo 3)
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        console.log(`Escape: listener of ${evidence.id} runs`);
+        onClose();
+      }
+    }
+    console.log(`effect:  add listener (${evidence.id})`);
+    window.addEventListener("keydown", handleKeyDown);
+  }, [evidence.id, onClose]);
 
   const personNames = evidence.personIds.map((id) => data.people.find((p) => p.id === id)?.name ?? id);
   const locationNames = evidence.locationIds.map((id) => {
