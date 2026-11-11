@@ -56,6 +56,10 @@ development**: it is not built, not deployed, and the GitHub Pages deploy still 
 npm run server   # http://localhost:3000, in a second terminal next to npm run dev
 ```
 
+With `npm run dev` the app loads all case data from this backend (the Vite dev server passes `/api/...` on
+to port 3000), so **start both**; without the backend the app shows its "could not be loaded" message.
+`npm run build` / `npm run preview` and GitHub Pages use the static files instead.
+
 | Endpoint             | Returns the same data as     |
 | -------------------- | ---------------------------- |
 | `GET /api/case`      | `public/data/case.json`      |
