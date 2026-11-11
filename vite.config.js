@@ -27,5 +27,10 @@ export default defineConfig({
   server: {
     port: 5173,
     strictPort: true,
+    // /api/... is passed on to the dev backend (npm run server): for the browser it is
+    // the same origin as the page, so no CORS is needed
+    proxy: {
+      "/api": "http://localhost:3000",
+    },
   },
 });

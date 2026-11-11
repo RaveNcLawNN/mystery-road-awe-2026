@@ -17,7 +17,9 @@ export async function loadCaseData(): Promise<CaseData> {
   const caseFile = parseCaseFile(await fetchJson("data/case.json"));
   const people = parsePeople(await fetchJson("data/people.json"));
   const locations = parseLocations(await fetchJson("data/locations.json"));
-  const evidence = parseEvidence(await fetchJson("data/evidence.json"), people);
+  // dev: from the backend (npm run server); the GitHub Pages build has no backend, so the static file
+  const evidenceUrl = import.meta.env.DEV ? "/api/evidence" : "data/evidence.json";
+  const evidence = parseEvidence(await fetchJson(evidenceUrl), people);
   const timeline = parseTimeline(await fetchJson("data/timeline.json"), people);
   return { caseFile, evidence, people, locations, timeline };
 }
