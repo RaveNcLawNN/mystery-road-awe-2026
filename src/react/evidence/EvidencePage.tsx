@@ -24,20 +24,17 @@ export function EvidencePage({ data, onUpdateEvidence, notes, onSaveNote }: Evid
   // useEffect examples for demo
 
   // empty array: run only at mount (first render)
-  useEffect(() => {
-    console.log("[]: onMount");
-  }, []);
+  useEffect(() => { console.log("[]: onMount"); }, []);
 
   // array with a value: run at mount and after every render in which that value changed
-  useEffect(() => {
-    console.log("[filters.search]: onMount and OnChange");
-  }, [filters.search]);
+  useEffect(() => { console.log("[filters.search]: onMount and OnChange"); }, [filters.search]);
 
   // no array: run after every render
-  useEffect(() => {
-    console.log("onRender");
-  });
+  useEffect(() => { console.log("onRender"); });
 
+
+
+  
   // derived, not stored: recalculated from the full list and the filters on every render
   const visibleEvidence = filterAndSortEvidence(data.evidence, filters);
 
