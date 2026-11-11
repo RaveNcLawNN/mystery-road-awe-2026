@@ -46,6 +46,31 @@ Opening `index.html` directly from the filesystem (`file://`) does not work: the
 data with `fetch()` and is made of ES modules, and both need HTTP. A plain static file server on the
 project root no longer works either, because the runtime files live in `public/` (see below).
 
+### Dev backend (development only)
+
+A small Express server in `server/server.js` serves the case files read-only. It is **only for local
+development**: it is not built, not deployed, and the GitHub Pages deploy still uses the static files in
+`public/data/`.
+
+```bash
+npm run server   # http://localhost:3000, in a second terminal next to npm run dev
+```
+
+| Endpoint             | Returns the same data as     |
+| -------------------- | ---------------------------- |
+| `GET /api/case`      | `public/data/case.json`      |
+| `GET /api/evidence`  | `public/data/evidence.json`  |
+| `GET /api/people`    | `public/data/people.json`    |
+| `GET /api/locations` | `public/data/locations.json` |
+| `GET /api/timeline`  | `public/data/timeline.json`  |
+
+To test slow or failing requests, add to any endpoint:
+
+- `?delay=2000`: answers after 2 seconds
+- `?fail=1`: answers with HTTP 500 instead of the data
+
+Example: `http://localhost:3000/api/evidence?delay=2000&fail=1`.
+
 ### Project layout
 
 - `index.html`: the app, loads `src/react/main.tsx` (React; code in `src/react/`, see `docs/ARCHITECTURE.md`)
@@ -54,6 +79,7 @@ project root no longer works either, because the runtime files live in `public/`
 - `src/vanilla/`: the previous vanilla app (legacy, not used by the React app)
 - `src/types.ts`, `src/validate.ts`, `src/storage.ts`, `src/utils/`: shared by both (data model, runtime checks of
   the JSON files, localStorage helpers, formatting)
+- `server/`: the dev-only backend (see above)
 - `tsconfig.json`: TypeScript settings (type-checking only, Vite does the compiling)
 - `styles.css`, `assets/logo/`: processed by Vite
 - `public/data/*.json`, `public/assets/people/*.png`: copied as-is and served from the site root,
