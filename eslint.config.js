@@ -49,6 +49,14 @@ export default defineConfig([
       globals: globals.node,
     },
   },
+  {
+    // the dev backend runs in Node; its terminal output is its only UI
+    files: ["server/**/*.js"],
+    extends: [js.configs.recommended],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
   // last: turns off rules that conflict with Prettier
   eslintConfigPrettier,
 ]);
