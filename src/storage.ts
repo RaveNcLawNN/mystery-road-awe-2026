@@ -1,9 +1,4 @@
-// ---------------------------------------------------------------------
-// LOCAL STORAGE HELPERS (bookmarks, notes, hypothesis draft)
-// ---------------------------------------------------------------------
-// Plain read…/write… functions, used by the React app and the vanilla app.
-// The vanilla app's wrappers around its shared state are in
-// vanilla/vanillaStorage.ts.
+// localStorage helpers, used by the React and the vanilla app.
 
 const STORAGE_KEY_BOOKMARKS = "remotion_bookmarks";
 const STORAGE_KEY_NOTES = "remotion_notes";
@@ -13,7 +8,6 @@ const STORAGE_KEY_REVIEWS = "remotion_reviews";
 export function readStoredBookmarks(): string[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY_BOOKMARKS);
-    // JSON.parse returns any; unknown forces the checks below
     const parsed: unknown = raw ? JSON.parse(raw) : [];
     // valid JSON is not necessarily a list of evidence ids
     return Array.isArray(parsed) ? parsed.filter((id): id is string => typeof id === "string") : [];
@@ -51,8 +45,7 @@ export function writeStoredNotes(notes: Record<string, string>): void {
   localStorage.setItem(STORAGE_KEY_NOTES, JSON.stringify(notes));
 }
 
-// Review status / relevance changed in the app, per evidence id. Only the
-// changes are stored; evidence.json itself stays as it is.
+// status / relevance changes per evidence id; evidence.json stays unchanged
 export type StoredReviews = Record<string, { status?: string; relevance?: string }>;
 
 export function readStoredReviews(): StoredReviews {
@@ -81,8 +74,7 @@ export function writeStoredReviews(reviews: StoredReviews): void {
   localStorage.setItem(STORAGE_KEY_REVIEWS, JSON.stringify(reviews));
 }
 
-// The hypothesis form as saved in localStorage (all values as the form
-// controls hold them, i.e. strings).
+// the hypothesis form as saved in localStorage
 export interface HypothesisDraft {
   suspectId: string;
   nature: string;
@@ -104,11 +96,9 @@ export const EMPTY_HYPOTHESIS_DRAFT: HypothesisDraft = {
   savedAt: "",
 };
 
-// Valid JSON is not necessarily a valid draft: a field is only used if it
-// has the type the form writes, otherwise it gets the empty default.
+// a field with the wrong type gets the empty default
 function parseHypothesisDraft(json: unknown): HypothesisDraft | null {
   if (json === null || typeof json !== "object") return null;
-  // safe: an object whose property values are still unknown
   const fields = json as Record<string, unknown>;
   const text = (value: unknown): string => (typeof value === "string" ? value : "");
   const evidenceIds = fields.evidenceIds;

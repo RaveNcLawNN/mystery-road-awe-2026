@@ -26,10 +26,7 @@ export default defineConfig([
     },
   },
   {
-    // TypeScript modules: rules that use the type information (via
-    // tsconfig.json), e.g. no-unsafe-* for any-typed values from library
-    // APIs such as JSON.parse, and no-floating-promises. no-explicit-any is
-    // included. Type errors themselves are reported by tsc, not by ESLint.
+    // TypeScript: rules that use the type information (e.g. no-unsafe-*, no-floating-promises)
     files: ["src/**/*.{ts,tsx}"],
     extends: [tseslint.configs.recommendedTypeChecked],
     languageOptions: {
@@ -40,8 +37,7 @@ export default defineConfig([
     },
   },
   {
-    // React components: the rules of hooks (only call hooks at the top
-    // level of a component) and complete useEffect dependency lists
+    // React: rules of hooks and complete useEffect dependency lists
     files: ["src/**/*.tsx"],
     extends: [reactHooks.configs.flat.recommended],
   },
@@ -53,6 +49,6 @@ export default defineConfig([
       globals: globals.node,
     },
   },
-  // last: turns off every rule that would conflict with Prettier's formatting
+  // last: turns off rules that conflict with Prettier
   eslintConfigPrettier,
 ]);

@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router";
 
-// Rendered by the catch-all route (path="*") for every URL no other route matches.
+// shown for every URL no other route matches (path="*")
 export function NotFoundPage() {
   const { pathname } = useLocation();
 

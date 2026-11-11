@@ -6,16 +6,16 @@ import type { CaseData } from "../data/loadCaseData.ts";
 interface EvidenceDetailProps {
   evidence: Evidence;
   data: CaseData;
-  // the saved note for this item ("" if there is none)
+  // "" if there is none
   note: string;
   onSaveNote: (text: string) => void;
-  // the evidence belongs to App: the detail only reports what should change
+  // the evidence belongs to App, the detail only reports changes
   onReviewChange: (changes: Partial<Pick<Evidence, "status" | "relevance">>) => void;
   onClose: () => void;
 }
 
 export function EvidenceDetail({ evidence, data, note, onSaveNote, onReviewChange, onClose }: EvidenceDetailProps) {
-  // what is typed in the textarea; saved only when "Save note" is clicked
+  // saved only on "Save note"
   const [noteDraft, setNoteDraft] = useState(note);
 
   const personNames = evidence.personIds.map((id) => data.people.find((p) => p.id === id)?.name ?? id);
@@ -65,7 +65,7 @@ export function EvidenceDetail({ evidence, data, note, onSaveNote, onReviewChang
       </div>
       <div className="detail-field">
         <strong>Review status</strong>
-        {/* the data has "Reviewed" and "reviewed": compared in lower case, like the vanilla select */}
+        {/* the data has "Reviewed" and "reviewed", so compared in lower case */}
         <select
           value={evidence.status.toLowerCase()}
           onChange={(event) => onReviewChange({ status: event.target.value })}

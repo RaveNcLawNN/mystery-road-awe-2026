@@ -1,6 +1,3 @@
-// ---------------------------------------------------------------------
-// DOMAIN TYPES
-// ---------------------------------------------------------------------
 // The shapes of public/data/*.json as the app uses them.
 
 // case.json
@@ -16,10 +13,7 @@ export interface CaseFile {
   notes: string;
 }
 
-// A reference to a person by id ("nova-byte"), never by display name
-// ("Nova Byte"). Both are strings, so a plain string type could not tell
-// them apart; the brand makes PersonId a distinct type that only
-// validate.ts creates, after checking it against people.json.
+// A person id ("nova-byte"), never a display name. Only validate.ts creates one.
 export type PersonId = string & { readonly __brand: "PersonId" };
 
 // people.json
@@ -34,7 +28,7 @@ export interface Person {
   avatar: string; // URL relative to the site root
 }
 
-// locations.json (not "Location": that name is taken by the DOM's window.location type)
+// locations.json ("Location" is already a DOM type)
 export interface CaseLocation {
   id: string; // "L01"
   name: string;
@@ -50,13 +44,11 @@ export interface Evidence {
   timestamp: string; // ISO date-time
   summary: string;
   content: string;
-  // evidence.json mixes ids and display names here (E04: "Nova Byte");
-  // names are resolved to ids when the file is loaded
+  // names in the file (E04) are turned into ids when loading
   personIds: PersonId[];
   locationIds: string[];
   tags: string[];
-  // free text in the file ("unreviewed", "Reviewed"); the detail view writes
-  // "unreviewed" | "reviewed" | "flagged"
+  // free text in the file ("unreviewed", "Reviewed")
   status: string;
   relevance: string;
   // not in the file: set from the stored bookmarks after loading

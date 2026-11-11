@@ -1,15 +1,14 @@
 import type { ReactNode } from "react";
-// importing the file lets Vite include it in the build and return its final URL
+// Vite bundles the file and returns its final URL
 import logoUrl from "../../../assets/logo/logo.svg";
 import { NavBar } from "./NavBar.tsx";
 
 interface AppLayoutProps {
-  // the current page (or the loading / error message)
+  // the current page, or the loading / error message
   children: ReactNode;
 }
 
-// The frame around every page: header with navigation, main area, footer.
-// It only arranges what it is given; it does not know about data or routing.
+// The frame around every page; knows nothing about data or routing.
 export function AppLayout({ children }: AppLayoutProps) {
   return (
     <>

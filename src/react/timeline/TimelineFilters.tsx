@@ -5,12 +5,11 @@ interface TimelineFiltersProps {
   people: Person[];
   locations: CaseLocation[];
   events: TimelineEvent[];
-  // person id from the URL (?person=…), shown as the initial selection
+  // from ?person=…, the initial selection
   selectedPersonId: string;
 }
 
-// The toolbar with the same four dropdowns as the vanilla Timeline. They
-// are visually complete but do not filter yet (Exercise 5).
+// the dropdowns do not filter yet
 export function TimelineFilters({ people, locations, events, selectedPersonId }: TimelineFiltersProps) {
   // every event type once, in order of first appearance
   const eventTypes = [...new Set(events.map((evt) => evt.type))];

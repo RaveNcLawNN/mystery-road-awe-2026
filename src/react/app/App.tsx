@@ -22,22 +22,18 @@ import { WorkspacePage } from "../workspace/WorkspacePage.tsx";
 import { NotFoundPage } from "./NotFoundPage.tsx";
 
 export function App() {
-  // The case data as loaded from the JSON files, once; never changed afterwards.
-  // null = not loaded yet.
+  // loaded once from the JSON files; null = not loaded yet
   const [data, setData] = useState<CaseData | null>(null);
-  // Review status / relevance changed by the user, per evidence id, saved in
-  // localStorage. The single source for these changes (see caseData below).
+  // status / relevance changes by the user, saved in localStorage
   const [reviews, setReviews] = useState(readStoredReviews);
   const [loadFailed, setLoadFailed] = useState(false);
-  // evidence id -> note text; the single source for the Evidence detail and the Workspace list
+  // evidence id -> note text
   const [notes, setNotes] = useState(readStoredNotes);
 
-  // The hypothesis form's current (possibly unsaved) input. Kept here, not in
-  // the form, so it survives leaving and re-entering the Workspace.
+  // kept here, not in the form, so unsaved input survives leaving the Workspace
   const [hypothesisDraft, setHypothesisDraft] = useState(() => readStoredHypothesis() ?? EMPTY_HYPOTHESIS_DRAFT);
 
-  // The name of the page the URL points to, e.g. "/team/people/P03" -> "People & Locations".
-  // Derived from the URL on every render.
+  // e.g. "/team/people/P03" -> "People & Locations"
   const { pathname } = useLocation();
   const currentPage = NAV_ITEMS.find((item) => pathname === item.to || pathname.startsWith(item.to + "/"));
   const pageName = currentPage?.label ?? "Page not found";
@@ -47,22 +43,20 @@ export function App() {
     setNotes(nextNotes);
     writeStoredNotes(nextNotes);
   }
-  // Records a status/relevance change for one item (new objects, never
-  // `ev.status = …`) and saves it, so it survives a reload.
+
+  // saves a status / relevance change, so it survives a reload
   function updateEvidence(evidenceId: string, changes: Partial<Pick<Evidence, "status" | "relevance">>) {
     const nextReviews = { ...reviews, [evidenceId]: { ...reviews[evidenceId], ...changes } };
     setReviews(nextReviews);
     writeStoredReviews(nextReviews);
   }
 
-  // The browser tab title is outside of what React renders (#root), so it is
-  // set in an effect: after the first render, and again after every render
-  // in which pageName is a different string than in the render before.
+  // outside of what React renders, so set in an effect; runs again when pageName changes
   useEffect(() => {
     document.title = `${pageName} – Project ReMotion`;
   }, [pageName]);
 
-  // Runs once after the first render ([] = no dependencies).
+  // [] = runs only once, after the first render
   useEffect(() => {
     async function load() {
       try {
@@ -86,15 +80,13 @@ export function App() {
       </div>
     );
   } else {
-    // What every page sees: the loaded evidence with the user's review changes
-    // applied. Derived on every render, never stored.
+    // the loaded evidence with the user's review changes applied (derived, not stored)
     const caseData: CaseData = {
       ...data,
       evidence: data.evidence.map((ev) => ({ ...ev, ...reviews[ev.id] })),
     };
 
-    // React Router renders the element of the first route whose path
-    // matches the URL; "*" matches everything that is left.
+    // the first matching route is shown; "*" catches the rest
     content = (
       <Routes>
         <Route path="/" element={<DashboardPage data={caseData} />} />
@@ -128,7 +120,6 @@ export function App() {
     );
   }
 
-  // the bookmarks are provided to every page through context (see BookmarksContext.tsx)
   return (
     <BookmarksProvider>
       <AppLayout>{content}</AppLayout>

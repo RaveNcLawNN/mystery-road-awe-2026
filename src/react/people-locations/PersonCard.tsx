@@ -4,7 +4,7 @@ import { BulletList } from "./BulletList.tsx";
 
 interface PersonCardProps {
   person: Person;
-  // how many evidence items mention this person (calculated by the page)
+  // evidence items that mention this person
   evidenceCount: number;
 }
 

@@ -5,13 +5,12 @@ import type { EvidenceFilters, FilterAction } from "./evidenceFilters.ts";
 interface EvidenceToolbarProps {
   data: CaseData;
   filters: EvidenceFilters;
-  // sends an action to the filters reducer in EvidencePage
+  // sends an action to the filters reducer
   dispatch: (action: FilterAction) => void;
 }
 
-// Same controls as the vanilla toolbar, all controlled by the filters state.
 export function EvidenceToolbar({ data, filters, dispatch }: EvidenceToolbarProps) {
-  // every type once, lowercased like the vanilla filter ("Test-Report" = "test-report")
+  // every type once, in lower case
   const types = [...new Set(data.evidence.map((ev) => ev.type.toLowerCase()))];
 
   return (
@@ -25,7 +24,7 @@ export function EvidenceToolbar({ data, filters, dispatch }: EvidenceToolbarProp
           id="evidenceSearch"
           placeholder="Search evidence by title, summary, or tag…"
           autoComplete="off"
-          // controlled: the box always shows the state, and every keystroke goes through the state
+          // controlled: the box always shows the state
           value={filters.search}
           onChange={(event) => dispatch({ type: "SET_FILTER", field: "search", value: event.target.value })}
         />

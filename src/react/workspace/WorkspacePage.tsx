@@ -5,7 +5,7 @@ import { HypothesisForm } from "./HypothesisForm.tsx";
 
 interface WorkspacePageProps {
   data: CaseData;
-  // owned by App (saved from the Evidence detail)
+  // owned by App
   notes: Record<string, string>;
   hypothesisDraft: HypothesisDraft;
   onHypothesisDraftChange: (draft: HypothesisDraft) => void;
@@ -13,7 +13,7 @@ interface WorkspacePageProps {
 
 export function WorkspacePage({ data, notes, hypothesisDraft, onHypothesisDraftChange }: WorkspacePageProps) {
   const { bookmarks } = useBookmarks();
-  // derived from the bookmarks in context, not stored here
+  // derived, not stored
   const bookmarkedEvidence = data.evidence.filter((ev) => bookmarks.includes(ev.id));
   const notedEvidence = data.evidence.filter((ev) => notes[ev.id]);
 

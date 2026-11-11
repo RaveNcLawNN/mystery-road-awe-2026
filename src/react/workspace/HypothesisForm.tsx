@@ -5,17 +5,16 @@ import type { CaseData } from "../data/loadCaseData.ts";
 
 interface HypothesisFormProps {
   data: CaseData;
-  // The draft is owned by App: the form unmounts when the Workspace is left,
-  // App does not, so unsaved edits survive switching pages.
+  // owned by App, so unsaved edits survive switching pages
   draft: HypothesisDraft;
   onDraftChange: (draft: HypothesisDraft) => void;
 }
 
 export function HypothesisForm({ data, draft, onDraftChange }: HypothesisFormProps) {
-  // only for the message below; true after a save that localStorage refused
+  // true after localStorage refused a save
   const [saveFailed, setSaveFailed] = useState(false);
 
-  // copies the draft and overwrites the changed fields (never changes `draft` itself)
+  // a new object with the changed fields, `draft` itself is not changed
   function update(changes: Partial<HypothesisDraft>) {
     onDraftChange({ ...draft, ...changes });
   }
@@ -38,7 +37,7 @@ export function HypothesisForm({ data, draft, onDraftChange }: HypothesisFormPro
       <h3>Hypothesis Draft</h3>
       <form
         onSubmit={(event) => {
-          // without this the browser would send the form and reload the page
+          // otherwise the browser reloads the page
           event.preventDefault();
           save();
         }}

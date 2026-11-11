@@ -5,11 +5,10 @@ interface SelectOption {
 
 interface FilterSelectProps {
   id: string;
-  // screen-reader label (visually hidden, as in the vanilla toolbar)
+  // screen-reader label (visually hidden)
   label: string;
   options: SelectOption[];
-  // Either controlled (value + onChange, the Evidence toolbar) or display
-  // only with an initial selection (defaultValue, the Timeline toolbar).
+  // controlled (value + onChange) or only an initial selection (defaultValue)
   value?: string;
   onChange?: (value: string) => void;
   defaultValue?: string;

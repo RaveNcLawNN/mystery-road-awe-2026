@@ -3,8 +3,7 @@ import type { Person, TimelineEvent } from "../../types.ts";
 import { formatDate } from "../../utils/format.ts";
 import { Badge, type BadgeVariant } from "../components/Badge.tsx";
 
-// Lookup table: certainty -> badge color. A value that is not listed
-// (e.g. a new certainty in the data) falls back to the neutral badge.
+// certainty -> badge color; unknown values get the neutral badge
 const CERTAINTY_BADGE_VARIANTS: Record<string, BadgeVariant> = {
   confirmed: "badge-reviewed",
   reported: "badge-flagged",
@@ -17,9 +16,8 @@ function certaintyBadgeVariant(certainty: string): BadgeVariant {
 
 interface TimelineEventCardProps {
   event: TimelineEvent;
-  // "L01 - Robotics Lab", resolved by the page
+  // e.g. "L01 - Robotics Lab"
   locationNames: string[];
-  // the people involved, resolved by the page
   people: Person[];
 }
 
@@ -53,7 +51,7 @@ interface LocationLineProps {
   names: string[];
 }
 
-// Renders nothing at all (null) when the event has no location.
+// renders nothing (null) without a location
 function LocationLine({ names }: LocationLineProps) {
   if (names.length === 0) {
     return null;

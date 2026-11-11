@@ -13,11 +13,10 @@ interface DashboardPageProps {
 
 export function DashboardPage({ data }: DashboardPageProps) {
   const { bookmarks } = useBookmarks();
-  // Derived values: calculated on every render from the current data, never
-  // stored, so they cannot get out of date.
+  // derived on every render, never stored
   const reviewedCount = data.evidence.filter((ev) => ev.status.toLowerCase() === "reviewed").length;
   const progressPercent = data.evidence.length === 0 ? 0 : Math.round((reviewedCount / data.evidence.length) * 100);
-  // slice() copies, so reverse() does not reorder the shared array
+  // slice() copies, so reverse() does not change the data
   const recentEvidence = data.evidence.slice(-5).reverse();
   const recentTimeline = data.timeline.slice(-5).reverse();
 

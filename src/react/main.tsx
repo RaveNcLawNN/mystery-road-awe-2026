@@ -1,6 +1,4 @@
-// ---------------------------------------------------------------------
-// ENTRY POINT of the app (index.html)
-// ---------------------------------------------------------------------
+// entry point of the app (index.html)
 
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
@@ -14,9 +12,7 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    {/* The route lives in the URL hash (index.html#/team/people): works on
-        GitHub Pages and the "mpa" dev server, which have no fallback for
-        unknown paths like /team/people. */}
+    {/* hash URLs (index.html#/team/people) need no server fallback (GitHub Pages, dev server) */}
     <HashRouter>
       <App />
     </HashRouter>

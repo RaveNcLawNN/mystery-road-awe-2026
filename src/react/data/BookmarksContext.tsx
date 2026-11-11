@@ -3,16 +3,15 @@ import { readStoredBookmarks, writeStoredBookmarks } from "../../storage.ts";
 import { toggleId } from "./toggleId.ts";
 
 interface BookmarksContextValue {
-  // readonly: push/splice are a type error, so it can only be replaced
+  // readonly: can only be replaced, not changed
   bookmarks: readonly string[];
   toggleBookmark: (evidenceId: string) => void;
 }
 
-// null = used outside of <BookmarksProvider> (a programming error, see useBookmarks)
+// null = used outside of <BookmarksProvider>
 const BookmarksContext = createContext<BookmarksContextValue | null>(null);
 
-// Owns the bookmark state (the single source of truth) and makes it available
-// to every component below it, without passing it through the ones in between.
+// Holds the bookmarks and gives them to every component below it.
 export function BookmarksProvider({ children }: { children: ReactNode }) {
   const [bookmarks, setBookmarks] = useState<readonly string[]>(readStoredBookmarks);
 
@@ -22,11 +21,10 @@ export function BookmarksProvider({ children }: { children: ReactNode }) {
     writeStoredBookmarks(nextBookmarks);
   }
 
-  // React 19: the context itself is the provider component (<BookmarksContext.Provider> before)
+  // React 19: no .Provider needed
   return <BookmarksContext value={{ bookmarks, toggleBookmark }}>{children}</BookmarksContext>;
 }
 
-// Reads the bookmarks in any component below <BookmarksProvider>.
 export function useBookmarks(): BookmarksContextValue {
   const value = useContext(BookmarksContext);
   if (value === null) {

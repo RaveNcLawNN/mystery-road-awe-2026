@@ -8,8 +8,7 @@ interface PersonDetailPageProps {
 
 // Route: /team/people/:personId, e.g. /team/people/nova-byte
 export function PersonDetailPage({ data }: PersonDetailPageProps) {
-  // Every URL parameter is a string, or undefined if the route has no such
-  // parameter. Nothing guarantees that the id belongs to a real person.
+  // from the URL: may not belong to a real person
   const { personId } = useParams();
   const person = data.people.find((p) => p.id === personId);
 

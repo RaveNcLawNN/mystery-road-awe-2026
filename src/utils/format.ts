@@ -1,12 +1,7 @@
-// ---------------------------------------------------------------------
-// FORMATTING HELPERS
-// ---------------------------------------------------------------------
-
 export type StatusBadgeClass = "badge-reviewed" | "badge-flagged" | "badge-unreviewed";
 export type RelevanceBadgeClass = "badge-relevant" | "badge-unreviewed";
 
-// ISO timestamp → localized "Oct 16, 2026 08:49". Values that are not a
-// parsable date are shown as they are.
+// ISO timestamp → "Oct 16, 2026 08:49"; invalid dates are shown as they are
 export function formatDate(ts: string | undefined): string {
   if (!ts) return "Unknown date";
   const d = new Date(ts);
@@ -18,9 +13,7 @@ export function formatDate(ts: string | undefined): string {
   );
 }
 
-// ISO date without a time ("2026-10-16") → localized "Oct 16, 2026".
-// Date-only strings are parsed as UTC midnight, so they are formatted in UTC
-// too; in local time the day would shift back by one west of UTC.
+// "2026-10-16" → "Oct 16, 2026". In UTC, otherwise the day shifts west of UTC.
 export function formatDay(isoDate: string): string {
   const d = new Date(isoDate);
   if (isNaN(d.getTime())) return isoDate;

@@ -5,7 +5,7 @@ import { LocationCard } from "./LocationCard.tsx";
 
 interface PeoplePageProps {
   data: CaseData;
-  // which tab to show; comes from the route (/team/people or /team/locations)
+  // from the route (/team/people or /team/locations)
   tab: "people" | "locations";
 }
 
@@ -18,7 +18,7 @@ export function PeoplePage({ data, tab }: PeoplePageProps) {
     <section>
       <h2>People &amp; Locations</h2>
 
-      {/* The tabs are links: switching tabs changes the URL. */}
+      {/* the tabs are links, so a tab change changes the URL */}
       <div className="tab-bar">
         <NavLink to="/team/people" className={tabClass}>
           People

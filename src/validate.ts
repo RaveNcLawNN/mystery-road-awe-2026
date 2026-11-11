@@ -1,11 +1,5 @@
-// ---------------------------------------------------------------------
-// RUNTIME VALIDATION OF THE CASE FILES
-// ---------------------------------------------------------------------
-// TypeScript types are erased at build time: what a JSON file actually
-// contains is only known after it has been fetched. These functions check
-// the parsed JSON (typed as unknown) against the domain types and throw on
-// the first mismatch, so a broken file fails at load time with a message
-// naming the file, record and field, instead of as a TypeError in a view.
+// Checks the fetched JSON against the domain types (TypeScript types do not
+// exist at runtime). Throws on the first mismatch, naming file and field.
 
 import type { CaseFile, CaseLocation, Evidence, Person, PersonId, TimelineEvent } from "./types.ts";
 
@@ -15,7 +9,6 @@ function expectObject(value: unknown, where: string): JsonObject {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     throw new Error(`${where}: expected an object`);
   }
-  // safe: a plain object whose property values are still unknown
   return value as JsonObject;
 }
 
@@ -38,10 +31,8 @@ function stringArrayField(obj: JsonObject, key: string, where: string): string[]
   return items;
 }
 
-// A person reference in evidence.json/timeline.json is meant to be an id,
-// but evidence E04 uses the display name "Nova Byte". Inside the app it is
-// always an id: names are resolved here, once. A reference that matches
-// neither an id nor a name is reported and left out.
+// Turns person references into ids (E04 uses the name "Nova Byte").
+// Unknown references are reported and left out.
 function resolvePersonRefs(refs: string[], people: readonly Person[], where: string): PersonId[] {
   const ids: PersonId[] = [];
   for (const ref of refs) {

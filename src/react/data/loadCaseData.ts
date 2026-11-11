@@ -1,6 +1,4 @@
-// Loads and validates all case files for the React version. Uses the same
-// files, fetch helper and validation as the vanilla app (data.ts), but
-// returns the data instead of writing it into the shared state.
+// Loads and validates all case files (same files and checks as the vanilla app).
 
 import type { CaseFile, CaseLocation, Evidence, Person, TimelineEvent } from "../../types.ts";
 import { parseCaseFile, parseEvidence, parseLocations, parsePeople, parseTimeline } from "../../validate.ts";
@@ -14,8 +12,7 @@ export interface CaseData {
   timeline: TimelineEvent[];
 }
 
-// One request after another, as in data.ts; people come first because
-// evidence and timeline resolve their person references against them.
+// people first: evidence and timeline resolve their person references against them
 export async function loadCaseData(): Promise<CaseData> {
   const caseFile = parseCaseFile(await fetchJson("data/case.json"));
   const people = parsePeople(await fetchJson("data/people.json"));

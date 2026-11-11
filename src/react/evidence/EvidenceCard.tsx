@@ -9,7 +9,7 @@ interface EvidenceCardProps {
 }
 
 export function EvidenceCard({ evidence, onOpen }: EvidenceCardProps) {
-  // straight from context: EvidencePage no longer passes the bookmarks through
+  // straight from context
   const { bookmarks, toggleBookmark } = useBookmarks();
   const isBookmarked = bookmarks.includes(evidence.id);
 
@@ -20,8 +20,7 @@ export function EvidenceCard({ evidence, onOpen }: EvidenceCardProps) {
         className={isBookmarked ? "bookmark-btn active" : "bookmark-btn"}
         aria-label={"Toggle bookmark for " + evidence.title}
         onClick={(event) => {
-          // the button sits inside the card: without this the click would
-          // also reach the card's onClick and open the detail
+          // otherwise the click would also open the card
           event.stopPropagation();
           toggleBookmark(evidence.id);
         }}

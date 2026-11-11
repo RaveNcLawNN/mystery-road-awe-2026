@@ -10,7 +10,6 @@ export const NAV_ITEMS: { to: string; label: string }[] = [
   { to: "/workspace", label: "Workspace" },
 ];
 
-// NavLink knows the current URL itself and tells us whether it matches.
 export function NavBar() {
   return (
     <nav className="main-nav" aria-label="Main navigation">
@@ -18,7 +17,7 @@ export function NavBar() {
         <NavLink
           key={item.to}
           to={item.to}
-          // "/" would match every URL; end = only the exact path counts
+          // end: otherwise "/" would match every URL
           end={item.to === "/"}
           className={({ isActive }) => (isActive ? "nav-btn active" : "nav-btn")}
         >
